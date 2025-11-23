@@ -42,10 +42,10 @@ class RiskAssistant < ApplicationRecord
   end                                
 
   alias_attribute :initialised?, :initialised   # permite usar “?” al final
-  
+
   private
 
   def sync_client_owned
     self.client_owned = user&.client? || false
-  en
+  end
 end
