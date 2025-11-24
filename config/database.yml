@@ -85,6 +85,5 @@ test:
 #
 production:
   <<: *default
-  database: insurai_production
-  username: insurai
-  password: <%= ENV["INSURAI_DATABASE_PASSWORD"] %>
+  # Render provides DATABASE_URL with full connection details.
+  url: <%= ENV.fetch("DATABASE_URL") %>
