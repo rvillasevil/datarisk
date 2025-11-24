@@ -86,19 +86,19 @@ test:
 production:
   primary: &primary_production
     <<: *default
-    url: <%= ENV.fetch("DATABASE_URL") %>
+    url: <%= ENV.fetch("DATABASE_URL") { ENV.fetch("DATABASE_INTERNAL_URL") } %>
   cache:
     <<: *primary_production
-    url: <%= ENV.fetch("DATABASE_URL") %>
+    url: <%= ENV.fetch("DATABASE_URL") { ENV.fetch("DATABASE_INTERNAL_URL") } %>
     database: datarisk_production_cache
     migrations_paths: db/cache_migrate
   queue:
     <<: *primary_production
-    url: <%= ENV.fetch("DATABASE_URL") %>
+    url: <%= ENV.fetch("DATABASE_URL") { ENV.fetch("DATABASE_INTERNAL_URL") } %>
     database: datarisk_production_queue
     migrations_paths: db/queue_migrate
   cable:
     <<: *primary_production
-    url: <%= ENV.fetch("DATABASE_URL") %>
+    url: <%= ENV.fetch("DATABASE_URL") { ENV.fetch("DATABASE_INTERNAL_URL") } %>
     database: datarisk_production_cable
     migrations_paths: db/cable_migrate
