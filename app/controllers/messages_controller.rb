@@ -255,6 +255,22 @@ class MessagesController < ApplicationController
     runner.submit_user_message(content: @message.content, file_id: nil)
     assistant_text = runner.run_and_wait
 
+    assistant_text = runner.run_and_wait.to_s.strip
+
+    if assistant_text.blank?
+      Rails.logger.warn("MessagesController#assistant_interaction: respuesta vacía del asistente")
+
+      @risk_assistant.messages.create!(
+        sender:      "assistant",
+        role:        "assistant",
+        content:     "No he recibido respuesta del asistente. Por favor, inténtalo de nuevo.",
+        field_asked: @message.field_asked,
+        thread_id:   runner.thread_id
+      )
+
+      return
+    end    
+
     # Intentar interpretar la respuesta como JSON estructurado
     begin
       parsed = JSON.parse(assistant_text)
