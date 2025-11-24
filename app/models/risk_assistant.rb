@@ -46,6 +46,7 @@ class RiskAssistant < ApplicationRecord
   private
 
   def sync_client_owned
+    return unless has_attribute?(:client_owned)
     self.client_owned = user&.client? || false
   end
 end

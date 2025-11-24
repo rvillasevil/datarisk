@@ -37,6 +37,7 @@ class User < ApplicationRecord
   private
 
   def sync_risk_assistants_client_owned
+    return unless risk_assistants.klass.column_names.include?("client_owned")
     risk_assistants.update_all(client_owned: client?)
   end
 end
