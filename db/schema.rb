@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2025_11_24_181628) do
+ActiveRecord::Schema[7.0].define(version: 2025_11_25_062147) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -88,6 +88,20 @@ ActiveRecord::Schema[7.0].define(version: 2025_11_24_181628) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["user_id"], name: "index_clients_on_user_id"
+  end
+
+  create_table "conversation_snapshots", force: :cascade do |t|
+    t.bigint "risk_assistant_id", null: false
+    t.string "thread_id"
+    t.text "last_user_message"
+    t.text "last_assistant_message"
+    t.jsonb "messages_dump", default: []
+    t.jsonb "normalized_payload", default: {}
+    t.string "status", default: "captured", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["risk_assistant_id"], name: "index_conversation_snapshots_on_risk_assistant_id"
+    t.index ["thread_id"], name: "index_conversation_snapshots_on_thread_id"
   end
 
   create_table "edificios_construccions", force: :cascade do |t|
@@ -372,6 +386,7 @@ ActiveRecord::Schema[7.0].define(version: 2025_11_24_181628) do
   add_foreign_key "almacenamientos", "risk_assistants"
   add_foreign_key "client_invitations", "users", column: "owner_id"
   add_foreign_key "clients", "users"
+  add_foreign_key "conversation_snapshots", "risk_assistants"
   add_foreign_key "edificios_construccions", "risk_assistants"
   add_foreign_key "field_catalogue_messages", "field_catalogues"
   add_foreign_key "field_catalogues", "users", column: "owner_id"

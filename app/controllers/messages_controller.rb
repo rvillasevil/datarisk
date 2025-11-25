@@ -21,45 +21,54 @@ class MessagesController < ApplicationController
   # ------------------------------------------------------------------
 
   def create
-      return redirect_blank_message if message_blank?
+    current_thread   = @risk_assistant.thread_id
+    assistant_output = nil
 
-      last_question   = @risk_assistant.messages
-                                    .where(role: "assistant", key: nil)
-                                    .where.not(field_asked: nil)
-                                    .last
-      requested_field = params.dig(:message, :field_asked)
-      expected_field  = requested_field.presence || last_question&.field_asked
+    return redirect_blank_message if message_blank?
 
-      if requested_field.present? && !RiskFieldSet.by_id.key?(requested_field.to_sym)
-        Rails.logger.warn("MessagesController#create: invalid field_asked '#{requested_field}'")
-        expected_field = last_question&.field_asked
-        unless expected_field
-          head :unprocessable_entity
-          return
-        end
-      end
+    last_question   = @risk_assistant.messages
+                                  .where(role: "assistant", key: nil)
+                                  .where.not(field_asked: nil)
+                                  .last
+    requested_field = params.dig(:message, :field_asked)
+    expected_field  = requested_field.presence || last_question&.field_asked
 
-      @message = save_user_message(expected_field)      
-      current_thread = @risk_assistant.thread_id
-
-      if skip_message?(@message.content)
-        handle_skip(current_thread)
-        redirect_to @risk_assistant
+    if requested_field.present? && !RiskFieldSet.by_id.key?(requested_field.to_sym)
+      Rails.logger.warn("MessagesController#create: invalid field_asked '#{requested_field}'")
+      expected_field = last_question&.field_asked
+      unless expected_field
+        head :unprocessable_entity
         return
       end
-
-      return if handle_file_upload(params[:file], current_thread)
-
-      assistant_interaction(current_thread)
-      redirect_to @risk_assistant
-
-    rescue => e
-      Rails.logger.error "💥 Error en MessagesController#create: #{e.class} – #{e.message}"
-      flash[:error] = "Se produjo un error\n     al procesar tu mensaje."
-      redirect_to risk_assistant_path(@risk_assistant)
     end
 
-      private
+    @message = save_user_message(expected_field)
+
+    if skip_message?(@message.content)
+      handle_skip(current_thread)
+      assistant_output = assistant_output_for_snapshot(current_thread)
+      redirect_to @risk_assistant
+      return
+    end
+
+    if handle_file_upload(params[:file], current_thread)
+      assistant_output = assistant_output_for_snapshot(current_thread)
+      redirect_to risk_assistant_path(@risk_assistant)
+      return
+    end
+
+    assistant_output = assistant_interaction(current_thread)
+    redirect_to @risk_assistant
+
+  rescue => e
+    Rails.logger.error "💥 Error en MessagesController#create: #{e.class} – #{e.message}"
+    flash[:error] = "Se produjo un error\n     al procesar tu mensaje."
+    redirect_to risk_assistant_path(@risk_assistant)
+  ensure
+    persist_snapshot!(thread_id: current_thread, assistant_output: assistant_output)
+  end
+
+  private
 
   def message_blank?
     params.dig(:message, :content).blank? && params[:file].blank?
@@ -256,6 +265,8 @@ class MessagesController < ApplicationController
     assistant_text = runner.run_and_wait
 
     assistant_text = runner.run_and_wait.to_s.strip
+    assistant_response_for_snapshot = assistant_text
+
 
     if assistant_text.blank?
       Rails.logger.warn("MessagesController#assistant_interaction: respuesta vacía del asistente")
@@ -334,7 +345,7 @@ class MessagesController < ApplicationController
         thread_id:   runner.thread_id
       )
 
-      return
+      return assistant_response_for_snapshot
     end
 
 
@@ -447,6 +458,8 @@ class MessagesController < ApplicationController
       thread_id: runner.thread_id
     )
 
+    assistant_response_for_snapshot = final_content    
+
     if confirmations.any?
 
       @risk_assistant.messages.create!(
@@ -457,6 +470,9 @@ class MessagesController < ApplicationController
         thread_id: runner.thread_id
       )
     end
+
+    assistant_response_for_snapshot    
+
   end
 
   def message_params
@@ -526,6 +542,39 @@ class MessagesController < ApplicationController
       { role: role, content: content }
     end
   end
+
+  def assistant_output_for_snapshot(thread_id)
+    @risk_assistant.messages
+                   .where(thread_id: thread_id, sender: %w[assistant assistant_confirmation assistant_summary assistant_raw])
+                   .order(:created_at)
+                   .last
+                   &.content
+  end
+
+  def persist_snapshot!(thread_id:, assistant_output:)
+    return unless @risk_assistant
+
+    assistant_content = assistant_output.presence || assistant_output_for_snapshot(thread_id)
+
+    normalized_payload = ConversationNormalizer.call(
+      risk_assistant: @risk_assistant,
+      last_user_message: @message&.content,
+      last_assistant_message: assistant_content.to_s
+    )
+
+    ConversationSnapshot.create!(
+      risk_assistant: @risk_assistant,
+      thread_id: thread_id,
+      last_user_message: @message&.content,
+      last_assistant_message: assistant_content,
+      messages_dump: collect_messages_for_context(@risk_assistant),
+      normalized_payload: normalized_payload,
+      status: normalized_payload.present? ? "normalized" : "captured"
+    )
+  rescue => e
+    Rails.logger.error "ConversationSnapshot error: #{e.class} – #{e.message}"
+  end
+
 
   def image_file?(file)
     file.content_type.to_s.start_with?("image/")
