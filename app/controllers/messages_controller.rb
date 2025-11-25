@@ -262,11 +262,9 @@ class MessagesController < ApplicationController
   def assistant_interaction(current_thread)
     runner = AssistantRunner.new(@risk_assistant)
     runner.submit_user_message(content: @message.content, file_id: nil)
-    assistant_text = runner.run_and_wait
 
     assistant_text = runner.run_and_wait.to_s.strip
     assistant_response_for_snapshot = assistant_text
-
 
     if assistant_text.blank?
       Rails.logger.warn("MessagesController#assistant_interaction: respuesta vacía del asistente")

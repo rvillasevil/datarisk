@@ -84,24 +84,9 @@ test:
 # for a full overview on how database connection configuration can be specified.
 #
 production:
-  primary: &primary_production
-    <<: *default
-    database: <%= ENV.fetch("POSTGRES_DB", "datarisk_production") %>
-    username: <%= ENV.fetch("POSTGRES_USER", "postgres") %>
-    password: <%= ENV["POSTGRES_PASSWORD"] %>
-    host: <%= ENV.fetch("POSTGRES_HOST", "localhost") %>
-  cache:
-    <<: *primary_production
-    url: <%= ENV.fetch("DATABASE_URL") { ENV["DATABASE_INTERNAL_URL"] } %>
-    database: datarisk_production_cache
-    migrations_paths: db/cache_migrate
-  queue:
-    <<: *primary_production
-    url: <%= ENV.fetch("DATABASE_URL") { ENV["DATABASE_INTERNAL_URL"] } %>
-    database: datarisk_production_queue
-    migrations_paths: db/queue_migrate
-  cable:
-    <<: *primary_production
-    url: <%= ENV.fetch("DATABASE_URL") { ENV["DATABASE_INTERNAL_URL"] } %>
-    database: datarisk_production_cable
-    migrations_paths: db/cable_migrate
+  <<: *default
+  # La clave es esta línea 'url': le dice a Rails que use la variable de entorno
+  url: <%= ENV["DATABASE_URL"] %>
+  adapter: postgresql
+  encoding: unicode
+  pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>

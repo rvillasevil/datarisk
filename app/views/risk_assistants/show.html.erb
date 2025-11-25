@@ -1,127 +1,29 @@
 <%# -------------------------------------------------------------- %>
 <%# Chat Page – Bootstrap 5 Responsive con Sidebar intacto         %>
 <%# -------------------------------------------------------------- %>
-<div class="sidebar-nav">
-  <div class="sidebar-header">
-    <div>
-      <p class="text-uppercase small text-light opacity-75 mb-1">Panel</p>
-      <h2 class="h5 text-white mb-0">Flujo de <%= @risk_assistant.name %></h2>
-    </div>
-    <div class="soft-pill">En línea</div>
-  </div>
-
-  <ul class="nav flex-column mt-3">
-    <li class="nav-item">
-      <%= link_to summary_risk_assistant_path(@risk_assistant), class: "nav-link d-flex align-items-center gap-2" do %>
-        <i class="bi bi-clipboard-data"></i>
-        <div>
-          <span class="d-block fw-semibold">Resumen</span>
-          <small class="text-muted d-block">Puntos clave del análisis</small>
-        </div>
-      <% end %>
-    </li>
-
-    <li class="nav-item mt-2">
-      <div class="nav-link d-flex align-items-center gap-2 text-primary-emphasis">
-        <i class="bi bi-folder"></i>
-        <div>
-          <span class="d-block fw-semibold">Archivos</span>
-          <small class="text-muted d-block">Documentos cargados y acciones rápidas</small>
-        </div>
-      </div>
-      <% if @risk_assistant.uploaded_files.attached? %>
-        <ul class="nav flex-column mt-2 gap-2">
-          <% @risk_assistant.uploaded_files.each do |file| %>
-            <li class="uploaded-file-card">
-              <div class="d-flex justify-content-between align-items-start">
-                <div class="file-info d-flex align-items-start gap-2">
-                  <div class="file-icon-circle">
-                    <i class="bi <%= file_icon_for(file) %>"></i>
-                  </div>
-                  <div>
-                    <%= link_to file.filename.to_s,
-                                url_for(file),
-                                target: "_blank",
-                                class: "file-name" %>
-                    <div class="text-muted small">(<%= number_to_human_size(file.byte_size) %>)</div>
-                  </div>
-                </div>
-                <div class="file-actions d-flex gap-1">
-                  <%= link_to rails_blob_path(file, disposition: "attachment"),
-                              class: "btn btn-light btn-sm", title: "Descargar" do %>
-                    <i class="bi bi-download"></i>
-                  <% end %>
-                  <%= link_to file_risk_assistant_path(@risk_assistant, file),
-                              data: { turbo_method: :delete, turbo_confirm: "¿Eliminar archivo?" },
-                              class: "btn btn-outline-danger btn-sm", title: "Eliminar" do %>
-                    <i class="bi bi-trash"></i>
-                  <% end %>
-                </div>
-              </div>
-            </li>
-          <% end %>
-        </ul>
-      <% else %>
-        <p class="text-muted small ms-1">No hay archivos subidos.</p>
-      <% end %>
-    </li>
-
-    <li class="nav-item mt-3">
-      <%= link_to risk_assistant_resume_path(@risk_assistant), class: "nav-link d-flex align-items-center gap-3" do %>
-        <div class="progress-circle">
-          <span><%= @overall_pct %>%</span>
-        </div>
-        <div>
-          <span class="d-block fw-semibold">Progreso</span>
-          <small class="text-muted d-block">Secciones respondidas</small>
-        </div>
-      <% end %>
-      <div class="mt-3">
-        <%= render partial: "sidebar",
-                   locals: {
-                     sections: sections,
-                     progress_by_section: progress_by_section,
-                     @: @,
-                     risk_assistant: risk_assistant
-                   } %>
-      </div>
-    </li>
-  </ul>
-</div>
-app/views/risk_assistants/show.html.erb
-+16
--12
-
-<%# -------------------------------------------------------------- %>
-<%# Chat Page – Bootstrap 5 Responsive con Sidebar intacto         %>
-<%# -------------------------------------------------------------- %>
-<div class="chat-container container-fluid py-4">
-  <div class="d-flex justify-content-between align-items-center mb-3">
-    <div>
-      <p class="text-uppercase small text-muted mb-1">Asistente de riesgo</p>
-      <h1 class="fw-bold mb-0"><%= @risk_assistant.name %></h1>
-      <p class="text-muted mb-0">Conversación guiada y documentos en un panel limpio y moderno.</p>
-    </div>
-
-    <button class="btn btn-outline-secondary d-md-none rounded-pill shadow-sm"
+<div class="chat-container container-fluid py-3">
+  <!-- CABECERA + Botón hamburguesa -->
+  <div class="d-flex justify-content-between align-items-center mb-0">
+    <button class="btn btn-outline-secondary d-md-none"
             data-bs-toggle="offcanvas"
             data-bs-target="#sidebarCanvas">
       <i class="bi bi-list"></i>
+      <h1 class="h4 mb-0"><%= @risk_assistant.name %></h1>
     </button>
   </div>
 
-  <div class="chat-layout">
-    <!-- SIDEBAR -->
-    <aside class="fixed-sidebar">
+  <!-- SIDEBAR -->
+  <aside class="fixed-sidebar">
       <!-- Desktop -->
       <div class="d-none d-md-block">
-        <div class="sidebar-box sidebar-modern shadow-sm">
-          <%= render partial: "sidebar_nav",
+        <div class="sidebar-box">
+          <%#── Sección de “Archivos subidos” ──────────────────────────────────── %>          
+          <%= render partial: "sidebar_nav",                     
                     locals: {
                        risk_assistant: @risk_assistant,
                        sections: @sections,
                        progress_by_section: @progress_by_section,
-                       @: @@
+                       overall_pct: @overall_pct
                      } %>
         </div>
       </div>
@@ -138,7 +40,7 @@ app/views/risk_assistants/show.html.erb
                          risk_assistant: @risk_assistant,
                          sections: @sections,
                          progress_by_section: @progress_by_section,
-                         @: @@
+                         overall_pct: @overall_pct
                        } %>
           </div>
         </div>
@@ -146,7 +48,8 @@ app/views/risk_assistants/show.html.erb
     </aside>
 
     <!-- MAIN / CHAT -->
-    <main class="chat-page chat-main glass-panel">
+    <main class="chat-page chat-main">
+      <h1 class="h1 mb-0"><%= @risk_assistant.name %></h1>
         <% display_msgs = @risk_assistant.messages.visible_to_user %>
 
         <div class="chat-history">
@@ -172,6 +75,9 @@ app/views/risk_assistants/show.html.erb
           <%#— Contenedor donde mostraremos el nombre del archivo seleccionado —%>
           <div id="selected-file-container" class="mb-2" style="display: none;">
             <small class="text-muted">Archivo adjunto: <span id="selected-file-name"></span></small>
+          </div>
+
+          <div class="input-group">
             <%= f.text_area :content,
                            name: 'message[content]',
                            rows: 2,
