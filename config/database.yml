@@ -89,7 +89,7 @@ production:
     database: <%= ENV.fetch("POSTGRES_DB", "datarisk_production") %>
     username: <%= ENV.fetch("POSTGRES_USER", "postgres") %>
     password: <%= ENV["POSTGRES_PASSWORD"] %>
-    host: <%= ENV.fetch("POSTGRES_HOST", "db") %>
+    host: <%= ENV.fetch("POSTGRES_HOST", "localhost") %>
   cache:
     <<: *primary_production
     url: <%= ENV.fetch("DATABASE_URL") { ENV["DATABASE_INTERNAL_URL"] } %>
