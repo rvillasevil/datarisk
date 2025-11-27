@@ -143,8 +143,8 @@ class AssistantRunner
       extra << "### Formato de respuesta:\n" \
                "Devuelve un JSON con las claves `campo_actual` (valor `#{field_id}`), `estado_del_campo`, `valor`, `siguiente_campo`, `mensaje_para_usuario` y `explicacion_normativa`.\n" \
                "No pases al siguiente campo hasta que `estado_del_campo` sea 'confirmado'. Si cambias de campo, establece `estado_del_campo` como 'confirmado' para el campo anterior.\n"
-      extra << "### Contrato JSON obligatorio:\n" \
-               "Usa response_format=json_object y respeta este esquema: #{JSON.pretty_generate(CONTROL_JSON_SCHEMA)}\n"
+        extra << "### Contrato JSON obligatorio:\n" \
+                 "Usa response_format=json_schema (strict=true) y respeta este esquema: #{JSON.pretty_generate(CONTROL_JSON_SCHEMA)}\n"
       extra << "⚠️ Tras confirmar, responde SOLO \"OK\" y espera la siguiente instrucción."
       extra << "\nAntes de formular la siguiente pregunta, revisa este historial y señala cualquier contradicción detectada."
 
@@ -171,7 +171,14 @@ class AssistantRunner
         assistant_id:            ENV['OPENAI_ASSISTANT_ID'],
         additional_instructions: extra,
         temperature:             0,
-        response_format:         { type: "json_object" })
+        response_format:         {
+          type: "json_schema",
+          json_schema: {
+            name: "control_json_schema",
+            schema: CONTROL_JSON_SCHEMA,
+            strict: true
+          }
+        })
     @last_field_id
   end
 
@@ -316,7 +323,14 @@ class AssistantRunner
       assistant_id:           ENV.fetch("OPENAI_ASSISTANT_ID"),
       additional_instructions: extra,
       temperature: 0,
-      response_format: { type: "json_object" }
+      response_format: {
+        type: "json_schema",
+        json_schema: {
+          name: "control_json_schema",
+          schema: CONTROL_JSON_SCHEMA,
+          strict: true
+        }
+      }
     )
     Rails.logger.debug "↳ Instrucciones de campo: #{instr.truncate(120)}" if instr.present?
     resp["id"]

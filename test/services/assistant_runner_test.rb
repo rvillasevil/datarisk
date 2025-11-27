@@ -40,7 +40,7 @@ class AssistantRunnerTest < ActiveSupport::TestCase
     runner
   end
 
-test 'includes assistant instructions from config in run prompt' do
+  test 'includes assistant instructions from config in run prompt' do
     instructions = "Pregunta con instrucciones del JSON"
     runner       = build_runner
     runner.instance_variable_set(:@thread_id, "thread_123")
@@ -51,6 +51,14 @@ test 'includes assistant instructions from config in run prompt' do
         RiskFieldSet.stub :question_for, ->(*) { "Pregunta base" } do
           RiskFieldSet.stub :normative_tips_for, ->(*) { "" } do
             captured_body = nil
+            expected_schema = {
+              type: "json_schema",
+              json_schema: {
+                name: "control_json_schema",
+                schema: AssistantRunner::CONTROL_JSON_SCHEMA,
+                strict: true
+              }
+            }            
 
             runner.stub :next_pending_field, :field do
               runner.stub :post, ->(url, body) { captured_body = body; { "id" => "run_123" } } do
@@ -59,6 +67,7 @@ test 'includes assistant instructions from config in run prompt' do
             end
 
             assert_includes captured_body[:additional_instructions], instructions
+            assert_equal expected_schema, captured_body[:response_format]            
           end
         end
       end
