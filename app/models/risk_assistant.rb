@@ -8,6 +8,7 @@ class RiskAssistant < ApplicationRecord
   validates :name, presence: true
 
   before_validation :sync_client_owned
+  before_validation :sync_field_catalog_version
 
   has_one :identificacion, class_name: 'Identificacion', dependent: :destroy
   has_one :ubicacion_configuracion, dependent: :destroy
@@ -26,11 +27,19 @@ class RiskAssistant < ApplicationRecord
                                 :riesgos_especifico, :siniestralidad, :recomendacione
 
   def campos
-    confirmados = messages.where.not(key: nil).pluck(:key, :value).to_h
+    confirmados = messages
+                    .where.not(key: nil)
+                    .order(:created_at)
+                    .group_by(&:key)
+                    .transform_values(&:last)
 
     resultado = {}
-    confirmados.each do |key, value|
-      resultado[key] = { estado: 'confirmado', valor: value }
+    confirmados.each do |key, msg|
+      resultado[key] = {
+        estado: msg.value_state.presence || 'confirmado',
+        valor:  msg.value,
+        fuente: msg.value_source.presence
+      }
     end
 
     RiskFieldSet.flat_fields.each do |field|
@@ -49,4 +58,10 @@ class RiskAssistant < ApplicationRecord
     return unless has_attribute?(:client_owned)
     self.client_owned = user&.client? || false
   end
+
+  def sync_field_catalog_version
+    return unless has_attribute?(:field_catalog_version)
+    self.field_catalog_version ||= RiskFieldSet.catalog_version
+  end
+
 end

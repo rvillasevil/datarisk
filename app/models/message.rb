@@ -23,6 +23,10 @@ class Message < ApplicationRecord
   # Existing records with the same key will be overwritten to keep keys unique.
   def self.save_unique!(risk_assistant:, key:, **attrs)
     msg = risk_assistant.messages.find_or_initialize_by(key: key)
+    if key.present?
+      attrs[:value_state]  ||= 'confirmado'
+      attrs[:value_source] ||= 'assistant'
+    end
     msg.assign_attributes(attrs)
     msg.save!
     msg

@@ -10,11 +10,29 @@ class AssistantRunner
     "OpenAI-Beta"   => "assistants=v2"
   }.freeze
 
+  CONTROL_JSON_SCHEMA = {
+    type: "object",
+    required: %w[campo_actual estado_del_campo valor siguiente_campo mensaje_para_usuario explicacion_normativa],
+    properties: {
+      campo_actual: { type: %w[string null] },
+      estado_del_campo: { type: "string", enum: %w[confirmado pendiente desconocido inconsistente omitido] },
+      valor: { type: %w[string number boolean null object array] },
+      siguiente_campo: { type: %w[string null] },
+      mensaje_para_usuario: { type: "string" },
+      explicacion_normativa: { type: %w[string null] }
+    }
+  }.freeze
+
   attr_reader :risk_assistant, :thread_id, :last_field_id
   def initialize(risk_assistant)
     @risk_assistant = risk_assistant
     @thread_id      = risk_assistant.thread_id.presence || create_thread
     @fields_json    = build_fields_json
+
+    if risk_assistant.respond_to?(:field_catalog_version) &&
+       risk_assistant.field_catalog_version != RiskFieldSet.catalog_version
+      risk_assistant.update!(field_catalog_version: RiskFieldSet.catalog_version)
+    end
     inject_instructions_once if !risk_assistant.initialised?
   end
 
@@ -124,7 +142,9 @@ class AssistantRunner
       extra << "### Pregunta:\n#{question}\n\n"
       extra << "### Formato de respuesta:\n" \
                "Devuelve un JSON con las claves `campo_actual` (valor `#{field_id}`), `estado_del_campo`, `valor`, `siguiente_campo`, `mensaje_para_usuario` y `explicacion_normativa`.\n" \
-               "No pases al siguiente campo hasta que `estado_del_campo` sea 'confirmado'. Si cambias de campo, establece `estado_del_campo` como 'confirmado' para el campo anterior.\n"  
+               "No pases al siguiente campo hasta que `estado_del_campo` sea 'confirmado'. Si cambias de campo, establece `estado_del_campo` como 'confirmado' para el campo anterior.\n"
+      extra << "### Contrato JSON obligatorio:\n" \
+               "Usa response_format=json_object y respeta este esquema: #{JSON.pretty_generate(CONTROL_JSON_SCHEMA)}\n"
       extra << "⚠️ Tras confirmar, responde SOLO \"OK\" y espera la siguiente instrucción."
       extra << "\nAntes de formular la siguiente pregunta, revisa este historial y señala cualquier contradicción detectada."
 
@@ -150,7 +170,8 @@ class AssistantRunner
     post("#{BASE_URL}/threads/#{thread_id}/runs",
         assistant_id:            ENV['OPENAI_ASSISTANT_ID'],
         additional_instructions: extra,
-        temperature:             0)
+        temperature:             0,
+        response_format:         { type: "json_object" })
     @last_field_id
   end
 
@@ -281,15 +302,16 @@ class AssistantRunner
       8. Usa la plantilla indicada en assistant_instructions si existe.
       9. Si se adjunta un archivo, busca la información relacionada con cada uno de los campos y valida cada uno de ellos.
       10. Revisa el historial y señala cualquier contradicción antes de formular la siguiente pregunta.
-      11. Devuelve SIEMPRE un JSON con las claves `campo_actual`, `estado_del_campo`, `valor`, `siguiente_campo`, `mensaje_para_usuario` y `explicacion_normativa`.      
-
+      11. Devuelve SIEMPRE un JSON con las claves `campo_actual`, `estado_del_campo`, `valor`, `siguiente_campo`, `mensaje_para_usuario` y `explicacion_normativa` respetando este esquema:
+          #{JSON.pretty_generate(CONTROL_JSON_SCHEMA)}
     SYS
  
     resp = post(
       "#{BASE_URL}/threads/#{thread_id}/runs",
       assistant_id:           ENV.fetch("OPENAI_ASSISTANT_ID"),
       additional_instructions: extra,
-      temperature: 0
+      temperature: 0,
+      response_format: { type: "json_object" }
     )
     Rails.logger.debug "↳ Instrucciones de campo: #{instr.truncate(120)}" if instr.present?
     resp["id"]
@@ -322,9 +344,12 @@ class AssistantRunner
 
   def post(url, body)
     Rails.logger.debug "→ HTTP POST to #{url} with body:\n#{JSON.pretty_generate(body)}"
-    resp = HTTP.headers(HEADERS).post(url, json: body).body.to_s
-    Rails.logger.debug "← Response: #{resp.truncate(200).gsub("\n"," ")}"
-    JSON.parse(resp)
+    response  = HTTP.headers(HEADERS).post(url, json: body)
+    resp_body = response.body.to_s
+    Rails.logger.debug "← Response: #{resp_body.truncate(200).gsub("\n"," ")}" 
+    parsed = JSON.parse(resp_body)
+    log_assistant_interaction(url: url, request_body: body, response_body: parsed, status: response.status.to_i)
+    parsed
   end
 
   def get(url)
@@ -336,6 +361,27 @@ class AssistantRunner
     Rails.logger.debug "← Error fetching #{url}: #{e.class}: #{e.message}"
     raise
   end
+
+
+  def log_assistant_interaction(url:, request_body:, response_body:, status:)
+    return unless risk_assistant && url.start_with?(BASE_URL)
+
+    endpoint = url.delete_prefix(BASE_URL)
+    return unless endpoint.include?("/runs") || endpoint.include?("/messages")
+
+    AssistantRunLog.create!(
+      risk_assistant:  risk_assistant,
+      run_id:          response_body["id"] || request_body[:run_id],
+      endpoint:        endpoint,
+      request_payload: request_body,
+      response_payload: response_body,
+      http_status:     status
+    )
+  rescue StandardError => e
+    Rails.logger.warn "AssistantRunner: no se pudo registrar la auditoría: #{e.message}"
+  end
+
+
 end
 
 

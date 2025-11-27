@@ -105,6 +105,8 @@ class MessagesController < ApplicationController
       content:       "Campo omitido.",
       sender:        "assistant",
       role:          "developer",
+      value_state:   "omitido",
+      value_source:  "sistema", 
       field_asked:   @message.field_asked,
       thread_id:     current_thread
     )
@@ -134,6 +136,7 @@ class MessagesController < ApplicationController
       content:       "Archivo subido correctamente.",
       sender:        "assistant",
       role:          "assistant",
+      value_source:  "archivo",
       field_asked:   field_key,
       thread_id:     current_thread
     )
@@ -175,6 +178,8 @@ class MessagesController < ApplicationController
       content:       "El documento parece ser una #{doc_type}.",
       sender:        "assistant",
       role:          "assistant",
+      value_state:   "confirmado",
+      value_source:  "documento",
       field_asked:   @message.field_asked,
       thread_id:     current_thread
     )
@@ -187,8 +192,10 @@ class MessagesController < ApplicationController
         content:       "El documento parece ser una #{doc_type}.",
         sender:        "assistant",
         role:          "assistant",
+        value_state:   "confirmado",
+        value_source:  "documento",
         thread_id:     current_thread
-      )    
+      )
 
       @risk_assistant.messages.create!(
         sender:    "assistant",
@@ -213,6 +220,8 @@ class MessagesController < ApplicationController
           content:       "✅ Perfecto, #{label} es &&#{valor}&&.",
           sender:        "assistant",
           role:          "developer",
+          value_state:   "confirmado",
+          value_source:  "documento",
           field_asked:   campo_id,
           thread_id:     current_thread
         )
@@ -266,6 +275,7 @@ class MessagesController < ApplicationController
     assistant_text = runner.run_and_wait.to_s.strip
     assistant_response_for_snapshot = assistant_text
 
+
     if assistant_text.blank?
       Rails.logger.warn("MessagesController#assistant_interaction: respuesta vacía del asistente")
 
@@ -278,7 +288,9 @@ class MessagesController < ApplicationController
       )
 
       return
-    end    
+    end 
+
+    parsed = AssistantResponseParser.call(assistant_text)
 
     # Intentar interpretar la respuesta como JSON estructurado
     begin
@@ -328,6 +340,8 @@ class MessagesController < ApplicationController
           content:       "✅ Perfecto, #{RiskFieldSet.label_for(campo_actual)} es &&#{valor}&&.",
           sender:        "assistant_confirmation",
           role:          "developer",
+          value_state:   estado,
+          value_source:  "usuario",
           field_asked:   campo_actual,
           thread_id:     runner.thread_id
         )
@@ -378,6 +392,8 @@ class MessagesController < ApplicationController
         content:       "✅ Perfecto, #{RiskFieldSet.label_for(clean_id)} es &&#{value}&&.",
         sender:        "assistant_confirmation",
         role:          "developer",
+        value_state:   "confirmado",
+        value_source:  "assistant",
         field_asked:   nil,
         thread_id:     runner.thread_id
       )

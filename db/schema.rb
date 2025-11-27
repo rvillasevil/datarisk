@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2025_11_25_062147) do
+ActiveRecord::Schema[7.0].define(version: 2025_11_26_191444) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -69,6 +69,20 @@ ActiveRecord::Schema[7.0].define(version: 2025_11_25_062147) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["risk_assistant_id"], name: "index_almacenamientos_on_risk_assistant_id"
+  end
+
+  create_table "assistant_run_logs", force: :cascade do |t|
+    t.bigint "risk_assistant_id", null: false
+    t.string "run_id"
+    t.string "endpoint", null: false
+    t.jsonb "request_payload", default: {}, null: false
+    t.jsonb "response_payload", default: {}, null: false
+    t.integer "http_status"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["risk_assistant_id", "endpoint"], name: "index_assistant_run_logs_on_risk_assistant_id_and_endpoint"
+    t.index ["risk_assistant_id", "run_id"], name: "index_assistant_run_logs_on_risk_assistant_id_and_run_id"
+    t.index ["risk_assistant_id"], name: "index_assistant_run_logs_on_risk_assistant_id"
   end
 
   create_table "client_invitations", force: :cascade do |t|
@@ -241,6 +255,9 @@ ActiveRecord::Schema[7.0].define(version: 2025_11_25_062147) do
     t.string "section"
     t.string "field_asked"
     t.string "item_label"
+    t.string "value_state"
+    t.string "value_source"
+    t.index ["risk_assistant_id", "field_asked", "created_at"], name: "index_messages_on_assistant_field_created_at"
     t.index ["risk_assistant_id"], name: "index_messages_on_risk_assistant_id"
   end
 
@@ -285,6 +302,7 @@ ActiveRecord::Schema[7.0].define(version: 2025_11_25_062147) do
     t.string "thread_id"
     t.boolean "initialised", default: false, null: false
     t.boolean "client_owned", default: false, null: false
+    t.string "field_catalog_version"
     t.index ["user_id"], name: "index_risk_assistants_on_user_id"
     t.index ["user_id"], name: "index_risk_assistants_on_user_id_unique_for_client", unique: true, where: "client_owned"
   end
@@ -384,6 +402,7 @@ ActiveRecord::Schema[7.0].define(version: 2025_11_25_062147) do
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "actividad_procesos", "risk_assistants"
   add_foreign_key "almacenamientos", "risk_assistants"
+  add_foreign_key "assistant_run_logs", "risk_assistants"
   add_foreign_key "client_invitations", "users", column: "owner_id"
   add_foreign_key "clients", "users"
   add_foreign_key "conversation_snapshots", "risk_assistants"

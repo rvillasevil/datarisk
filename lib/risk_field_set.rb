@@ -5,6 +5,7 @@ require "yaml"
 require "json"
 require "pathname"
 require "set"
+require "digest"
 
 
 class RiskFieldSet
@@ -24,6 +25,9 @@ class RiskFieldSet
   ) unless const_defined?(:Field)
 
   class << self
+    def catalog_version
+      Digest::SHA256.hexdigest(flat_fields.to_json)
+    end
     # Devuelve el hash de secciones con sus campos ya procesados
     def all
       @sections ||= load_data!
