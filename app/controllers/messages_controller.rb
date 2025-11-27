@@ -292,13 +292,6 @@ class MessagesController < ApplicationController
 
     parsed = AssistantResponseParser.call(assistant_text)
 
-    # Intentar interpretar la respuesta como JSON estructurado
-    begin
-      parsed = JSON.parse(assistant_text)
-    rescue JSON::ParserError
-      parsed = nil
-    end
-
     campo_actual = parsed.is_a?(Hash) ? parsed["campo_actual"] : nil
     @message.update!(field_asked: campo_actual) if campo_actual.present?
 
