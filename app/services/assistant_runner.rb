@@ -375,6 +375,7 @@ class AssistantRunner
     Rails.logger.debug "→ HTTP GET to #{url}"
     resp = HTTP.headers(HEADERS).get(url).body.to_s
     Rails.logger.debug "← Response: #{resp.truncate(200).gsub("\n", " ")}"
+    return {} if resp.strip.empty?
     JSON.parse(resp)
   rescue StandardError => e
     Rails.logger.debug "← Error fetching #{url}: #{e.class}: #{e.message}"
