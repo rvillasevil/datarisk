@@ -40,6 +40,31 @@ class AssistantRunnerTest < ActiveSupport::TestCase
     runner
   end
 
+test 'includes assistant instructions from config in run prompt' do
+    instructions = "Pregunta con instrucciones del JSON"
+    runner       = build_runner
+    runner.instance_variable_set(:@thread_id, "thread_123")
+    runner.instance_variable_set(:@fields_json, "{}")
+
+    RiskFieldSet.stub :flat_fields, [] do
+      RiskFieldSet.stub :by_id, { field: { id: "field", label: "Campo", assistant_instructions: instructions } } do
+        RiskFieldSet.stub :question_for, ->(*) { "Pregunta base" } do
+          RiskFieldSet.stub :normative_tips_for, ->(*) { "" } do
+            captured_body = nil
+
+            runner.stub :next_pending_field, :field do
+              runner.stub :post, ->(url, body) { captured_body = body; { "id" => "run_123" } } do
+                runner.send(:start_run_with_instructions)
+              end
+            end
+
+            assert_includes captured_body[:additional_instructions], instructions
+          end
+        end
+      end
+    end
+  end  
+
   test 'returns fields following JSON order including arrays' do
     fields = [
       { id: 'first', type: :string, parent: nil },
@@ -125,3 +150,5 @@ class AssistantRunnerTest < ActiveSupport::TestCase
       end
     end
   end
+
+end

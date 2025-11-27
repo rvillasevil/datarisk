@@ -284,13 +284,18 @@ class AssistantRunner
          #{question}
          (Incluye las opciones si existen para ese campo.)
 
+      3.1 Antes de formular la pregunta añade siempre un contexto descriptivo que explique qué información se va a pedir y por qué es importante. Incluye ejemplos concretos cuando sirvan para ilustrar mejor la solicitud.         
+
       4. Añade a la pregunta las siguientes indicaciones al usuario:
          #{instr.presence ? instr : "ninguna"}
 
       4.1 Añade justo después de la pregunta, una explicación de la pregunta de como mínimo 2 párrafos y máximo 3 párrafos, de no más de 500 palabras en total, que ayude al usuario a entender qué información se le está pidiendo y por qué es importante. Usa un lenguaje claro y sencillo, evitando tecnicismos y jerga compleja. Si el campo tiene tip normativo, incluye una explicación breve de la normativa relacionada con ese campo.
 
-      <%# 5. Incluye siempre en un párrafo independiente el desarrollo de la normativa relacionada con la pregunta del punto 3:
-          Normativa: #{tips.presence ? tips : "ninguna"} %>
+      4.2 Incluye toda la narrativa (pregunta, explicaciones y aclaraciones) dentro del valor de `mensaje_para_usuario` del JSON de salida.
+
+      5. Incluye siempre en un párrafo independiente el desarrollo de la normativa relacionada con la pregunta del punto 3:
+          Normativa: #{tips.presence ? tips : "ninguna"}
+      5.1 Coloca el desarrollo normativo en la clave `explicacion_normativa` del JSON de salida.
 
       6. Antes de validar un valor:
          – Si el campo es *select*, comprueba que la respuesta esté en
