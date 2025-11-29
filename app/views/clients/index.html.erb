@@ -18,8 +18,12 @@
                 <tr>
                   <td><%= link_to client.name, client_path(client) %></td>
                   <td class="text-end">
-                    <%= link_to 'Revocar acceso', user_client_path(@user, client), method: :delete, data: { confirm: '¿Estás seguro?' }, class: 'btn btn-link text-danger p-0' %>
-                  </td>
+                    <%= button_to 'Revocar acceso',
+                                  user_client_path(@user, client),
+                                  method: :delete,
+                                  form: { class: 'd-inline' },
+                                  data: { turbo_confirm: '¿Estás seguro?' },
+                                  class: 'btn btn-link text-danger p-0' %>                  </td>
                 </tr>
               <% end %>
             </tbody>

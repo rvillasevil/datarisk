@@ -33,8 +33,12 @@
           <tr>
             <td><%= client.name %></td>
             <td class="text-center">
-              <%= link_to 'Revocar', user_client_path(current_user, client), method: :delete, data: { confirm: '¿Estás seguro?' }, class: 'btn btn-outline-danger btn-sm' %>
-            </td>
+              <%= button_to 'Revocar',
+                            user_client_path(current_user, client),
+                            method: :delete,
+                            form: { class: 'd-inline' },
+                            data: { turbo_confirm: '¿Estás seguro?' },
+                            class: 'btn btn-outline-danger btn-sm' %>            </td>
           </tr>
         <% end %>
       </tbody>
