@@ -34,11 +34,16 @@
       <div class="card mb-4">
         <div class="card-body">
           <h3 class="h5 mb-3">¿Tienes un token de invitación?</h3>
-          <p class="text-muted">Introduce el token y tu correo para crear una cuenta con acceso invitado.</p>
-          <div class="mb-3">
-            <%= label_tag :invitation_token, "Token de invitación", class: "form-label" %><br />
-            <%= text_field_tag :invitation_token, params[:invitation_token], class: "form-control" %>
-          </div>
+          <p class="text-muted">Introduce tu token para acceder directamente con una invitación.</p>
+          <%= form_with url: new_user_registration_path, method: :get, local: true do |f| %>
+            <div class="mb-3">
+              <%= f.label :invitation_token, "Token de invitación", class: "form-label" %><br />
+              <%= f.text_field :invitation_token, params[:invitation_token], class: "form-control", required: true %>
+            </div>
+            <div class="d-grid">
+              <%= f.submit "Acceder con token", class: "btn btn-outline-primary" %>
+            </div>
+          <% end %>
         </div>
       </div>
 
