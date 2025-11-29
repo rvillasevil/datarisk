@@ -35,6 +35,16 @@
       <!-- Links adicionales -->
       <div class="text-center">
         <%= render "devise/shared/links" %>
+        <div class="mt-3">
+          <%= link_to "¿Tienes un token de invitación?", new_user_registration_path, class: "btn btn-link" %>
+        </div>
+        <div class="mt-3">
+          <% if user_signed_in? && current_user.guest? %>
+            <%= button_to "Transformarme en usuario normal", guest_upgrade_path, method: :post, class: "btn btn-secondary w-100" %>
+          <% else %>
+            <p class="text-muted mb-0">Inicia sesión como invitado para habilitar el cambio a usuario normal.</p>
+          <% end %>
+        </div>        
       </div>
     </div>
   </div>

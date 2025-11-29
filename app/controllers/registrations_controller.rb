@@ -1,15 +1,11 @@
 class RegistrationsController < Devise::RegistrationsController
   def create
-    build_resource(sign_up_params)
 
     invitation_token = params[:invitation_token].to_s.strip
 
-    if invitation_token.blank?
-      resource.errors.add(:base, 'Debe proporcionar un token de invitación.')
-      clean_up_passwords resource
-      set_minimum_password_length
-      return respond_with resource
-    end
+    return super if invitation_token.blank?
+
+    build_resource(sign_up_params)
 
     invitation = ClientInvitation.find_by(token: invitation_token, accepted_at: nil)
 
@@ -20,7 +16,7 @@ class RegistrationsController < Devise::RegistrationsController
       return respond_with resource
     end
 
-    unless invitation.email.to_s.casecmp?(resource.email.to_s)
+    if invitation.email.present? && !invitation.email.to_s.casecmp?(resource.email.to_s)
       resource.errors.add(:email, 'no coincide con la invitación.')
       clean_up_passwords resource
       set_minimum_password_length
@@ -28,7 +24,7 @@ class RegistrationsController < Devise::RegistrationsController
     end
 
     resource.owner_id = invitation.owner_id
-    resource.role = :client    
+    resource.role = :guest   
 
     resource.save
     yield resource if block_given?

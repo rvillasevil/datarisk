@@ -9,11 +9,6 @@
         <%= f.hidden_field :role, value: params[:role] || resource.role %>
 
         <div class="mb-3">
-          <%= label_tag :invitation_token, "Token de invitación", class: "form-label" %><br />
-          <%= text_field_tag :invitation_token, params[:invitation_token], class: "form-control" %>
-        </div>       
-
-        <div class="mb-3">
           <%= f.label :email, class: "form-label" %><br />
           <%= f.email_field :email, autofocus: true, autocomplete: "email", class: "form-control" %>
         </div>
@@ -35,6 +30,17 @@
           <%= f.submit "Sign up", class: "btn btn-primary" %>
         </div>
       <% end %>
+
+      <div class="card mb-4">
+        <div class="card-body">
+          <h3 class="h5 mb-3">¿Tienes un token de invitación?</h3>
+          <p class="text-muted">Introduce el token y tu correo para crear una cuenta con acceso invitado.</p>
+          <div class="mb-3">
+            <%= label_tag :invitation_token, "Token de invitación", class: "form-label" %><br />
+            <%= text_field_tag :invitation_token, params[:invitation_token], class: "form-control" %>
+          </div>
+        </div>
+      </div>
 
       <!-- Links adicionales -->
       <div class="text-center">

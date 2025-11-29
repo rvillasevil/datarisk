@@ -15,7 +15,7 @@ class ApplicationController < ActionController::Base
   helper_method :owner_or_self
 
   def require_authorized_user!
-    redirect_to root_path, alert: 'Acceso no autorizado' unless current_user&.owner? || current_user&.client?
+    redirect_to root_path, alert: 'Acceso no autorizado' unless current_user&.owner? || current_user&.client? || current_user&.guest?
   end
   alias_method :require_client!, :require_authorized_user!
 

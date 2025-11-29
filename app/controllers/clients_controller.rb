@@ -1,5 +1,6 @@
 class ClientsController < ApplicationController
   before_action :authenticate_user!
+  before_action :require_owner!, only: %i[index new create destroy]   
   before_action :set_user, except: :show
   before_action :set_client, only: %i[destroy show]
 
@@ -16,10 +17,7 @@ class ClientsController < ApplicationController
   end
 
   def create
-    unless current_user.can_add_client?
-      redirect_to user_clients_path(@user), alert: 'Client limit reached.'
-      return
-    end
+    return redirect_to(user_clients_path(@user), alert: 'Client limit reached.') unless current_user.can_add_client?
 
     token = params.dig(:user, :token).presence || SecureRandom.hex(10)
 
@@ -52,6 +50,10 @@ class ClientsController < ApplicationController
   def set_user
     @user = current_user
   end
+
+  def require_owner!
+    redirect_to root_path, alert: 'Solo los owners pueden gestionar invitaciones.' unless current_user&.owner?
+  end  
 
   def set_client
     @client = (@user || current_user).clients.find(params[:id])

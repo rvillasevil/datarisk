@@ -34,8 +34,7 @@
     <div class="card mb-4">
     <div class="card-body">
       <h2 class="h4 mb-3">Tokens de invitación</h2>
-      <p class="text-muted">Los tokens generados aquí no se envían automáticamente por correo electrónico.</p>
-
+      <p class="text-muted">Los tokens generados aquí no se envían automáticamente por correo electrónico. Límite: <%= User::MAX_CLIENTS %> invitaciones activas.</p>
       <% if @client_invitations.any? %>
         <div class="table-responsive">
           <table class="table">

@@ -2,15 +2,11 @@ class User < ApplicationRecord
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable
 
-  enum role: { owner: 0, client: 1 }
+  enum role: { owner: 0, client: 1, guest: 2 }
 
   MAX_CLIENTS = 20
 
-  def can_add_client?
-    clients.count < MAX_CLIENTS
-  end  
-
-  after_initialize { self.role ||= :client }  
+  after_initialize { self.role ||= :client }
 
   belongs_to :owner, class_name: 'User', optional: true
   has_many :clients, class_name: 'User', foreign_key: :owner_id, dependent: :nullify
@@ -28,10 +24,12 @@ class User < ApplicationRecord
   validates :role, presence: true
   validates :role, inclusion: { in: roles.keys }  
   validates :company_name, presence: true, if: :owner?
-  validates :owner, presence: true, if: :client?
+  validates :owner, presence: true, if: -> { client? || guest? }
 
   def can_add_client?
-    true
+    return false unless owner?
+
+    client_invitations.pending.count < MAX_CLIENTS
   end
 
   private

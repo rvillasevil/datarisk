@@ -27,6 +27,8 @@ Rails.application.routes.draw do
 
   resources :data_collections, only: %i[index show new]
 
+  resource :guest_upgrade, only: :create, controller: 'users/guest_upgrades'  
+
   get 'owners/dashboard', to: 'owners#dashboard', as: :owner_dashboard 
 
   get 'client_invitations/accept', to: 'invitations#accept', as: :accept_client_invitation
