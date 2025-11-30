@@ -242,7 +242,7 @@
     end
 
     def set_risk_assistant
-      @risk_assistant = owner_or_self.risk_assistants.find(params[:id])
+      @risk_assistant = risk_assistants_scope.find(params[:id])
     end
 
     # Permite editar todos los campos de Message excepto id, conversation_id, created_at, updated_at

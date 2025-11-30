@@ -13,9 +13,11 @@
     <div class="col-md-6 col-lg-3">
       <%= link_to 'Resúmenes', data_collections_path(anchor: 'resumenes'), class: 'btn btn-primary w-100' %>
     </div>
-    <div class="col-md-6 col-lg-3">
-      <%= link_to 'Análisis de pólizas', policy_analyses_path, class: 'btn btn-primary w-100' %>
-    </div>
+    <% unless current_user.guest? %>
+      <div class="col-md-6 col-lg-3">
+        <%= link_to 'Análisis de pólizas', policy_analyses_path, class: 'btn btn-primary w-100' %>
+      </div>
+    <% end %>
     <div class="col-md-6 col-lg-3">
       <%= link_to 'Toma de datos con asistente', risk_assistants_path, class: 'btn btn-primary w-100' %>
     </div>    

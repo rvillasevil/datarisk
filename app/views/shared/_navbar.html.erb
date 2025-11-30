@@ -35,7 +35,7 @@
         </li>
 
         <% if user_signed_in? %>
-          <% dashboard_path = current_user.client? ? client_dashboard_path : owner_dashboard_path %>
+          <% dashboard_path = current_user.owner? ? owner_dashboard_path : client_dashboard_path %>
           <li class="nav-item me-2">
             <%= link_to "Dashboard", dashboard_path, class: "btn btn-outline-secondary" %>
           </li>        

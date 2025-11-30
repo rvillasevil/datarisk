@@ -38,8 +38,7 @@
           <%= form_with url: new_user_registration_path, method: :get, local: true do |f| %>
             <div class="mb-3">
               <%= f.label :invitation_token, "Token de invitación", class: "form-label" %><br />
-              <%= f.text_field :invitation_token, params[:invitation_token], class: "form-control", required: true %>
-            </div>
+              <%= f.text_field :invitation_token, value: params[:invitation_token], class: "form-control", required: true %>            </div>
             <div class="d-grid">
               <%= f.submit "Acceder con token", class: "btn btn-outline-primary" %>
             </div>
