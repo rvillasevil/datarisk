@@ -5,8 +5,11 @@ class ApplicationController < ActionController::Base
   private
   
   def risk_assistants_scope
-    return current_user.risk_assistants if current_user&.guest?
-    owner_or_self.risk_assistants
+    if current_user&.guest? && current_user.owner.present?
+      current_user.owner.risk_assistants
+    else
+      owner_or_self.risk_assistants
+    end
   end
   helper_method :risk_assistants_scope
 

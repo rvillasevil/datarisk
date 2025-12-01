@@ -155,8 +155,6 @@ class MessagesController < ApplicationController
           field_asked: next_field[:id],
           thread_id:   current_thread
         )
-
-        redirect_to risk_assistant_path(@risk_assistant)
         return true
       end
     end
@@ -244,8 +242,6 @@ class MessagesController < ApplicationController
         content:   "He extraído y confirmado automáticamente los siguientes campos del documento:\n\n#{todos_confirmaciones}",
         thread_id: current_thread
       )
-
-      redirect_to risk_assistant_path(@risk_assistant)
       return true  
     end
 
@@ -263,7 +259,6 @@ class MessagesController < ApplicationController
       thread_id: current_thread
     )
 
-    redirect_to risk_assistant_path(@risk_assistant)
     true
   end
   end

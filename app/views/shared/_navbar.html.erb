@@ -9,9 +9,15 @@
       <% else %>
         <%= image_tag "logoHowden.png", alt: logo_alt, class: "brand-logo__image" %>
       <% end %>
-      <div class="brand-logo__text">
-        <div class="brand-logo__company"><%= logo_alt %></div>
-        <div class="brand-logo__tagline">Gestión inteligente de riesgos</div>
+      <div class="brand-logo__text-group">
+        <div class="brand-logo__text">
+          <div class="brand-logo__company"><%= logo_alt %></div>
+          <div class="brand-logo__tagline">Gestión inteligente de riesgos</div>
+        </div>
+        <div class="brand-logo__powered-by">
+          <span class="brand-logo__powered-label">Powered by</span>
+          <span class="brand-logo__powered-name">DataRisk</span>
+        </div>
       </div>
     </a>
 

@@ -48,7 +48,7 @@ h1, h2, h3, h4, h5, h6 {
   align-items: center;
   gap: 0.75rem;
   padding: 0.25rem 0.5rem;
-  max-width: 280px;
+  max-width: 320px;  
   text-decoration: none;
 }
 
@@ -59,6 +59,13 @@ h1, h2, h3, h4, h5, h6 {
   height: auto;
   object-fit: contain;
 }
+
+.brand-logo__text-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
 
 .brand-logo__text {
   display: flex;
@@ -77,6 +84,30 @@ h1, h2, h3, h4, h5, h6 {
   font-size: clamp(0.72rem, 1.5vw, 0.9rem);
   color: #475569;
   font-weight: 500;
+}
+
+.brand-logo__powered-by {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.25rem 0.65rem;
+  background: #f1f5f9;
+  border-radius: 999px;
+  align-self: flex-start;
+}
+
+.brand-logo__powered-label {
+  font-size: 0.72rem;
+  letter-spacing: 0.7px;
+  text-transform: uppercase;
+  color: #64748b;
+  font-weight: 700;
+}
+
+.brand-logo__powered-name {
+  font-size: 0.82rem;
+  color: #0f172a;
+  font-weight: 800;
 }
 
 header, footer {

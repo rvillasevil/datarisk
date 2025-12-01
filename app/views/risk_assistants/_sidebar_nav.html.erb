@@ -1,64 +1,108 @@
-<nav class="sidebar-nav">
-  <ul class="nav flex-column">
-    <li class="nav-item">
-      <%= link_to summary_risk_assistant_path(risk_assistant), class: "nav-link d-flex align-items-center gap-2" do %>
-        <i class="bi bi-clipboard-data"></i>
-        <span>Resumen</span>
-      <% end %>
-    </li>
-    <li class="nav-item mt-2">
-      <span class="nav-link d-flex align-items-center gap-2">
-        <i class="bi bi-folder"></i>
-        <span>Archivos</span>
-      </span>
-      <% if risk_assistant.uploaded_files.attached? %>
-        <ul class="nav flex-column ms-3 mt-1">
-              <% @risk_assistant.uploaded_files.each do |file| %>
-                <div class="card uploaded-file-card mb-2">
-                  <div class="card-body d-flex justify-content-between align-items-center">
-                    <div class="file-info d-flex align-items-center">
-                      <i class="bi <%= file_icon_for(file) %> file-icon me-2"></i>
-                      <%= link_to file.filename.to_s,
-                                  url_for(file),
-                                  target: "_blank",
-                                  class: "file-name text-decoration-none" %>
-                      <small class="text-muted ms-2">(<%= number_to_human_size(file.byte_size) %>)</small>
-                    </div>
-                    <div class="file-actions">
-                      <%= link_to rails_blob_path(file, disposition: "attachment"),
-                                  class: "btn btn-sm btn-outline-primary me-1",
-                                  title: "Descargar" do %>
-                        <i class="bi bi-download"></i>
-                      <% end %>
-                      <%= link_to file_risk_assistant_path(@risk_assistant, file),
-                                  data: { turbo_method: :delete, turbo_confirm: "¿Eliminar archivo?" },
-                                  class: "btn btn-sm btn-outline-danger",
-                                  title: "Eliminar" do %>
-                        <i class="bi bi-trash"></i>
-                      <% end %>
-                    </div>
-                  </div>
-                </div>
+<nav class="sidebar-modern">
+  <div class="sidebar-header d-flex align-items-center gap-3">
+    <div class="sidebar-avatar d-inline-flex align-items-center justify-content-center">
+      <i class="bi bi-shield-check"></i>
+    </div>
+    <div class="sidebar-title">
+      <p class="text-muted mb-0">Asistente de riesgo</p>
+      <p class="fw-semibold mb-0 text-truncate"><%= risk_assistant.name %></p>
+    </div>
+    <%= link_to risk_assistants_path, class: "icon-button", title: "Volver a mis empresas" do %>
+      <i class="bi bi-arrow-left-short"></i>
+    <% end %>
+  </div>
+
+  <div class="sidebar-quick-actions d-flex gap-2">
+    <%= link_to summary_risk_assistant_path(risk_assistant), class: "quick-pill" do %>
+      <i class="bi bi-clipboard-data"></i>
+      <span>Resumen</span>
+    <% end %>
+    <%= link_to risk_assistant_resume_path(risk_assistant), class: "quick-pill" do %>
+      <i class="bi bi-graph-up-arrow"></i>
+      <span>Progreso</span>
+    <% end %>
+  </div>
+
+  <div class="sidebar-section">
+    <div class="sidebar-section-title">
+      <i class="bi bi-journal-richtext"></i>
+      <span>Navegación</span>
+    </div>
+    <ul class="nav flex-column sidebar-nav-list">
+      <li class="nav-item">
+        <%= link_to summary_risk_assistant_path(risk_assistant), class: "nav-link" do %>
+          <i class="bi bi-collection"></i>
+          <div>
+            <div class="fw-semibold">Datos recopilados</div>
+            <small class="text-muted">Consulta toda la información registrada</small>
+          </div>
+        <% end %>
+      </li>
+      <li class="nav-item">
+        <%= link_to risk_assistant_resume_path(risk_assistant), class: "nav-link" do %>
+          <i class="bi bi-speedometer2"></i>
+          <div>
+            <div class="fw-semibold">Panel de avance</div>
+            <small class="text-muted">Ve el progreso y los campos pendientes</small>
+          </div>
+        <% end %>
+      </li>
+    </ul>
+  </div>
+
+  <div class="sidebar-section">
+    <div class="sidebar-section-title">
+      <i class="bi bi-folder-check"></i>
+      <span>Archivos</span>
+    </div>
+    <% if risk_assistant.uploaded_files.attached? %>
+      <div class="uploaded-files list-group">
+        <% @risk_assistant.uploaded_files.each do |file| %>
+          <div class="list-group-item uploaded-file-card d-flex align-items-center justify-content-between">
+            <div class="d-flex align-items-center gap-2 flex-grow-1">
+              <div class="file-chip">
+                <i class="bi <%= file_icon_for(file) %>"></i>
+              </div>
+              <div class="flex-grow-1">
+                <%= link_to file.filename.to_s,
+                            url_for(file),
+                            target: "_blank",
+                            class: "file-name stretched-link" %>
+                <div class="text-muted small">Tamaño: <%= number_to_human_size(file.byte_size) %></div>
+              </div>
+            </div>
+            <div class="d-flex align-items-center gap-2 ms-2">
+              <%= link_to rails_blob_path(file, disposition: "attachment"),
+                          class: "icon-button", title: "Descargar" do %>
+                <i class="bi bi-download"></i>
               <% end %>
-        </ul>
-      <% else %>
-        <p class="text-muted small ms-3">No hay archivos subidos.</p>
-      <% end %>
-    </li>
-    <li class="nav-item mt-2">
-      <%= link_to risk_assistant_resume_path(risk_assistant), class: "nav-link d-flex align-items-center gap-2" do %>
-        <i class="bi bi-graph-up"></i>
-        <span>Progreso</span>
-      <% end %>
-      <div class="mt-2 ms-3">
-        <%= render partial: "sidebar",
-                   locals: {
-                     sections: sections,
-                     progress_by_section: progress_by_section,
-                     overall_pct: overall_pct,
-                     risk_assistant: risk_assistant
-                   } %>
+              <%= link_to file_risk_assistant_path(@risk_assistant, file),
+                          data: { turbo_method: :delete, turbo_confirm: "¿Eliminar archivo?" },
+                          class: "icon-button text-danger", title: "Eliminar" do %>
+                <i class="bi bi-trash"></i>
+              <% end %>
+            </div>
+          </div>
+        <% end %>
       </div>
-    </li>
-  </ul>
+    <% else %>
+      <p class="text-muted small mb-0">No hay archivos subidos todavía.</p>
+    <% end %>
+  </div>
+
+  <div class="sidebar-section">
+    <div class="sidebar-section-title">
+      <i class="bi bi-activity"></i>
+      <span>Progreso</span>
+    </div>
+    <div class="glass-card">
+      <%= render partial: "sidebar",
+                 locals: {
+                   sections: sections,
+                   progress_by_section: progress_by_section,
+                   overall_pct: overall_pct,
+                   risk_assistant: risk_assistant
+                 } %>
+    </div>
+  </div>
 </nav>
