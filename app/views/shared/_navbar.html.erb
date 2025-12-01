@@ -1,15 +1,18 @@
 <nav class="navbar navbar-expand-lg navbar-light bg-white border-bottom sticky-top">
   <div class="container">
     <!-- Logo -->
-    <a class="navbar-brand" href="/">
+    <a class="navbar-brand brand-logo" href="/">
       <% owner = Current.owner %>
       <% logo_alt = owner&.company_name.presence || "Nombre de tu empresa" %>
       <% if owner&.logo&.attached? %>
-        <%= image_tag owner.logo, alt: logo_alt, height: "50", style:"margin:-20px" %>
+        <%= image_tag owner.logo, alt: logo_alt, class: "brand-logo__image" %>
       <% else %>
-        <%= image_tag "logoHowden.png", alt: logo_alt, height: "50", style:"margin:-20px" %>
+        <%= image_tag "logoHowden.png", alt: logo_alt, class: "brand-logo__image" %>
       <% end %>
-      <span style="color:black; font-weight:600;letter-spacing:-1px;">&nbsp;&nbsp;&nbsp;DataRisk</span>
+      <div class="brand-logo__text">
+        <div class="brand-logo__company"><%= logo_alt %></div>
+        <div class="brand-logo__tagline">Gestión inteligente de riesgos</div>
+      </div>
     </a>
 
     <!-- Botón hamburguesa para móviles -->

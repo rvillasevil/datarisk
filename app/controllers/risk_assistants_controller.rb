@@ -5,11 +5,11 @@
     before_action :set_risk_assistant, only: [:show, :generate_report, :report, :update_message, :create_message, :summary, :destroy_file]    
     
     def index
-      @risk_assistants = owner_or_self.risk_assistants
+      @risk_assistants = risk_assistants_scope
     end
   
     def show
-      @risk_assistants = owner_or_self.risk_assistants
+      @risk_assistants = risk_assistants_scope
       @messages = @risk_assistant.messages
       @company_name = @messages.where("key LIKE ?", "%Nombre de la empresa%").last
 

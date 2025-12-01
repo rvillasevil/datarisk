@@ -3,6 +3,13 @@
     <div class="col-md-6 offset-md-3">
       <h2 class="text-center mb-4">Iniciar sesión</h2>
 
+      <% owner_mode = params[:role] == "owner" %>
+
+      <div class="btn-group w-100 mb-4" role="group" aria-label="Seleccionar tipo de inicio de sesión">
+        <%= link_to "Usuario normal", new_user_session_path(role: :user), class: "btn btn-outline-primary #{'active' unless owner_mode}" %>
+        <%= link_to "Empresa", new_owner_session_path, class: "btn btn-outline-primary #{'active' if owner_mode}" %>
+      </div>
+
       <%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
         <%= render "devise/shared/error_messages", resource: resource %>
 

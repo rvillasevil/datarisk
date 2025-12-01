@@ -40,6 +40,45 @@ h1, h2, h3, h4, h5, h6 {
  /* font-family: 'Fkromanstandard', 'Times New Roman', sans-serif;*/
 }
 
+.brand-logo {
+  position: sticky;
+  top: 0;
+  left: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.25rem 0.5rem;
+  max-width: 280px;
+  text-decoration: none;
+}
+
+.brand-logo__image {
+  max-height: 52px;
+  max-width: 120px;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+}
+
+.brand-logo__text {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.2;
+  color: #0f172a;
+  font-weight: 600;
+}
+
+.brand-logo__company {
+  font-size: clamp(0.95rem, 2vw, 1.1rem);
+  letter-spacing: -0.4px;
+}
+
+.brand-logo__tagline {
+  font-size: clamp(0.72rem, 1.5vw, 0.9rem);
+  color: #475569;
+  font-weight: 500;
+}
+
 header, footer {
   background: #0f172a;
   color: white;
@@ -143,4 +182,57 @@ footer p {
     color: #1d3557;
     align-self: flex-start;
   }
+
+  
+.branding-hero {
+  max-width: 1080px;
+}
+
+.branding-card {
+  background: linear-gradient(120deg, #f4f7fb 0%, #ffffff 60%);
+  border: 1px solid #e5e7eb;
+  border-radius: 1rem;
+  box-shadow: 0 10px 30px rgba(15, 23, 42, 0.08);
+  gap: 1.25rem;
+}
+
+.branding-logo-wrapper {
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 0.9rem;
+  padding: 0.75rem 1rem;
+  min-width: 120px;
+  min-height: 96px;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.6);
+}
+
+.branding-logo {
+  max-height: 72px;
+  object-fit: contain;
+}
+
+.placeholder-branding-logo {
+  width: 100%;
+  height: 100%;
+  border-radius: 0.6rem;
+  background: repeating-linear-gradient(
+    45deg,
+    #f8fafc,
+    #f8fafc 10px,
+    #eef2ff 10px,
+    #eef2ff 20px
+  );
+}
+
+.branding-eyebrow {
+  letter-spacing: 1px;
+  color: #6b7280;
+  font-size: 0.75rem;
+}
+
+.branding-title {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #0f172a;
+}
   
