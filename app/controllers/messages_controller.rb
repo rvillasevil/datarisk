@@ -245,17 +245,19 @@ class MessagesController < ApplicationController
       return true  
     end
 
-    next_field_id = RiskFieldSet.next_field_hash(
-                      @risk_assistant.messages.where.not(key: nil).pluck(:key, :value).to_h
-                    )&.dig(:id)
-    next_label = next_field_id ? RiskFieldSet.label_for(next_field_id) : "campo pendiente"
+    fallback_field = field_key.presence ||
+                     @message.field_asked.presence ||
+                     RiskFieldSet.next_field_hash(
+                       @risk_assistant.messages.where.not(key: nil).pluck(:key, :value).to_h
+                     )&.dig(:id)
+    fallback_label = fallback_field ? RiskFieldSet.label_for(fallback_field) : "campo pendiente"
 
     @risk_assistant.messages.create!(
       sender:    "assistant",
       role:      "assistant",
-      content:   "He extraído el texto del documento, pero no encontré datos para los campos solicitados.\n" \
-                 "Por favor, indícame directamente el campo \"#{next_label}\".",
-      field_asked: next_field_id,
+      content:   "He extraído el texto del documento, pero no encontré datos para el campo solicitado.\n" \
+                 "Por favor, indícame directamente el dato de \"#{fallback_label}\" para continuar.",
+      field_asked: fallback_field,
       thread_id: current_thread
     )
 
@@ -297,30 +299,15 @@ class MessagesController < ApplicationController
       explicacion  = parsed["explicacion_normativa"]      
       siguiente    = parsed["siguiente_campo"]
 
-      # Determine which field should be asked next. By default we keep the
-      # current field, but if the field was confirmed we only move to the next
-      # one if it's present and valid according to RiskFieldSet.
-      field_for_question = campo_actual
-
       siguiente_valido = siguiente.present? && RiskFieldSet.by_id.key?(siguiente.to_sym)
-      transition_without_confirmation = false      
 
-      if estado == "confirmado"
-        field_for_question = siguiente if siguiente_valido
-        field_for_question = nil unless siguiente_valido
-      elsif siguiente_valido && mensaje.to_s.include?("?")
-        field_for_question = siguiente
-        transition_without_confirmation = true
-      end
+      field_for_question = campo_actual.presence || @message.field_asked
+      field_definition   = campo_actual && RiskFieldSet.by_id[campo_actual.to_sym]
+      validation_error   = field_definition ? RiskFieldSet.validate_answer(field_definition, valor) : nil
 
-      if transition_without_confirmation
-        @message.update!(field_asked: field_for_question)
-        Rails.logger.info("MessagesController#assistant_interaction: transición sin confirmación hacia #{field_for_question}")        
-      end
+      answers_snapshot = @risk_assistant.messages.where.not(key: nil).pluck(:key, :value).to_h
 
-      runner.set_last_field(field_for_question) if field_for_question
-      
-      if estado == "confirmado" && campo_actual.present?
+      if estado == "confirmado" && campo_actual.present? && validation_error.nil?
         Message.save_unique!(
           risk_assistant: @risk_assistant,
           key:           campo_actual,
@@ -333,7 +320,27 @@ class MessagesController < ApplicationController
           field_asked:   campo_actual,
           thread_id:     runner.thread_id
         )
+        answers_snapshot[campo_actual.to_s] = valor
+      elsif validation_error.present? && campo_actual.present?
+        mensaje = "El dato para #{RiskFieldSet.label_for(campo_actual)} no es válido: #{validation_error}." \
+                  " Por favor, indícalo de nuevo."
+        siguiente = nil
       end
+
+      allowed_state_to_advance = (estado == "confirmado" && validation_error.nil?) ||
+                                 %w[omitido desconocido].include?(estado)
+
+      if allowed_state_to_advance
+        field_for_question = if siguiente_valido
+                               siguiente
+                             else
+                               RiskFieldSet.next_field_hash(answers_snapshot)&.dig(:id)
+                             end
+      end
+
+      field_for_question ||= campo_actual.presence || @message.field_asked
+
+      runner.set_last_field(field_for_question) if field_for_question
 
       mensaje = "#{mensaje}\nExplicación normativa: #{explicacion}" if explicacion.present?
 
