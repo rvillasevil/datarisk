@@ -1,0 +1,674 @@
+{
+  "form_title": "INFORME DE INSPECCIÓN DE RIESGOS (VERSIÓN CONSOLIDADA - EXTENDIDA)",
+  "sections": [
+    {
+      "id": "informe_metadata",
+      "title": "INFORMACIÓN DEL INFORME",
+      "fields": [
+        {
+          "id": "metadata_redactores_informe",
+          "label": "Nombre y cargo de las personas que redactan el informe",
+          "type": "select",
+          "assistant_instructions": "Pregunta quién o quiénes son las personas responsables de proporcionar la información para este informe y cuál es su cargo en la empresa.",
+          "normative_tips": "Asegurador: La fiabilidad del informe depende de la cualificación técnica del interlocutor (Jefe de Mantenimiento/Planta); datos incorrectos pueden invalidar coberturas. | Normativa: ISO 19011 (Directrices para la auditoría de sistemas de gestión)."
+        }
+      ]
+    },
+    {
+      "id": "descripcion_general_instalacion",
+      "title": "DESCRIPCIÓN GENERAL DE LA INSTALACIÓN",
+      "fields": [
+        {
+          "id": "dgi_actividad_operacion_resumen",
+          "label": "Actividad, Operación y Turnos",
+          "type": "textarea",
+          "assistant_instructions": "Solicita descripción de la actividad, productos, número de trabajadores, turnos y horarios de trabajo.",
+          "normative_tips": "Asegurador: La actividad define la 'Carga de Fuego'; turnos 24/7 reducen el riesgo al haber vigilancia constante, pero aumentan el desgaste de maquinaria. | Normativa: RSCIEI Anexo I (Cálculo de Densidad de Carga de Fuego)."
+        },
+        {
+          "id": "dgi_localizacion_coordenadas",
+          "label": "Ubicación y Coordenadas",
+          "type": "text",
+          "assistant_instructions": "Pide la dirección exacta y, si es posible, las coordenadas GPS para geolocalización de riesgos naturales (inundación, sismo).",
+          "normative_tips": "Asegurador: Las coordenadas son vitales para el modelado Catastrófico (NatCat); ubicaciones en zonas inundables o sísmicas pueden ser excluidas o tener franquicias altas. | Normativa: Mapas de peligrosidad de inundación (SNCZI) y Norma de Construcción Sismorresistente (NCSE)."
+        },
+        {
+          "id": "dgi_entorno_colindantes",
+          "label": "Entorno, Colindantes y Distancias",
+          "type": "textarea",
+          "assistant_instructions": "Describe el entorno (urbano, industrial, aislado) y detalla los vecinos: actividad, riesgo que suponen y distancia exacta en metros.",
+          "normative_tips": "Asegurador: La distancia >15-20m a vecinos peligrosos mitiga el riesgo de propagación externa; distancias menores penalizan la prima. | Normativa: RSCIEI (Caracterización de los establecimientos industriales según su configuración)."
+        },
+        {
+          "id": "dgi_accesibilidad",
+          "label": "Accesibilidad y Congestión",
+          "type": "textarea",
+          "assistant_instructions": "Evalúa la congestión de edificios en la parcela y la accesibilidad para vehículos de bomberos alrededor de las naves.",
+          "normative_tips": "Asegurador: Se requiere acceso perimetral completo para bomberos; zonas inaccesibles pueden llevar a la pérdida total del edificio en caso de incendio. | Normativa: RSCIEI/CTE (Accesibilidad por fachada y vía de aproximación)."
+        },
+        {
+          "id": "dgi_planos_fotos",
+          "label": "Planos y Fotografías (Layouts)",
+          "type": "file_multiple",
+          "assistant_instructions": "Solicita Layout exterior e interior, marcando edificaciones combustibles y sectores.",
+          "normative_tips": "Asegurador: Planos desactualizados dificultan la evaluación del PML (Pérdida Máxima Probable) y la gestión de emergencias. | Normativa: Norma Básica de Autoprotección (RD 393/2007)."
+        }
+      ]
+    },
+    {
+      "id": "construccion",
+      "title": "CONSTRUCCIÓN",
+      "fields": [
+        {
+          "id": "constr_datos_generales",
+          "label": "Datos Generales de la Parcela",
+          "type": "group",
+          "fields": [
+            {
+              "id": "constr_superficie_total",
+              "label": "Superficie Parcela vs Construida (m²)",
+              "type": "text",
+              "assistant_instructions": "Pregunta por la superficie total de la parcela y la construida.",
+              "normative_tips": "Asegurador: Una alta ocupación de parcela dificulta la maniobrabilidad y aumenta el riesgo de propagación entre naves."
+            },
+            {
+              "id": "constr_regimen_propiedad",
+              "label": "Régimen de Propiedad",
+              "type": "select",
+              "options": [
+                "Propiedad",
+                "Alquiler",
+                "Leasing"
+              ],
+              "assistant_instructions": "¿Son propietarios o inquilinos?",
+              "normative_tips": "Asegurador: En régimen de alquiler, se revisan las cláusulas de renuncia a recurso contra el propietario/inquilino."
+            },
+            {
+              "id": "constr_sismo",
+              "label": "Cumplimiento Norma Sismo-resistente",
+              "type": "text",
+              "assistant_instructions": "Pregunta si, por año de construcción y zona, les aplica la norma sismo-resistente y si la cumplen.",
+              "normative_tips": "Asegurador: En zonas sísmicas, la falta de cumplimiento normativo puede implicar la denegación de cobertura para terremoto. | Normativa: NCSE-02."
+            }
+          ]
+        },
+        {
+          "id": "constr_edificios_principales_array",
+          "label": "Detalle de Edificios y Sectores (Tabla de Construcción)",
+          "type": "array_of_objects",
+          "assistant_instructions": "Vamos a detallar cada edificio/sector. Debemos identificar porcentajes de materiales combustibles en cubierta y cerramientos.",
+          "normative_tips": "Asegurador: La presencia de paneles sándwich combustibles (PUR/EPS) y estructura metálica no protegida son los factores constructivos más penalizados. | Normativa: RSCIEI (Estabilidad al fuego de estructuras y Reacción al fuego de materiales - Euroclases).",
+          "item_label_template": "Edificio/Sector {{index + 1}}",
+          "item_schema": {
+            "id": "edificio_item_completo",
+            "fields": [
+              {
+                "id": "ed_nombre",
+                "label": "Nombre/Uso",
+                "type": "text",
+                "assistant_instructions": "Identificar el uso principal del sector (ej. Producción, Almacén, Oficinas).",
+                "normative_tips": "El uso determina el riesgo: un almacén es más combustible que unas oficinas, requiriendo mayor sectorización."
+              },
+              {
+                "id": "ed_superficie",
+                "label": "Superficie (m²)",
+                "type": "number",
+                "assistant_instructions": "Superficie total por sector de incendio.",
+                "normative_tips": "Superficies >2.500m² suelen requerir medidas de protección adicionales (rociadores/bíes) según riesgo."
+              },
+              {
+                "id": "ed_anio",
+                "label": "Año Construcción",
+                "type": "number",
+                "assistant_instructions": "Año de construcción o última reforma del edificio.",
+                "normative_tips": "La antigüedad del edificio puede afectar la resistencia de los materiales y la aplicación de normativas más recientes (ej. sismo)."
+              },
+              {
+                "id": "ed_estructura",
+                "label": "Estructura",
+                "type": "text",
+                "assistant_instructions": "Hormigón, Metálica (¿protegida?), Madera.",
+                "normative_tips": "Asegurador: Estructura de hormigón es óptima; metálica requiere ignifugado (R-60/R-90) para evitar colapso temprano."
+              },
+              {
+                "id": "ed_cubierta_mat",
+                "label": "Material Cubierta y % Combustible",
+                "type": "text",
+                "assistant_instructions": "Ej: Panel Sandwich PUR (100% Combustible) o Lana de Roca (No combustible).",
+                "normative_tips": "Asegurador: Se exige Lana de Roca o PIR Certificado FM/LPCB; el PUR/EPS eleva drásticamente el riesgo."
+              },
+              {
+                "id": "ed_cerramiento_mat",
+                "label": "Material Fachada y % Combustible",
+                "type": "text",
+                "assistant_instructions": "Ej: Bloque hormigón, chapa simple, panel.",
+                "normative_tips": "Asegurador: Mismo criterio que cubierta; fachadas combustibles facilitan la propagación vertical."
+              },
+              {
+                "id": "ed_sectorizacion",
+                "label": "Sectorización y Huecos",
+                "type": "textarea",
+                "assistant_instructions": "Resistencia al fuego de paredes/puertas y estado del sellado de huecos.",
+                "normative_tips": "Asegurador: Un solo hueco sin sellar (paso de cables) invalida todo el muro cortafuegos; se verifica integridad EI-120/EI-180."
+              }
+            ]
+          }
+        },
+        {
+          "id": "constr_camaras_frigorificas_array",
+          "label": "Cámaras Frigoríficas (Detalle)",
+          "type": "array_of_objects",
+          "assistant_instructions": "Si existen cámaras frigoríficas, detállalas una a una. Es crítico saber el tipo de panel aislante.",
+          "normative_tips": "Asegurador: Las cámaras de panel combustible (PUR) sin rociadores interiores son casi inasegurables por el riesgo de incendio incontenible. | Normativa: RSCIEI (Regulación específica para cámaras frigoríficas).",
+          "item_label_template": "Cámara {{index + 1}}",
+          "item_schema": {
+            "id": "camara_item",
+            "fields": [
+              {
+                "id": "cam_uso",
+                "label": "Uso/Producto",
+                "type": "text",
+                "assistant_instructions": "Detallar el tipo de producto almacenado (fácilmente combustible, etc.).",
+                "normative_tips": "El producto dentro de la cámara afecta la clasificación del riesgo de incendio."
+              },
+              {
+                "id": "cam_superficie",
+                "label": "Superficie (m²)",
+                "type": "number",
+                "assistant_instructions": "Superficie total de la cámara para evaluar el potencial de pérdida.",
+                "normative_tips": "Cámaras > 1500m² suelen ser foco de especial atención aseguradora."
+              },
+              {
+                "id": "cam_panel",
+                "label": "Tipo de Aislamiento",
+                "type": "select",
+                "options": [
+                  "Lana de Roca (Incombustible)",
+                  "PIR (Certificado FM)",
+                  "PUR (Poliuretano)",
+                  "EPS (Poliestireno)",
+                  "Desconocido"
+                ],
+                "assistant_instructions": "Tipo de material del panel sándwich de las paredes y cubierta.",
+                "normative_tips": "Asegurador: Preferencia absoluta por Lana de Roca o PIR FM Approved Class 1."
+              },
+              {
+                "id": "cam_proteccion",
+                "label": "Protección Interior (Rociadores)",
+                "type": "boolean",
+                "normative_tips": "Asegurador: Obligatorio rociadores (secos o preacción) en cámaras de material combustible según estándares NFPA/FM."
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "proceso_productivo",
+      "title": "PROCESO PRODUCTIVO",
+      "fields": [
+        {
+          "id": "pp_descripcion_riesgos",
+          "label": "Descripción del Proceso y Riesgos",
+          "type": "textarea",
+          "assistant_instructions": "Descripción de fases, aportes de calor, presiones, manejo de inflamables/explosivos.",
+          "normative_tips": "Asegurador: Procesos con aceites térmicos, llamas abiertas o alta presión requieren sistemas de seguridad redundantes (válvulas corte, detección gas). | Normativa: Directiva de Máquinas y Reglamento de Aparatos a Presión."
+        },
+        {
+          "id": "pp_diagrama",
+          "label": "Diagrama de Flujo",
+          "type": "file",
+          "assistant_instructions": "Adjuntar diagrama de proceso.",
+          "normative_tips": "Asegurador: Permite identificar puntos únicos de fallo (SPOF) en la cadena productiva."
+        },
+        {
+          "id": "pp_equipos_tabla",
+          "label": "Equipos Principales de Producción",
+          "type": "array_of_objects",
+          "assistant_instructions": "Detalle de maquinaria crítica: fabricante, año, valor y si es cuello de botella.",
+          "normative_tips": "Asegurador: Maquinaria antigua, prototipos únicos o sin repuestos en el mercado aumentan el riesgo de Pérdida de Beneficios prolongada.",
+          "item_label_template": "Equipo {{index + 1}}",
+          "item_schema": {
+            "id": "equipo_detalle",
+            "fields": [
+              {
+                "id": "eq_nombre",
+                "label": "Equipo",
+                "type": "text",
+                "assistant_instructions": "Nombre o identificación de la máquina (ej. Línea 1, Caldera principal).",
+                "normative_tips": "Base para determinar la criticidad de la interrupción."
+              },
+              {
+                "id": "eq_fabricante_anio",
+                "label": "Fabricante / Año",
+                "type": "text",
+                "assistant_instructions": "Fabricante y año de fabricación del equipo.",
+                "normative_tips": "Indica el nivel de obsolescencia del equipo, clave para Avería de Maquinaria."
+              },
+              {
+                "id": "eq_capacidad_uso",
+                "label": "Capacidad Nominal y Factor de Uso (%)",
+                "type": "text",
+                "assistant_instructions": "Capacidad máxima de producción y el porcentaje real de uso.",
+                "normative_tips": "Uso >90% indica cuello de botella operativo sin margen de maniobra."
+              },
+              {
+                "id": "eq_valor",
+                "label": "Valor Reposición (€)",
+                "type": "number",
+                "assistant_instructions": "Coste de reemplazar el equipo por uno nuevo o equivalente.",
+                "normative_tips": "Base para cálculo de Suma Asegurada."
+              },
+              {
+                "id": "eq_origen",
+                "label": "Procedencia (Nacional/Importado)",
+                "type": "text",
+                "assistant_instructions": "Relevante para tiempos de repuesto.",
+                "normative_tips": "Importaciones de Asia/EEUU aumentan tiempos de paralización por transporte y aduanas."
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "almacenamiento",
+      "title": "ALMACENAMIENTO",
+      "fields": [
+        {
+          "id": "alm_tabla_general",
+          "label": "Desglose de Almacenamientos",
+          "type": "array_of_objects",
+          "assistant_instructions": "Detallar almacenes de: Materia Prima, Producto Intermedio, Final y Auxiliar. Importante: Tipo de embalaje y altura.",
+          "normative_tips": "Asegurador: La altura de almacenamiento y el uso de plásticos determinan si los rociadores de techo son efectivos o si se requieren rociadores en estantería (In-Rack). | Normativa: NFPA 13 (Clasificación Commodities) / RSCIEI (Carga de Fuego).",
+          "item_label_template": "{{item.alm_tipo_material}} - {{item.alm_producto}}",
+          "item_schema": {
+            "id": "almacen_item_full",
+            "fields": [
+              {
+                "id": "alm_tipo_material",
+                "label": "Categoría",
+                "type": "select",
+                "options": [
+                  "Materia Prima",
+                  "Producto Intermedio",
+                  "Producto Terminado",
+                  "Material Auxiliar/Repuestos"
+                ],
+                "assistant_instructions": "Clasificar el almacén según la fase de producción (MP, PI, PT, Aux.).",
+                "normative_tips": "El inventario de PT tiene mayor valor y afecta directamente la PB; la MP el coste de reposición."
+              },
+              {
+                "id": "alm_producto",
+                "label": "Producto y Riesgo",
+                "type": "text",
+                "assistant_instructions": "Ej: Ropa (Incendio), Harina (Explosión).",
+                "normative_tips": "Clasificar según NFPA: Clase I-IV o Plásticos Grupo A/B/C."
+              },
+              {
+                "id": "alm_configuracion",
+                "label": "Almacenamiento y Altura",
+                "type": "text",
+                "assistant_instructions": "Ej: Estanterías metálicas a 8m, A granel en silos, Apilado en suelo.",
+                "normative_tips": "Riesgo crítico: Almacenamiento en estanterías >9-10m sin rociadores intermedios."
+              },
+              {
+                "id": "alm_embalaje",
+                "label": "Embalaje",
+                "type": "text",
+                "assistant_instructions": "Cajas cartón, palets plástico/madera, retractilado.",
+                "normative_tips": "El plástico expandido (EPS) o palets de plástico aumentan severamente la intensidad del fuego."
+              },
+              {
+                "id": "alm_cantidad",
+                "label": "Cantidad Máxima",
+                "type": "text",
+                "assistant_instructions": "Indicar la cantidad máxima o stock de seguridad (en kg, litros, unidades, etc.).",
+                "normative_tips": "Se utiliza para verificar la Suficiencia de la Suma Asegurada de Existencias."
+              },
+              {
+                "id": "alm_ubicacion",
+                "label": "Ubicación",
+                "type": "text",
+                "normative_tips": "Preferiblemente en sector independiente a producción."
+              },
+              {
+                "id": "alm_proteccion",
+                "label": "Protección Específica",
+                "type": "text",
+                "assistant_instructions": "Rociadores, In-rack, espumas, etc.",
+                "normative_tips": "Debe haber correspondencia entre riesgo (plástico/altura) y diseño de rociadores (K-factor, densidad)."
+              }
+            ]
+          }
+        },
+        {
+          "id": "alm_especificos_checkbox",
+          "label": "Riesgos Específicos de Almacenamiento",
+          "type": "checkbox_group",
+          "options": [
+            "Líquidos Inflamables/APQ",
+            "Aerosoles",
+            "Productos a Granel (Polvo)",
+            "Baterías Litio"
+          ],
+          "assistant_instructions": "Marcar si existen estos almacenamientos especiales.",
+          "normative_tips": "Asegurador: Requieren protecciones dedicadas (armarios ignífugos, salas ventiladas, extinción especial). | Normativa: Reglamento APQ, NFPA 30 (Líquidos), NFPA 30B (Aerosoles)."
+        }
+      ]
+    },
+    {
+      "id": "instalaciones_servicio",
+      "title": "INSTALACIONES DE SERVICIO",
+      "fields": [
+        {
+          "id": "is_electricidad_general",
+          "label": "Suministro Eléctrico General",
+          "type": "textarea",
+          "assistant_instructions": "Nº acometidas, voltaje, subestaciones principales.",
+          "normative_tips": "Asegurador: Doble acometida reduce riesgo de paralización. Termografías anuales son obligatorias para renovación de póliza. | Normativa: REBT (Reglamento Electrotécnico Baja Tensión)."
+        },
+        {
+          "id": "is_transformadores_array",
+          "label": "Tabla de Transformadores",
+          "type": "array_of_objects",
+          "assistant_instructions": "Inventario de transformadores. Crítico: saber si son de aceite (riesgo incendio) o secos, y su protección.",
+          "normative_tips": "Asegurador: Transformadores de aceite en interior sin sala bunkerizada y sistema de extinción son riesgo inaceptable. Se prefieren trafos secos (resina). | Normativa: Reglamento de Alta Tensión.",
+          "item_label_template": "Trafo {{index + 1}}",
+          "item_schema": {
+            "id": "trafo_item",
+            "fields": [
+              {
+                "id": "tr_potencia",
+                "label": "Potencia (kVA/MVA) y Voltaje",
+                "type": "text",
+                "assistant_instructions": "Potencia y tensión (ej. 20 MVA, 60kV/6kV).",
+                "normative_tips": "La potencia es un indicador de la criticidad del transformador para la continuidad de la producción."
+              },
+              {
+                "id": "tr_tipo",
+                "label": "Tipo y Refrigeración",
+                "type": "text",
+                "assistant_instructions": "Aceite (ONAF/ONAN) o Seco/Resina. Si es aceite, indicar volumen litros.",
+                "normative_tips": "Aceite mineral es combustible; siliconas o ésteres naturales reducen el riesgo."
+              },
+              {
+                "id": "tr_ubicacion",
+                "label": "Ubicación y Sectorización",
+                "type": "text",
+                "assistant_instructions": "Sala interior, exterior, celdas separadas.",
+                "normative_tips": "Deben estar sectorizados (EI-120) de la zona productiva."
+              },
+              {
+                "id": "tr_proteccion",
+                "label": "Protección Incendios",
+                "type": "text",
+                "assistant_instructions": "Foso recogida aceite, extintores, sistema automático.",
+                "normative_tips": "Obligatorio foso de recogida de aceite con apagallamas para evitar derrame inflamado."
+              }
+            ]
+          }
+        },
+        {
+          "id": "is_otras_instalaciones",
+          "label": "Otras Instalaciones (Detalle)",
+          "type": "group",
+          "fields": [
+            {
+              "id": "is_generacion_renovable",
+              "label": "Fotovoltaica / Cogeneración",
+              "type": "textarea",
+              "assistant_instructions": "¿Paneles en cubierta? ¿Inversores en sala técnica?",
+              "normative_tips": "Asegurador: Paneles en cubierta aumentan carga de fuego y dificultan extinción manual. Requieren pasillos de mantenimiento y desconexión CC accesible."
+            },
+            {
+              "id": "is_calderas",
+              "label": "Calderas (Vapor/Agua/Aceite)",
+              "type": "textarea",
+              "assistant_instructions": "Combustible, potencia, ubicación sala.",
+              "normative_tips": "Asegurador: Riesgo de explosión. Deben estar en sala independiente con muros resistentes a explosión o venteo. | Normativa: Reglamento de equipos a presión."
+            },
+            {
+              "id": "is_compresores",
+              "label": "Compresores Aire",
+              "type": "textarea",
+              "assistant_instructions": "Potencia, ubicación.",
+              "normative_tips": "Riesgo de incendio por sobrecalentamiento de aceite; mantener limpios y ventilados."
+            },
+            {
+              "id": "is_frio_industrial",
+              "label": "Refrigeración (Amoniaco/Gases)",
+              "type": "textarea",
+              "assistant_instructions": "Tipo de gas refrigerante.",
+              "normative_tips": "Amoniaco es tóxico e inflamable; requiere detección de fugas y ventilación de emergencia. | Normativa: Reglamento de seguridad instalaciones frigoríficas."
+            },
+            {
+              "id": "is_carga_baterias",
+              "label": "Carga de Baterías (Litio/Plomo)",
+              "type": "textarea",
+              "assistant_instructions": "Sala de carga, ventilación, tipo baterías.",
+              "normative_tips": "Asegurador: Riesgo alto. Se exige separación de 3m o muro cortafuegos, buena ventilación (hidrógeno/plomo) y no cargar en horario inhábil."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "seguridad_fisica",
+      "title": "SEGURIDAD FÍSICA (ROBO E INTRUSIÓN)",
+      "fields": [
+        {
+          "id": "sf_perimetro_accesos",
+          "label": "Protección Perimetral y Accesos",
+          "type": "textarea",
+          "assistant_instructions": "Tipo de vallado, muros, control de accesos, bolardos.",
+          "normative_tips": "Asegurador: Vallado perimetral integro de >2m de altura es el estándar mínimo para cobertura de robo."
+        },
+        {
+          "id": "sf_vigilancia_humana",
+          "label": "Vigilancia Humana",
+          "type": "textarea",
+          "assistant_instructions": "Empresa vigilancia, nº vigilantes por turno, rondas, armas.",
+          "normative_tips": "Asegurador: La vigilancia presencial 24h es la medida más valorada contra robo e incendio intencionado."
+        },
+        {
+          "id": "sf_sistemas_electronicos",
+          "label": "Sistemas Electrónicos (CCTV e Intrusión)",
+          "type": "textarea",
+          "assistant_instructions": "Cámaras (CCTV), detectores volumétricos/sísmicos. Conexión a CRA (Central Receptora de Alarmas).",
+          "normative_tips": "Asegurador: CCTV con grabación y sistema de intrusión Grado 3 conectado a CRA es el estándar exigido para industrias. | Normativa: Reglamento Seguridad Privada."
+        }
+      ]
+    },
+    {
+      "id": "gestion_seguridad_emergencia",
+      "title": "GESTIÓN DE LA SEGURIDAD Y EMERGENCIAS",
+      "fields": [
+        {
+          "id": "gs_organizacion",
+          "label": "Organización y PRL",
+          "type": "textarea",
+          "assistant_instructions": "Departamento de seguridad, cumplimiento LPRL, servicio prevención ajeno/propio.",
+          "normative_tips": "Asegurador: Una estructura clara de seguridad indica 'cultura de riesgo', reduciendo probabilidad de siniestros por error humano."
+        },
+        {
+          "id": "gs_procedimientos_permisos",
+          "label": "Permisos de Trabajo y Procedimientos",
+          "type": "textarea",
+          "assistant_instructions": "Específicamente: Permisos de Fuego (Hot Work), Prohibición de fumar, Orden y Limpieza.",
+          "normative_tips": "Asegurador: Imprescindible procedimiento de Permisos de Fuego (Hot Work) para contratistas; su ausencia es causa frecuente de rechazo de riesgo. | Normativa: NFPA 51B."
+        },
+        {
+          "id": "gs_formacion",
+          "label": "Formación",
+          "type": "textarea",
+          "assistant_instructions": "Planes de formación a operarios y brigadas.",
+          "normative_tips": "Asegurador: Brigadas de intervención formadas pueden controlar un conato antes de que sea un gran siniestro."
+        },
+        {
+          "id": "gs_planes_emergencia",
+          "label": "Planes de Emergencia y Simulacros",
+          "type": "textarea",
+          "assistant_instructions": "Plan de Autoprotección, afectación SEVESO, frecuencia de simulacros.",
+          "normative_tips": "Asegurador: Se exige mínimo un simulacro anual documentado. SEVESO implica controles de seguridad muy superiores. | Normativa: Directiva SEVESO / RD 393/2007 (Autoprotección)."
+        },
+        {
+          "id": "gs_bomberos",
+          "label": "Servicio de Bomberos",
+          "type": "textarea",
+          "assistant_instructions": "Públicos (distancia, tiempo respuesta) y Privados/Brigada interna.",
+          "normative_tips": "Asegurador: Tiempo de respuesta >20-30 min requiere autosuficiencia total de la planta (reserva agua ampliada, brigada profesional)."
+        }
+      ]
+    },
+    {
+      "id": "medios_proteccion_incendios",
+      "title": "MEDIOS DE PROTECCIÓN CONTRA INCENDIOS",
+      "fields": [
+        {
+          "id": "mpci_manuales",
+          "label": "Medios Manuales (Extintores, BIEs, Hidrantes)",
+          "type": "textarea",
+          "assistant_instructions": "Detallar tipo, cantidad y si cubren toda la planta. Hidrantes: ¿Públicos o privados?",
+          "normative_tips": "Asegurador: BIEs de 45mm son preferibles en industria. Hidrantes perimetrales propios son vitales si la red pública es débil. | Normativa: RIPCI (Reglamento Instalaciones Protección Contra Incendios)."
+        },
+        {
+          "id": "mpci_deteccion",
+          "label": "Detección y Alarma",
+          "type": "textarea",
+          "assistant_instructions": "Tipo detectores (humo, llama, aspiración), áreas cubiertas y si conecta a CRA. Norma diseño.",
+          "normative_tips": "Asegurador: Detección conectada a CRA o Vigilancia 24h es obligatoria. Sin transmisión, la detección no tiene valor para el seguro fuera de horario laboral. | Normativa: UNE 23007 / NFPA 72."
+        },
+        {
+          "id": "mpci_automaticos",
+          "label": "Sistemas Automáticos (Rociadores/Gas)",
+          "type": "textarea",
+          "assistant_instructions": "Tipo (Rociadores, Gas, Espuma), áreas protegidas, norma de diseño (NFPA, UNE, FM).",
+          "normative_tips": "Asegurador: Los rociadores (Sprinklers) son la única protección que garantiza tarifas bajas y gran capacidad de aseguramiento. Deben cubrir el 100% de las zonas. | Normativa: NFPA 13 / UNE-EN 12845."
+        },
+        {
+          "id": "mpci_agua",
+          "label": "Abastecimiento de Agua (Depósito y Bombas)",
+          "type": "textarea",
+          "assistant_instructions": "Capacidad depósito, fuente alimentación, nº y tipo de bombas (Eléctrica+Diesel), red en anillo.",
+          "normative_tips": "Asegurador: Se exige redundancia (bomba Eléctrica + Diesel) y reserva de agua exclusiva y suficiente (ej. 90-120 min) para el sistema más desfavorable. | Normativa: UNE 23500 / NFPA 20 / NFPA 22."
+        },
+        {
+          "id": "mpci_mantenimiento_contrato",
+          "label": "Mantenimiento PCI",
+          "type": "textarea",
+          "assistant_instructions": "Contrato con empresa mantenedora autorizada. Frecuencia.",
+          "normative_tips": "Asegurador: Requiere evidencias de mantenimiento trimestral/semestral según RIPCI y pruebas semanales de bombas según NFPA 25. | Normativa: RIPCI / NFPA 25."
+        }
+      ]
+    },
+    {
+      "id": "mantenimiento_industrial",
+      "title": "MANTENIMIENTO INDUSTRIAL",
+      "fields": [
+        {
+          "id": "mnt_tipo_gestion",
+          "label": "Gestión y Personal",
+          "type": "textarea",
+          "assistant_instructions": "Propio vs Externo. Uso de software GMAO.",
+          "normative_tips": "Asegurador: El uso de GMAO garantiza trazabilidad. Un mantenimiento pobre es precursor directo de incendios y averías."
+        },
+        {
+          "id": "mnt_preventivo_predictivo",
+          "label": "Tipos de Mantenimiento",
+          "type": "textarea",
+          "assistant_instructions": "¿Realizan preventivo? ¿Predictivo (vibraciones, termografías)? Paradas anuales.",
+          "normative_tips": "Asegurador: El predictivo (análisis de aceites, vibraciones, termografía) es clave para asegurar la cobertura de Avería de Maquinaria."
+        }
+      ]
+    },
+    {
+      "id": "perdida_beneficio",
+      "title": "PÉRDIDA DE BENEFICIO (ALCANCE DETALLADO)",
+      "fields": [
+        {
+          "id": "pb_dependencia_proveedores",
+          "label": "Dependencia de Proveedores (MP)",
+          "type": "textarea",
+          "assistant_instructions": "Stock de seguridad, nº proveedores, origen, dificultad de reemplazo.",
+          "normative_tips": "Asegurador: Proveedor único (Single Sourcing) sin alternativa validada es un agravante mayor de riesgo de contingencia."
+        },
+        {
+          "id": "pb_dependencia_clientes",
+          "label": "Dependencia de Clientes (PT)",
+          "type": "textarea",
+          "assistant_instructions": "Principales clientes, % ventas al mayor cliente, sectores.",
+          "normative_tips": "Asegurador: Alta concentración en un cliente (>30-40%) implica riesgo financiero si ese cliente falla o cancela contratos tras un siniestro."
+        },
+        {
+          "id": "pb_cuellos_botella_tiempos",
+          "label": "Cuellos de Botella y Tiempos de Reposición",
+          "type": "array_of_objects",
+          "assistant_instructions": "Maquinaria clave: tiempo de reposición (meses) y coste extra.",
+          "normative_tips": "Asegurador: Tiempos de reposición >12 meses requieren periodos de indemnización ampliados y encarecen la póliza.",
+          "item_label_template": "Cuello Botella {{index + 1}}",
+          "item_schema": {
+            "id": "cb_item",
+            "fields": [
+              {
+                "id": "cb_equipo",
+                "label": "Equipo/Línea",
+                "type": "text",
+                "assistant_instructions": "Identificar la máquina o proceso que detendría la producción si falla.",
+                "normative_tips": "El eslabón más débil del proceso productivo, con foco en el riesgo de Avería de Maquinaria."
+              },
+              {
+                "id": "cb_tiempo",
+                "label": "Tiempo Reposición (Meses)",
+                "type": "number",
+                "assistant_instructions": "Tiempo estimado de fabricación y entrega de un equipo de reemplazo.",
+                "normative_tips": "Dato crítico para calcular el MPL (Pérdida Máxima Posible) en Beneficios."
+              },
+              {
+                "id": "cb_impacto",
+                "label": "% Impacto en Producción/Facturación",
+                "type": "number",
+                "assistant_instructions": "¿Qué porcentaje de la producción total se detendría por el fallo de este equipo?",
+                "normative_tips": "¿Existe redundancia o la planta para al 100%?"
+              }
+            ]
+          }
+        },
+        {
+          "id": "pb_interdependencia_grupo",
+          "label": "Interdependencia de Grupo",
+          "type": "textarea",
+          "assistant_instructions": "¿Pertenecen a un grupo? ¿Si esta planta para, afecta a otras? Posibilidad de desviar producción.",
+          "normative_tips": "Asegurador: La interdependencia propaga el siniestro a otras plantas (Efecto Dominó financiero); la capacidad de desvío lo mitiga."
+        },
+        {
+          "id": "pb_estacionalidad",
+          "label": "Estacionalidad y Producción bajo Pedido",
+          "type": "textarea",
+          "assistant_instructions": "¿Ventas estables o picos estacionales? % Producción bajo pedido.",
+          "normative_tips": "Asegurador: Un siniestro justo antes del 'pico de campaña' maximiza la pérdida."
+        },
+        {
+          "id": "pb_bcp",
+          "label": "Plan de Continuidad de Negocio (BCP)",
+          "type": "textarea",
+          "assistant_instructions": "Existencia de BCP, análisis de impacto (BIA), estrategias de recuperación.",
+          "normative_tips": "Asegurador: Disponer de un BCP (ISO 22301) probado demuestra resiliencia y justifica mejores condiciones de aseguramiento."
+        }
+      ]
+    },
+    {
+      "id": "sostenibilidad_esg",
+      "title": "SOSTENIBILIDAD / ESG",
+      "fields": [
+        {
+          "id": "esg_general",
+          "label": "Políticas ESG",
+          "type": "textarea",
+          "assistant_instructions": "Aspectos ambientales, sociales y de gobernanza relevantes para el riesgo.",
+          "normative_tips": "Asegurador: Factores ESG influyen en la reputación y riesgos legales; mala gestión ambiental puede excluir coberturas de RC Contaminación."
+        }
+      ]
+    }
+  ]
+}

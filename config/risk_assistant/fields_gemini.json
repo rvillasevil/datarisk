@@ -1,5 +1,5 @@
 {
-    "form_title": "INFORME DE INSPECCIÓN DE RIESGOS (VERSIÓN CONSOLIDADA)",
+    "form_title": "INFORME DE INSPECCIÓN DE RIESGOS (VERSIÓN CONSOLIDADA - EXTENDIDA)",
     "sections": [
         {
             "id": "informe_metadata",
@@ -9,8 +9,8 @@
                     "id": "metadata_redactores_informe",
                     "label": "Nombre y cargo de las personas que redactan el informe",
                     "type": "select",
-                    "assistant_instructions": "Pregunta quién o quiénes son las personas responsables de proporcionar la información para este informe y cuál es su cargo en la empresa. Es importante registrar tanto el nombre como el puesto. Ej: '¿Podría indicarme su nombre completo y su cargo, por favor?'",
-                    "normative_tips": "Identificar a los interlocutores es clave para validar la información técnica y de gestión, un principio básico en cualquier auditoría de riesgos."
+                    "assistant_instructions": "Pregunta quién o quiénes son las personas responsables de proporcionar la información para este informe y cuál es su cargo en la empresa.",
+                    "normative_tips": "Asegurador: La fiabilidad del informe depende de la cualificación técnica del interlocutor (Jefe de Mantenimiento/Planta); datos incorrectos pueden invalidar coberturas. | Normativa: ISO 19011 (Directrices para la auditoría de sistemas de gestión)."
                 }
             ]
         },
@@ -20,24 +20,38 @@
             "fields": [
                 {
                     "id": "dgi_actividad_operacion_resumen",
-                    "label": "Descripción de la Actividad y Operación",
+                    "label": "Actividad, Operación y Turnos",
                     "type": "textarea",
-                    "assistant_instructions": "Pide al usuario una descripción completa del negocio. Debes obtener: 1) El sector de actividad y los productos que fabrican (Ej: 'Fabricamos componentes de automoción'). 2) El tamaño de la empresa, en número de trabajadores o facturación. 3) La capacidad de producción anual (en unidades, toneladas, etc.). 4) El mercado al que se dirigen (nacional, internacional, o ambos).",
-                    "normative_tips": "Normativa: La actividad y los materiales procesados son clave para calcular la Densidad de Carga de Fuego (MJ/m²) según el RSCIEI, que determinará el Nivel de Riesgo Intrínseco de cada sector. | Mercado Asegurador: El asegurador utiliza esta descripción para entender el perfil de riesgo global, compararlo con benchmarks del sector y evaluar la exposición a riesgos específicos de la actividad (químicos, polvo, etc.)."
+                    "assistant_instructions": "Solicita descripción de la actividad, productos, número de trabajadores, turnos y horarios de trabajo.",
+                    "normative_tips": "Asegurador: La actividad define la 'Carga de Fuego'; turnos 24/7 reducen el riesgo al haber vigilancia constante, pero aumentan el desgaste de maquinaria. | Normativa: RSCIEI Anexo I (Cálculo de Densidad de Carga de Fuego)."
                 },
                 {
-                    "id": "dgi_localizacion_exposicion",
-                    "label": "Localización y Exposiciones Externas",
-                    "type": "textarea",
-                    "assistant_instructions": "Pregunta por la ubicación exacta de la planta. Solicita la dirección completa y una descripción del entorno: si está en un polígono industrial, una zona urbana, o aislada. Es crucial que preguntes por los colindantes: '¿Qué tienen en las parcelas de al lado? ¿Son otras fábricas, un río, campo abierto?'. Pide que especifiquen los riesgos que estos colindantes podrían suponer y la distancia aproximada en metros.",
-                    "normative_tips": "Normativa: La distancia a colindantes define el tipo de establecimiento (A, B, C, D, E) según RSCIEI. Por ejemplo, un establecimiento a más de 3m del vecino se considera 'Tipo C', permitiendo mayores superficies por sector. | Mercado Asegurador: Las exposiciones externas son un factor clave. Un incendio en un vecino puede propagarse. Se valora muy positivamente una distancia de seguridad de >15-20 metros a colindantes con riesgo, ya que reduce drásticamente la probabilidad de siniestro por propagación externa."
+                    "id": "dgi_localizacion_coordenadas",
+                    "label": "Ubicación y Coordenadas",
+                    "type": "text",
+                    "assistant_instructions": "Pide la dirección exacta y, si es posible, las coordenadas GPS para geolocalización de riesgos naturales (inundación, sismo).",
+                    "normative_tips": "Asegurador: Las coordenadas son vitales para el modelado Catastrófico (NatCat); ubicaciones en zonas inundables o sísmicas pueden ser excluidas o tener franquicias altas. | Normativa: Mapas de peligrosidad de inundación (SNCZI) y Norma de Construcción Sismorresistente (NCSE)."
                 },
                 {
-                    "id": "dgi_planos_fotos_generales",
-                    "label": "Planos y Fotografías Aéreas (Layouts generales, exteriores e interiores)",
+                    "id": "dgi_entorno_colindantes",
+                    "label": "Entorno, Colindantes y Distancias",
+                    "type": "textarea",
+                    "assistant_instructions": "Describe el entorno (urbano, industrial, aislado) y detalla los vecinos: actividad, riesgo que suponen y distancia exacta en metros.",
+                    "normative_tips": "Asegurador: La distancia >15-20m a vecinos peligrosos mitiga el riesgo de propagación externa; distancias menores penalizan la prima. | Normativa: RSCIEI (Caracterización de los establecimientos industriales según su configuración)."
+                },
+                {
+                    "id": "dgi_accesibilidad",
+                    "label": "Accesibilidad y Congestión",
+                    "type": "textarea",
+                    "assistant_instructions": "Evalúa la congestión de edificios en la parcela y la accesibilidad para vehículos de bomberos alrededor de las naves.",
+                    "normative_tips": "Asegurador: Se requiere acceso perimetral completo para bomberos; zonas inaccesibles pueden llevar a la pérdida total del edificio en caso de incendio. | Normativa: RSCIEI/CTE (Accesibilidad por fachada y vía de aproximación)."
+                },
+                {
+                    "id": "dgi_planos_fotos",
+                    "label": "Planos y Fotografías (Layouts)",
                     "type": "file_multiple",
-                    "assistant_instructions": "Pide al usuario que, si los tiene a mano, adjunte planos o fotografías que ayuden a entender la distribución general de la planta. Pueden ser layouts, vistas aéreas o planos de las instalaciones. Ej: '¿Tendría algún plano o foto aérea de la instalación que pudiera compartir?'",
-                    "normative_tips": "Disponer de planos actualizados es un requisito para el Plan de Autoprotección y facilita enormemente la labor de los servicios de emergencia."
+                    "assistant_instructions": "Solicita Layout exterior e interior, marcando edificaciones combustibles y sectores.",
+                    "normative_tips": "Asegurador: Planos desactualizados dificultan la evaluación del PML (Pérdida Máxima Probable) y la gestión de emergencias. | Normativa: Norma Básica de Autoprotección (RD 393/2007)."
                 }
             ]
         },
@@ -46,106 +60,106 @@
             "title": "CONSTRUCCIÓN",
             "fields": [
                 {
+                    "id": "constr_datos_generales",
+                    "label": "Datos Generales de la Parcela",
+                    "type": "group",
+                    "fields": [
+                        {
+                            "id": "constr_superficie_total",
+                            "label": "Superficie Parcela vs Construida (m²)",
+                            "type": "text",
+                            "assistant_instructions": "Pregunta por la superficie total de la parcela y la construida.",
+                            "normative_tips": "Asegurador: Una alta ocupación de parcela dificulta la maniobrabilidad y aumenta el riesgo de propagación entre naves."
+                        },
+                        {
+                            "id": "constr_regimen_propiedad",
+                            "label": "Régimen de Propiedad",
+                            "type": "select",
+                            "options": ["Propiedad", "Alquiler", "Leasing"],
+                            "assistant_instructions": "¿Son propietarios o inquilinos?",
+                            "normative_tips": "Asegurador: En régimen de alquiler, se revisan las cláusulas de renuncia a recurso contra el propietario/inquilino."
+                        },
+                        {
+                            "id": "constr_sismo",
+                            "label": "Cumplimiento Norma Sismo-resistente",
+                            "type": "text",
+                            "assistant_instructions": "Pregunta si, por año de construcción y zona, les aplica la norma sismo-resistente y si la cumplen.",
+                            "normative_tips": "Asegurador: En zonas sísmicas, la falta de cumplimiento normativo puede implicar la denegación de cobertura para terremoto. | Normativa: NCSE-02."
+                        }
+                    ]
+                },
+                {
                     "id": "constr_edificios_principales_array",
-                    "label": "Edificios Principales",
+                    "label": "Detalle de Edificios y Sectores (Tabla de Construcción)",
                     "type": "array_of_objects",
-                    "assistant_instructions": "Indica al usuario que ahora vais a detallar los edificios principales de la instalación. Pregúntale cuántos edificios significativos quiere detallar para preparar la tabla.",
-                    "normative_tips": "La descripción individual de cada edificio es fundamental, ya que la normativa de seguridad contra incendios (RSCIEI) se aplica a cada uno de ellos de forma independiente en muchos aspectos.",
-                    "allow_add_remove_rows": true,
-                    "item_label_template": "Edificio {{index + 1}}",
+                    "assistant_instructions": "Vamos a detallar cada edificio/sector. Debemos identificar porcentajes de materiales combustibles en cubierta y cerramientos.",
+                    "normative_tips": "Asegurador: La presencia de paneles sándwich combustibles (PUR/EPS) y estructura metálica no protegida son los factores constructivos más penalizados. | Normativa: RSCIEI (Estabilidad al fuego de estructuras y Reacción al fuego de materiales - Euroclases).",
+                    "item_label_template": "Edificio/Sector {{index + 1}}",
                     "item_schema": {
-                        "id": "edificio_item_detallado",
+                        "id": "edificio_item_completo",
                         "fields": [
-                            {
-                                "id": "edificio_caracteristicas_generales",
-                                "label": "Características Generales del Edificio",
-                                "type": "textarea",
-                                "assistant_instructions": "Para cada edificio, pregunta por sus datos básicos: Año de construcción, superficie total construida (m²), y número de plantas.",
-                                "normative_tips": "La superficie construida de un sector de incendio es un dato fundamental para determinar las exigencias de protección del RSCIEI."
-                            },
-                            {
-                                "id": "edificio_material_estructura",
-                                "label": "Estructura Portante",
-                                "type": "text",
-                                "assistant_instructions": "Pregunta de qué material es la estructura principal que soporta este edificio (pilares y vigas). Las opciones comunes son hormigón, metálica o madera.",
-                                "normative_tips": "Normativa: El RSCIEI exige una resistencia al fuego para la estructura (Estabilidad 'R'). Una estructura metálica sin protección tiene una R-15 (aprox. 15 min), insuficiente para la mayoría de riesgos. | Mercado Asegurador: Se exige protección al fuego (pintura intumescente, mortero, etc.) en estructuras metálicas para garantizar una estabilidad mínima de R-60 o R-90. Esto evita un colapso prematuro del edificio que destruiría equipos y sistemas de protección como los rociadores."
-                            },
-                            {
-                                "id": "edificio_material_cubierta",
-                                "label": "Cubierta (Tejado)",
-                                "type": "text",
-                                "assistant_instructions": "Pregunta por el tipo de cubierta de este edificio. Es importante saber si es de chapa metálica simple, panel sándwich, tipo 'deck', etc. Si es panel sándwich, pregunta por el material aislante (PUR, PIR, lana de roca).",
-                                "normative_tips": "Normativa: El RSCIEI exige una reacción al fuego mínima (ej. C-s3,d0). | Mercado Asegurador: Es un punto crítico. Se prohíben o penalizan fuertemente los paneles con espuma de Poliuretano (PUR) por su alta combustibilidad y propagación. El requisito mínimo es un panel con aislamiento de Poli-isocianurato (PIR) certificado (ej. FM Approved, B-s1,d0). La solución ideal es un panel con núcleo de Lana de Roca (no combustible)."
-                            },
-                            {
-                                "id": "edificio_material_cerramientos",
-                                "label": "Cerramientos (Paredes Exteriores)",
-                                "type": "text",
-                                "assistant_instructions": "Pregunta de qué material son las paredes exteriores o fachadas de este edificio. Las opciones comunes son bloque de hormigón, panel metálico prefabricado o panel sándwich.",
-                                "normative_tips": "Normativa: La fachada debe cumplir con una reacción al fuego mínima según el RSCIEI para evitar la propagación vertical y horizontal. | Mercado Asegurador: Al igual que la cubierta, se prefiere el uso de materiales no combustibles (bloque de hormigón) o paneles sándwich con certificaciones de reacción al fuego para evitar la propagación del incendio por el exterior del edificio."
-                            }
+                            {"id": "ed_nombre", "label": "Nombre/Uso", "type": "text"},
+                            {"id": "ed_superficie", "label": "Superficie (m²)", "type": "number", "normative_tips": "Superficies >2.500m² suelen requerir medidas de protección adicionales (rociadores/bíes) según riesgo."},
+                            {"id": "ed_anio", "label": "Año Construcción", "type": "number", "assistant_instructions": ""},
+                            {"id": "ed_estructura", "label": "Estructura", "type": "text", "assistant_instructions": "Hormigón, Metálica (¿protegida?), Madera.", "normative_tips": "Asegurador: Estructura de hormigón es óptima; metálica requiere ignifugado (R-60/R-90) para evitar colapso temprano."},
+                            {"id": "ed_cubierta_mat", "label": "Material Cubierta y % Combustible", "type": "text", "assistant_instructions": "Ej: Panel Sandwich PUR (100% Combustible) o Lana de Roca (No combustible).", "normative_tips": "Asegurador: Se exige Lana de Roca o PIR Certificado FM/LPCB; el PUR/EPS eleva drásticamente el riesgo."},
+                            {"id": "ed_cerramiento_mat", "label": "Material Fachada y % Combustible", "type": "text", "assistant_instructions": "Ej: Bloque hormigón, chapa simple, panel.", "normative_tips": "Asegurador: Mismo criterio que cubierta; fachadas combustibles facilitan la propagación vertical."},
+                            {"id": "ed_sectorizacion", "label": "Sectorización y Huecos", "type": "textarea", "assistant_instructions": "Resistencia al fuego de paredes/puertas y estado del sellado de huecos.", "normative_tips": "Asegurador: Un solo hueco sin sellar (paso de cables) invalida todo el muro cortafuegos; se verifica integridad EI-120/EI-180."}
                         ]
                     }
                 },
                 {
-                    "id": "constr_sectores_incendio_principales_array",
-                    "label": "Sectores de Incendio Principales",
+                    "id": "constr_camaras_frigorificas_array",
+                    "label": "Cámaras Frigoríficas (Detalle)",
                     "type": "array_of_objects",
-                    "assistant_instructions": "Indica al usuario que ahora vais a detallar los principales sectores de incendio, que son espacios delimitados para que el fuego no se propague. Pregúntale cuántos sectores significativos quiere detallar para preparar la tabla.",
-                    "normative_tips": "Normativa: La sectorización (delimitación de superficies máximas con paredes y puertas resistentes al fuego) es una medida básica del RSCIEI. | Mercado Asegurador: La sectorización es fundamental para limitar la Pérdida Máxima Posible (PML). El asegurador verifica la resistencia (EI-120, EI-60) y, sobre todo, la integridad de los cerramientos y la protección de los huecos (puertas cortafuego operativas, sellado de pasamuros), ya que un hueco sin proteger anula la sectorización.",
-                    "allow_add_remove_rows": true,
-                    "item_label_template": "Sector de Incendio {{index + 1}}",
+                    "assistant_instructions": "Si existen cámaras frigoríficas, detállalas una a una. Es crítico saber el tipo de panel aislante.",
+                    "normative_tips": "Asegurador: Las cámaras de panel combustible (PUR) sin rociadores interiores son casi inasegurables por el riesgo de incendio incontenible. | Normativa: RSCIEI (Regulación específica para cámaras frigoríficas).",
+                    "item_label_template": "Cámara {{index + 1}}",
                     "item_schema": {
-                        "id": "sector_incendio_item_detallado",
+                        "id": "camara_item",
                         "fields": [
-                            {"id": "sector_nombre_uso", "label": "Nombre/Uso del Sector", "type": "text", "assistant_instructions": "Para cada sector, pregunta por su nombre o el uso principal que tiene. Ej: 'Almacén de Materia Prima', 'Zona de Producción 1', 'Oficinas'."},
-                            {"id": "sector_superficie", "label": "Superficie (m²)", "type": "number", "assistant_instructions": "Para cada sector, pregunta por su superficie aproximada en metros cuadrados."},
-                            {"id": "sector_resistencia_fuego_elementos", "label": "Resistencia al Fuego de Paredes/Puertas (EI)", "type": "text", "assistant_instructions": "Pregunta cuál es la resistencia al fuego (ej. 'EI-60', 'EI-120') de las paredes y puertas que lo separan de otros sectores. Esto es un dato técnico muy importante.", "normative_tips": "Tip RSCIEI: La resistencia al fuego de los elementos separadores debe ser 'EI' (Integridad y Aislamiento) y la de las puertas 'EI₂' (ej. EI-120 para riesgo alto)."},
-                            {"id": "sector_comunicacion_proteccion", "label": "Protección de huecos de comunicación", "type": "textarea", "assistant_instructions": "Pregunta cómo se comunican los sectores entre sí. ¿Hay cintas transportadoras que los atraviesan? ¿Grandes portones? Si es así, pregunta si estos huecos tienen sistemas de cierre automático en caso de incendio (compuertas cortafuegos, etc.).", "normative_tips": "Los huecos sin proteger entre sectores (para cintas, instalaciones, etc.) anulan completamente la sectorización y son un defecto grave de seguridad."}
+                            {"id": "cam_uso", "label": "Uso/Producto", "type": "text"},
+                            {"id": "cam_superficie", "label": "Superficie (m²)", "type": "number", "assistant_instructions": ""},
+                            {"id": "cam_panel", "label": "Tipo de Aislamiento", "type": "select", "options": ["Lana de Roca (Incombustible)", "PIR (Certificado FM)", "PUR (Poliuretano)", "EPS (Poliestireno)", "Desconocido"], "assistant_instructions": "", "normative_tips": "Asegurador: Preferencia absoluta por Lana de Roca o PIR FM Approved Class 1."},
+                            {"id": "cam_proteccion", "label": "Protección Interior (Rociadores)", "type": "boolean", "normative_tips": "Asegurador: Obligatorio rociadores (secos o preacción) en cámaras de material combustible según estándares NFPA/FM."}
                         ]
                     }
-                },
-                {
-                    "id": "constr_camaras_frigorificas_descripcion",
-                    "label": "Cámaras Frigoríficas",
-                    "type": "textarea",
-                    "assistant_instructions": "Pregunta específicamente si en la instalación existen cámaras frigoríficas. Si es así, pide que describa cuántas hay, su tamaño, y de qué material es el panel aislante (PUR, PIR, lana de roca). Pregunta también si tienen protección contra incendios (rociadores) en su interior.",
-                    "normative_tips": "Normativa: El RSCIEI las considera un riesgo específico. | Mercado Asegurador: Las cámaras de paneles sándwich combustibles (PUR/PIR) sin protección interior con rociadores automáticos son consideradas uno de los mayores riesgos de incendio. El estándar del mercado (basado en normas como FM Global 8-29) exige rociadores automáticos en el interior de estas cámaras para poder asegurarlas en condiciones competitivas."
                 }
             ]
         },
         {
             "id": "proceso_productivo",
-            "title": "DESCRIPCIÓN DEL PROCESO PRODUCTIVO",
+            "title": "PROCESO PRODUCTIVO",
             "fields": [
                 {
-                    "id": "pp_proceso_resumen",
-                    "label": "Descripción General del Proceso Productivo",
+                    "id": "pp_descripcion_riesgos",
+                    "label": "Descripción del Proceso y Riesgos",
                     "type": "textarea",
-                    "assistant_instructions": "Pide una descripción del proceso de fabricación. Pregunta: '¿Podría explicarme a grandes rasgos las fases principales de su proceso productivo? ¿Utilizan fuentes de calor importantes, altas presiones o manejan productos inflamables o explosivos?' Incluye también una pregunta sobre las materias primas principales.",
-                    "normative_tips": "Normativa: Si se manejan líquidos inflamables o polvos combustibles, aplican normativas específicas (APQ, ATEX). | Mercado Asegurador: Se evalúan los riesgos inherentes al proceso (puntos calientes, reacciones químicas, etc.). Para riesgos especiales como líquidos inflamables (NFPA 30) o polvo combustible (NFPA 652), se espera ver medidas de control específicas: salas dedicadas, ventilación, inertización, venteo de explosiones, etc."
+                    "assistant_instructions": "Descripción de fases, aportes de calor, presiones, manejo de inflamables/explosivos.",
+                    "normative_tips": "Asegurador: Procesos con aceites térmicos, llamas abiertas o alta presión requieren sistemas de seguridad redundantes (válvulas corte, detección gas). | Normativa: Directiva de Máquinas y Reglamento de Aparatos a Presión."
                 },
                 {
-                    "id": "pp_diagrama_proceso",
-                    "label": "Diagrama del Proceso (Adjuntar archivo)",
+                    "id": "pp_diagrama",
+                    "label": "Diagrama de Flujo",
                     "type": "file",
-                    "assistant_instructions": "Pregunta si disponen de un diagrama de flujo del proceso que puedan compartir, ya que sería de gran ayuda para entenderlo.",
-                    "normative_tips": "Tener diagramas de proceso es fundamental para realizar análisis de riesgos más detallados como un HAZOP (Hazard and Operability Study)."
+                    "assistant_instructions": "Adjuntar diagrama de proceso.",
+                    "normative_tips": "Asegurador: Permite identificar puntos únicos de fallo (SPOF) en la cadena productiva."
                 },
                 {
-                    "id": "pp_equipos_criticos_array",
-                    "label": "Líneas/Equipos Principales y Críticos del Proceso",
+                    "id": "pp_equipos_tabla",
+                    "label": "Equipos Principales de Producción",
                     "type": "array_of_objects",
-                    "assistant_instructions": "Informa al usuario de que vais a identificar los equipos más importantes del proceso. Pregunta cuáles son las 2-3 máquinas o líneas de producción más críticas para su negocio.",
-                    "normative_tips": "Identificar los 'cuellos de botella' es el primer paso para un análisis de continuidad de negocio (Business Continuity Plan), referenciado en estándares como NFPA 1600.",
-                    "allow_add_remove_rows": true,
-                    "item_label_template": "Equipo/Línea Principal {{index + 1}}",
+                    "assistant_instructions": "Detalle de maquinaria crítica: fabricante, año, valor y si es cuello de botella.",
+                    "normative_tips": "Asegurador: Maquinaria antigua, prototipos únicos o sin repuestos en el mercado aumentan el riesgo de Pérdida de Beneficios prolongada.",
+                    "item_label_template": "Equipo {{index + 1}}",
                     "item_schema": {
-                        "id": "equipo_principal_item_simplificado",
+                        "id": "equipo_detalle",
                         "fields": [
-                            {"id": "equipo_nombre_funcion", "label": "Nombre y Función", "type": "text", "assistant_instructions": "Para cada equipo crítico, pregunta por su nombre y su función principal."},
-                            {"id": "equipo_criticidad", "label": "Criticidad y Redundancia", "type": "text", "assistant_instructions": "Para cada equipo, pregunta si su parada detendría toda la producción (cuello de botella) y si existe alguna máquina de respaldo o alternativa para seguir produciendo."},
-                            {"id": "equipo_valor", "label": "Valor de Reposición (€)", "type": "number", "assistant_instructions": "Pregunta por el coste estimado para reemplazar ese equipo si se destruyera por completo."}
+                            {"id": "eq_nombre", "label": "Equipo", "type": "text"},
+                            {"id": "eq_fabricante_anio", "label": "Fabricante / Año", "type": "text", "assistant_instructions": ""},
+                            {"id": "eq_capacidad_uso", "label": "Capacidad Nominal y Factor de Uso (%)", "type": "text", "assistant_instructions": "", "normative_tips": "Uso >90% indica cuello de botella operativo sin margen de maniobra."},
+                            {"id": "eq_valor", "label": "Valor Reposición (€)", "type": "number", "assistant_instructions": "", "normative_tips": "Base para cálculo de Suma Asegurada."},
+                            {"id": "eq_origen", "label": "Procedencia (Nacional/Importado)", "type": "text", "assistant_instructions": "Relevante para tiempos de repuesto.", "normative_tips": "Importaciones de Asia/EEUU aumentan tiempos de paralización por transporte y aduanas."}
                         ]
                     }
                 }
@@ -156,22 +170,32 @@
             "title": "ALMACENAMIENTO",
             "fields": [
                 {
-                    "id": "alm_zonas_almacenamiento_principales_array",
-                    "label": "Principales Zonas de Almacenamiento",
+                    "id": "alm_tabla_general",
+                    "label": "Desglose de Almacenamientos",
                     "type": "array_of_objects",
-                    "assistant_instructions": "Comunica al usuario que ahora hablaréis sobre cómo y dónde se almacenan los materiales. Pide que identifique las principales áreas de almacenamiento (materia prima, producto terminado, etc.).",
-                    "normative_tips": "Normativa: El almacenamiento se regula por su propia normativa (APQ para químicos) y por el RSCIEI según la carga de fuego. | Mercado Asegurador: La protección de almacenamientos (NFPA 13) es clave. El requisito fundamental es un sistema de rociadores automáticos correctamente diseñado para la mercancía (Clase I-IV, Plásticos), la altura y la configuración del almacenamiento. Almacenes de gran altura o con plásticos suelen requerir rociadores especiales (ESFR) o rociadores en estanterías ('in-rack').",
-                    "allow_add_remove_rows": true,
-                    "item_label_template": "Zona de Almacenamiento {{index + 1}}",
+                    "assistant_instructions": "Detallar almacenes de: Materia Prima, Producto Intermedio, Final y Auxiliar. Importante: Tipo de embalaje y altura.",
+                    "normative_tips": "Asegurador: La altura de almacenamiento y el uso de plásticos determinan si los rociadores de techo son efectivos o si se requieren rociadores en estantería (In-Rack). | Normativa: NFPA 13 (Clasificación Commodities) / RSCIEI (Carga de Fuego).",
+                    "item_label_template": "{{item.alm_tipo_material}} - {{item.alm_producto}}",
                     "item_schema": {
-                        "id": "alm_zona_item_simplificado",
+                        "id": "almacen_item_full",
                         "fields": [
-                            {"id": "alm_producto", "label": "Producto(s) Almacenado(s) y Tipo", "type": "text", "assistant_instructions": "Para cada zona, pregunta qué se almacena allí. Ej: 'Bobinas de cartón (Materia Prima)' o 'Producto terminado en palets de plástico'."},
-                            {"id": "alm_riesgo_principal", "label": "Riesgo Principal", "type": "text", "assistant_instructions": "Para cada zona, pregunta cuál es el principal riesgo de incendio. Ej: '¿El material es muy combustible? ¿Es inflamable? ¿Genera polvo?'", "normative_tips": "Tip NFPA: La clasificación de la mercancía es clave (Clase I a IV, Plásticos Grupo A, B, C). Los plásticos no expandidos (ej. en cajas de cartón) suelen requerir protección con rociadores ESFR o rociadores en estantería ('in-rack')."},
-                            {"id": "alm_cantidad_maxima", "label": "Cantidad Máxima Aproximada", "type": "text", "assistant_instructions": "Pregunta por la cantidad máxima que suelen tener almacenada en esa zona (en palets, toneladas, m³, etc.)."},
-                            {"id": "alm_ubicacion_proteccion", "label": "Ubicación y Protección Contra Incendios", "type": "textarea", "assistant_instructions": "Pregunta dónde se ubica la zona (nave, exterior) y, muy importante, qué sistemas contra incendios específicos tiene (detectores, rociadores automáticos, etc.)."}
+                            {"id": "alm_tipo_material", "label": "Categoría", "type": "select", "options": ["Materia Prima", "Producto Intermedio", "Producto Terminado", "Material Auxiliar/Repuestos"]},
+                            {"id": "alm_producto", "label": "Producto y Riesgo", "type": "text", "assistant_instructions": "Ej: Ropa (Incendio), Harina (Explosión).", "normative_tips": "Clasificar según NFPA: Clase I-IV o Plásticos Grupo A/B/C."},
+                            {"id": "alm_configuracion", "label": "Almacenamiento y Altura", "type": "text", "assistant_instructions": "Ej: Estanterías metálicas a 8m, A granel en silos, Apilado en suelo.", "normative_tips": "Riesgo crítico: Almacenamiento en estanterías >9-10m sin rociadores intermedios."},
+                            {"id": "alm_embalaje", "label": "Embalaje", "type": "text", "assistant_instructions": "Cajas cartón, palets plástico/madera, retractilado.", "normative_tips": "El plástico expandido (EPS) o palets de plástico aumentan severamente la intensidad del fuego."},
+                            {"id": "alm_cantidad", "label": "Cantidad Máxima", "type": "text"},
+                            {"id": "alm_ubicacion", "label": "Ubicación", "type": "text", "normative_tips": "Preferiblemente en sector independiente a producción."},
+                            {"id": "alm_proteccion", "label": "Protección Específica", "type": "text", "assistant_instructions": "Rociadores, In-rack, espumas, etc.", "normative_tips": "Debe haber correspondencia entre riesgo (plástico/altura) y diseño de rociadores (K-factor, densidad)."}
                         ]
                     }
+                },
+                {
+                    "id": "alm_especificos_checkbox",
+                    "label": "Riesgos Específicos de Almacenamiento",
+                    "type": "checkbox_group",
+                    "options": ["Líquidos Inflamables/APQ", "Aerosoles", "Productos a Granel (Polvo)", "Baterías Litio"],
+                    "assistant_instructions": "Marcar si existen estos almacenamientos especiales.",
+                    "normative_tips": "Asegurador: Requieren protecciones dedicadas (armarios ignífugos, salas ventiladas, extinción especial). | Normativa: Reglamento APQ, NFPA 30 (Líquidos), NFPA 30B (Aerosoles)."
                 }
             ]
         },
@@ -180,25 +204,67 @@
             "title": "INSTALACIONES DE SERVICIO",
             "fields": [
                 {
-                    "id": "is_instalacion_electrica_resumen",
-                    "label": "Instalación Eléctrica",
+                    "id": "is_electricidad_general",
+                    "label": "Suministro Eléctrico General",
                     "type": "textarea",
-                    "assistant_instructions": "Pregunta sobre la instalación eléctrica. Debes obtener información sobre: acometidas, transformadores principales (potencia, si son de aceite o secos), si hay generadores de emergencia y si un fallo eléctrico en un punto pararía toda la planta.",
-                    "normative_tips": "Normativa: Se remite al REBT. En zonas ATEX los requisitos son mucho más estrictos. | Mercado Asegurador: El requisito clave es un programa de mantenimiento preventivo (NFPA 70B). La práctica estándar exigida es la realización de inspecciones termográficas anuales por una empresa cualificada en los principales cuadros eléctricos y transformadores para detectar puntos calientes y prevenir incendios de origen eléctrico."
+                    "assistant_instructions": "Nº acometidas, voltaje, subestaciones principales.",
+                    "normative_tips": "Asegurador: Doble acometida reduce riesgo de paralización. Termografías anuales son obligatorias para renovación de póliza. | Normativa: REBT (Reglamento Electrotécnico Baja Tensión)."
                 },
                 {
-                    "id": "is_otras_instalaciones_clave",
-                    "label": "Otras Instalaciones de Servicio Clave",
-                    "type": "textarea",
-                    "assistant_instructions": "Pregunta por otras instalaciones auxiliares importantes. Ej: '¿Disponen de calderas de vapor o aceite térmico? ¿Compresores de aire? ¿Sistemas de refrigeración con amoniaco u otros gases?' Pide que describa su ubicación y criticidad.",
-                    "normative_tips": "Normativa: Las salas de calderas o de equipos con fluidos combustibles (RSCIEI, NFPA 85) deben constituir un sector de incendio propio y estar correctamente ventiladas. | Mercado Asegurador: Se espera que estas salas de alto riesgo estén correctamente sectorizadas y, si el riesgo lo justifica, dotadas de protección automática específica (ej. rociadores, detección de gas)."
+                    "id": "is_transformadores_array",
+                    "label": "Tabla de Transformadores",
+                    "type": "array_of_objects",
+                    "assistant_instructions": "Inventario de transformadores. Crítico: saber si son de aceite (riesgo incendio) o secos, y su protección.",
+                    "normative_tips": "Asegurador: Transformadores de aceite en interior sin sala bunkerizada y sistema de extinción son riesgo inaceptable. Se prefieren trafos secos (resina). | Normativa: Reglamento de Alta Tensión.",
+                    "item_label_template": "Trafo {{index + 1}}",
+                    "item_schema": {
+                        "id": "trafo_item",
+                        "fields": [
+                            {"id": "tr_potencia", "label": "Potencia (kVA/MVA) y Voltaje", "type": "text"},
+                            {"id": "tr_tipo", "label": "Tipo y Refrigeración", "type": "text", "assistant_instructions": "Aceite (ONAF/ONAN) o Seco/Resina. Si es aceite, indicar volumen litros.", "normative_tips": "Aceite mineral es combustible; siliconas o ésteres naturales reducen el riesgo."},
+                            {"id": "tr_ubicacion", "label": "Ubicación y Sectorización", "type": "text", "assistant_instructions": "Sala interior, exterior, celdas separadas.", "normative_tips": "Deben estar sectorizados (EI-120) de la zona productiva."},
+                            {"id": "tr_proteccion", "label": "Protección Incendios", "type": "text", "assistant_instructions": "Foso recogida aceite, extintores, sistema automático.", "normative_tips": "Obligatorio foso de recogida de aceite con apagallamas para evitar derrame inflamado."}
+                        ]
+                    }
                 },
                 {
-                    "id": "is_transporte_interno_baterias",
-                    "label": "Sistemas de Transporte y Carga de Baterías",
+                    "id": "is_otras_instalaciones",
+                    "label": "Otras Instalaciones (Detalle)",
+                    "type": "group",
+                    "fields": [
+                        {"id": "is_generacion_renovable", "label": "Fotovoltaica / Cogeneración", "type": "textarea", "assistant_instructions": "¿Paneles en cubierta? ¿Inversores en sala técnica?", "normative_tips": "Asegurador: Paneles en cubierta aumentan carga de fuego y dificultan extinción manual. Requieren pasillos de mantenimiento y desconexión CC accesible."},
+                        {"id": "is_calderas", "label": "Calderas (Vapor/Agua/Aceite)", "type": "textarea", "assistant_instructions": "Combustible, potencia, ubicación sala.", "normative_tips": "Asegurador: Riesgo de explosión. Deben estar en sala independiente con muros resistentes a explosión o venteo. | Normativa: Reglamento de equipos a presión."},
+                        {"id": "is_compresores", "label": "Compresores Aire", "type": "textarea", "assistant_instructions": "Potencia, ubicación.", "normative_tips": "Riesgo de incendio por sobrecalentamiento de aceite; mantener limpios y ventilados."},
+                        {"id": "is_frio_industrial", "label": "Refrigeración (Amoniaco/Gases)", "type": "textarea", "assistant_instructions": "Tipo de gas refrigerante.", "normative_tips": "Amoniaco es tóxico e inflamable; requiere detección de fugas y ventilación de emergencia. | Normativa: Reglamento de seguridad instalaciones frigoríficas."},
+                        {"id": "is_carga_baterias", "label": "Carga de Baterías (Litio/Plomo)", "type": "textarea", "assistant_instructions": "Sala de carga, ventilación, tipo baterías.", "normative_tips": "Asegurador: Riesgo alto. Se exige separación de 3m o muro cortafuegos, buena ventilación (hidrógeno/plomo) y no cargar en horario inhábil."}
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "seguridad_fisica",
+            "title": "SEGURIDAD FÍSICA (ROBO E INTRUSIÓN)",
+            "fields": [
+                {
+                    "id": "sf_perimetro_accesos",
+                    "label": "Protección Perimetral y Accesos",
                     "type": "textarea",
-                    "assistant_instructions": "Pregunta sobre las carretillas elevadoras. Es muy importante saber de qué tipo son sus baterías (plomo-ácido, litio) y cómo es la sala donde se cargan (si está ventilada, si tiene detectores o extintores, etc.).",
-                    "normative_tips": "Normativa: Sin regulación específica extensa, pero se considera riesgo importante. | Mercado Asegurador: Es un riesgo emergente muy vigilado. Para baterías de litio (NFPA 855), se exige como mínimo una sala de carga separada, bien ventilada y alejada de almacenamientos combustibles. Cada vez es más frecuente el requisito de dotar estas salas con detección de humos y rociadores automáticos debido al riesgo de 'thermal runaway'."
+                    "assistant_instructions": "Tipo de vallado, muros, control de accesos, bolardos.",
+                    "normative_tips": "Asegurador: Vallado perimetral integro de >2m de altura es el estándar mínimo para cobertura de robo."
+                },
+                {
+                    "id": "sf_vigilancia_humana",
+                    "label": "Vigilancia Humana",
+                    "type": "textarea",
+                    "assistant_instructions": "Empresa vigilancia, nº vigilantes por turno, rondas, armas.",
+                    "normative_tips": "Asegurador: La vigilancia presencial 24h es la medida más valorada contra robo e incendio intencionado."
+                },
+                {
+                    "id": "sf_sistemas_electronicos",
+                    "label": "Sistemas Electrónicos (CCTV e Intrusión)",
+                    "type": "textarea",
+                    "assistant_instructions": "Cámaras (CCTV), detectores volumétricos/sísmicos. Conexión a CRA (Central Receptora de Alarmas).",
+                    "normative_tips": "Asegurador: CCTV con grabación y sistema de intrusión Grado 3 conectado a CRA es el estándar exigido para industrias. | Normativa: Reglamento Seguridad Privada."
                 }
             ]
         },
@@ -207,39 +273,39 @@
             "title": "GESTIÓN DE LA SEGURIDAD Y EMERGENCIAS",
             "fields": [
                 {
-                    "id": "gs_organizacion_seguridad",
-                    "label": "Organización de la Seguridad y Prevención",
+                    "id": "gs_organizacion",
+                    "label": "Organización y PRL",
                     "type": "textarea",
-                    "assistant_instructions": "Pregunta sobre la gestión de la seguridad. '¿Quién es el responsable de seguridad en la planta? ¿Tienen un servicio de prevención propio o externo?' Confirma que cumplen con la Ley de Prevención de Riesgos Laborales.",
-                    "normative_tips": "Un sistema de gestión de la seguridad robusto es la base de la prevención. La existencia de un responsable claro y con autoridad es un factor muy positivo en la evaluación del riesgo."
+                    "assistant_instructions": "Departamento de seguridad, cumplimiento LPRL, servicio prevención ajeno/propio.",
+                    "normative_tips": "Asegurador: Una estructura clara de seguridad indica 'cultura de riesgo', reduciendo probabilidad de siniestros por error humano."
                 },
                 {
-                    "id": "gs_procedimientos_riesgos",
-                    "label": "Procedimientos y Gestión de Riesgos",
+                    "id": "gs_procedimientos_permisos",
+                    "label": "Permisos de Trabajo y Procedimientos",
                     "type": "textarea",
-                    "assistant_instructions": "Indaga sobre los procedimientos de trabajo seguro. Pregunta: '¿Tienen procedimientos establecidos para trabajos especiales, como soldadura o trabajos en caliente? ¿Y políticas estrictas de orden y limpieza?'",
-                    "normative_tips": "Normativa: La gestión de trabajos especiales es clave. | Mercado Asegurador: Un requisito prácticamente universal es disponer de un sistema formal de 'Permisos de Trabajo en Caliente' (según NFPA 51B). El asegurador verificará que el procedimiento está documentado, que se aplica rigurosamente y que incluye la vigilancia de la zona tras finalizar el trabajo. Un buen housekeeping (orden y limpieza) es también un factor muy valorado."
+                    "assistant_instructions": "Específicamente: Permisos de Fuego (Hot Work), Prohibición de fumar, Orden y Limpieza.",
+                    "normative_tips": "Asegurador: Imprescindible procedimiento de Permisos de Fuego (Hot Work) para contratistas; su ausencia es causa frecuente de rechazo de riesgo. | Normativa: NFPA 51B."
                 },
                 {
-                    "id": "gs_plan_emergencia_equipos",
-                    "label": "Plan de Emergencia y Equipos de Intervención",
+                    "id": "gs_formacion",
+                    "label": "Formación",
                     "type": "textarea",
-                    "assistant_instructions": "Pregunta sobre la preparación para emergencias. '¿Tienen un plan de autoprotección o de emergencia? ¿Cuentan con equipos de primera intervención (brigadas de emergencia) formados por sus propios trabajadores? Si es así, ¿cuántos hay por turno?'",
-                    "normative_tips": "Normativa: El RD 393/2007 obliga a implantar un Plan de Autoprotección en ciertas actividades. | Mercado Asegurador: Se valora muy positivamente la existencia de una Brigada de Emergencia interna, organizada y formada. Una brigada bien entrenada puede atajar un conato de incendio antes de la llegada de bomberos, limitando drásticamente los daños. Es un factor clave para la resiliencia del riesgo."
+                    "assistant_instructions": "Planes de formación a operarios y brigadas.",
+                    "normative_tips": "Asegurador: Brigadas de intervención formadas pueden controlar un conato antes de que sea un gran siniestro."
                 },
                 {
-                    "id": "gs_recursos_bomberos",
-                    "label": "Recursos de Bomberos",
+                    "id": "gs_planes_emergencia",
+                    "label": "Planes de Emergencia y Simulacros",
                     "type": "textarea",
-                    "assistant_instructions": "Pregunta sobre la ayuda externa. '¿A qué distancia en minutos están los bomberos públicos más cercanos? ¿Han visitado alguna vez la planta para conocerla?'",
-                    "normative_tips": "Un tiempo de intervención de bomberos inferior a 20 minutos se considera favorable. | Mercado Asegurador: El tiempo de respuesta y la dotación (profesional, voluntario) del servicio de bomberos público es un factor que modula la prima. Se valora muy positivamente que los bomberos realicen visitas periódicas a la planta para conocer sus riesgos, accesos e instalaciones de protección."
+                    "assistant_instructions": "Plan de Autoprotección, afectación SEVESO, frecuencia de simulacros.",
+                    "normative_tips": "Asegurador: Se exige mínimo un simulacro anual documentado. SEVESO implica controles de seguridad muy superiores. | Normativa: Directiva SEVESO / RD 393/2007 (Autoprotección)."
                 },
                 {
-                    "id": "gs_simulacros_seveso",
-                    "label": "Simulacros y Regulación SEVESO",
+                    "id": "gs_bomberos",
+                    "label": "Servicio de Bomberos",
                     "type": "textarea",
-                    "assistant_instructions": "Pregunta por la práctica de los planes. '¿Con qué frecuencia realizan simulacros de emergencia?'. Y una pregunta regulatoria importante: '¿Por la cantidad de productos químicos que almacenan, están afectados por la normativa SEVESO?'",
-                    "normative_tips": "Tip: El Plan de Autoprotección exige la realización de simulacros como mínimo una vez al año. La normativa SEVESO (Real Decreto 840/2015) aplica a industrias con grandes cantidades de sustancias peligrosas y exige medidas de seguridad y planes de emergencia mucho más estrictos."
+                    "assistant_instructions": "Públicos (distancia, tiempo respuesta) y Privados/Brigada interna.",
+                    "normative_tips": "Asegurador: Tiempo de respuesta >20-30 min requiere autosuficiencia total de la planta (reserva agua ampliada, brigada profesional)."
                 }
             ]
         },
@@ -248,153 +314,129 @@
             "title": "MEDIOS DE PROTECCIÓN CONTRA INCENDIOS",
             "fields": [
                 {
-                    "id": "mpci_deteccion_alarma_subseccion",
-                    "title": "Sistemas de Detección y Alarma",
-                    "type": "subsection",
-                    "fields": [
-                        {
-                            "id": "mpci_det_tipo_areas",
-                            "label": "Tipo de detectores y áreas cubiertas",
-                            "type": "textarea",
-                            "assistant_instructions": "Pregunta qué tipo de detectores de incendio tienen (humo, calor, llama, etc.) y qué zonas de la planta están cubiertas por ellos (toda la planta, solo almacenes, oficinas, etc.).",
-                            "normative_tips": "Tip RSCIEI: Se exige detección automática para Nivel de Riesgo Intrínseco Medio o Alto a partir de ciertas superficies. La elección del tipo de detector depende del riesgo (ej. detectores de llama para zonas de inflamables)."
-                        },
-                        {
-                            "id": "mpci_det_central_transmision",
-                            "label": "Central de detección y transmisión de alarmas",
-                            "type": "textarea",
-                            "assistant_instructions": "Pregunta dónde se reciben las señales de los detectores. '¿Tienen una central de alarmas? ¿La alarma se transmite automáticamente a una empresa de seguridad externa (CRA) o a un puesto de vigilancia interno 24h?'",
-                            "normative_tips": "Normativa: Se exige la transmisión de la alarma. | Mercado Asegurador: Una central de detección que no transmita la alarma a un lugar permanentemente vigilado (24/7) tiene un valor muy limitado. El requisito del mercado es que la alarma se transmita de forma automática a una Central Receptora de Alarmas (CRA) certificada, que garantice el aviso inmediato a los bomberos."
-                        }
-                    ]
+                    "id": "mpci_manuales",
+                    "label": "Medios Manuales (Extintores, BIEs, Hidrantes)",
+                    "type": "textarea",
+                    "assistant_instructions": "Detallar tipo, cantidad y si cubren toda la planta. Hidrantes: ¿Públicos o privados?",
+                    "normative_tips": "Asegurador: BIEs de 45mm son preferibles en industria. Hidrantes perimetrales propios son vitales si la red pública es débil. | Normativa: RIPCI (Reglamento Instalaciones Protección Contra Incendios)."
                 },
                 {
-                    "id": "mpci_medios_manuales_subseccion",
-                    "title": "Medios Manuales de Extinción",
-                    "type": "subsection",
-                    "fields": [
-                        {
-                            "id": "mpci_man_extintores",
-                            "label": "Extintores portátiles",
-                            "type": "textarea",
-                            "assistant_instructions": "Pregunta si la planta está dotada de extintores portátiles, de qué tipo son (polvo ABC, CO2) y si su distribución y señalización son correctas.",
-                            "normative_tips": "Tip RSCIEI: Especifica el número y tipo de extintores según la superficie y la actividad, siendo la eficacia mínima habitual la '21A-113B'."
-                        },
-                        {
-                            "id": "mpci_man_bies",
-                            "label": "Bocas de Incendio Equipadas (BIEs)",
-                            "type": "textarea",
-                            "assistant_instructions": "Pregunta por las mangueras rojas que se ven en las paredes (BIEs). '¿Tienen BIEs? ¿De qué diámetro son (las pequeñas de 25 mm o las más grandes de 45 mm)?'",
-                            "normative_tips": "Normativa: El RSCIEI exige BIEs de 25mm para riesgo Bajo/Medio y de 45mm para riesgo Alto. | Mercado Asegurador: Se consideran un sistema de intervención manual secundario, útil si hay una brigada formada. Los aseguradores confían mucho más en los sistemas automáticos, ya que no dependen de la intervención humana."
-                        },
-                        {
-                            "id": "mpci_man_hidrantes",
-                            "label": "Hidrantes Exteriores",
-                            "type": "textarea",
-                            "assistant_instructions": "Pregunta si existen hidrantes (tomas de agua para bomberos) en el exterior de los edificios y si son propios o de la red pública.",
-                            "normative_tips": "Tip RSCIEI: Para establecimientos de Tipo B o C con superficie mayor a 2.000 m², se exige una red de hidrantes propia que cubra todas las fachadas."
-                        }
-                    ]
+                    "id": "mpci_deteccion",
+                    "label": "Detección y Alarma",
+                    "type": "textarea",
+                    "assistant_instructions": "Tipo detectores (humo, llama, aspiración), áreas cubiertas y si conecta a CRA. Norma diseño.",
+                    "normative_tips": "Asegurador: Detección conectada a CRA o Vigilancia 24h es obligatoria. Sin transmisión, la detección no tiene valor para el seguro fuera de horario laboral. | Normativa: UNE 23007 / NFPA 72."
                 },
                 {
-                    "id": "mpci_medios_automaticos_subseccion",
-                    "title": "Sistemas Automáticos de Extinción",
-                    "type": "subsection",
-                    "fields": [
-                        {
-                            "id": "mpci_auto_rociadores",
-                            "label": "Rociadores Automáticos (Sprinklers)",
-                            "type": "textarea",
-                            "assistant_instructions": "Esta es una pregunta muy importante. Pregunta detalladamente: '¿Disponen de un sistema de rociadores automáticos? ¿Qué zonas protege? ¿Conoce la norma de diseño (NFPA, CEPREVEN, etc.) y el tipo de riesgo para el que está diseñado (Riesgo Ligero, Ordinario, Extra)?'",
-                            "normative_tips": "Normativa: El RSCIEI los hace obligatorios para Riesgo Alto, y para Riesgo Medio a partir de ciertas superficies. | Mercado Asegurador: Es la medida de protección más valorada y efectiva. Un riesgo industrial de cierta entidad sin cobertura total de rociadores automáticos (diseñados e instalados según una norma reconocida como NFPA 13 o EN 12845) será muy difícil de asegurar o lo será con primas muy elevadas. Es el requisito fundamental del mercado asegurador."
-                        },
-                        {
-                            "id": "mpci_auto_otros",
-                            "label": "Otros sistemas automáticos (Gases, espuma, etc.)",
-                            "type": "textarea",
-                            "assistant_instructions": "Pregunta si además de rociadores, tienen otros sistemas automáticos para riesgos especiales, como sistemas de extinción por gas (CO2, Inergen) para salas eléctricas o de servidores, o sistemas de espuma para tanques de inflamables.",
-                            "normative_tips": "Tip NFPA: Existen estándares específicos para cada sistema: NFPA 11 (espuma), NFPA 12 (CO2), NFPA 2001 (agentes limpios), que definen los criterios de diseño para proteger riesgos concretos."
-                        }
-                    ]
+                    "id": "mpci_automaticos",
+                    "label": "Sistemas Automáticos (Rociadores/Gas)",
+                    "type": "textarea",
+                    "assistant_instructions": "Tipo (Rociadores, Gas, Espuma), áreas protegidas, norma de diseño (NFPA, UNE, FM).",
+                    "normative_tips": "Asegurador: Los rociadores (Sprinklers) son la única protección que garantiza tarifas bajas y gran capacidad de aseguramiento. Deben cubrir el 100% de las zonas. | Normativa: NFPA 13 / UNE-EN 12845."
                 },
                 {
-                    "id": "mpci_abastecimiento_agua_subseccion",
-                    "title": "Sistema de Abastecimiento de Agua (PCI)",
-                    "type": "subsection",
-                    "fields": [
-                        {
-                            "id": "mpci_agua_fuente_reserva",
-                            "label": "Fuente de agua y reserva",
-                            "type": "textarea",
-                            "assistant_instructions": "Pregunta por el suministro de agua para los sistemas de incendio. '¿De dónde cogen el agua (red pública, depósito propio, pozo)? ¿Tienen un depósito de reserva de agua exclusivo para incendios? Si es así, ¿qué capacidad (m³) tiene?'",
-                            "normative_tips": "Normativa: El RSCIEI exige una autonomía de agua específica según el sistema y el riesgo (ej. 60-90 min). | Mercado Asegurador: Se exige un abastecimiento de agua que sea 'adecuado, fiable y exclusivo' para el servicio contra incendios. Esto implica un depósito con capacidad suficiente para la demanda más desfavorable (ej. rociadores + hidrantes) y, preferiblemente, una fuente de llenado doble o alternativa."
-                        },
-                        {
-                            "id": "mpci_agua_bombeo",
-                            "label": "Equipo de bombeo",
-                            "type": "textarea",
-                            "assistant_instructions": "Pide una descripción del grupo de bombeo. '¿Cuántas bombas tienen (principal, reserva, jockey)? ¿Son eléctricas o diésel? ¿Conoce su caudal y presión? ¿Con qué frecuencia las prueban?'",
-                            "normative_tips": "Normativa: El RSCIEI y NFPA 20 definen las características del grupo de bombeo. | Mercado Asegurador: El requisito estándar es tener redundancia de energía. La configuración más aceptada es una bomba principal eléctrica y una bomba de reserva idéntica accionada por un motor diésel. Esto garantiza el suministro de agua incluso durante un corte eléctrico. Las pruebas semanales de arranque de las bombas son obligatorias (según NFPA 25)."
-                        }
-                    ]
+                    "id": "mpci_agua",
+                    "label": "Abastecimiento de Agua (Depósito y Bombas)",
+                    "type": "textarea",
+                    "assistant_instructions": "Capacidad depósito, fuente alimentación, nº y tipo de bombas (Eléctrica+Diesel), red en anillo.",
+                    "normative_tips": "Asegurador: Se exige redundancia (bomba Eléctrica + Diesel) y reserva de agua exclusiva y suficiente (ej. 90-120 min) para el sistema más desfavorable. | Normativa: UNE 23500 / NFPA 20 / NFPA 22."
                 },
                 {
-                    "id": "mpci_mantenimiento_general",
-                    "label": "Mantenimiento de los Sistemas PCI",
-                     "type": "textarea",
-                     "assistant_instructions": "Como cierre de la sección, pregunta: '¿Tienen un contrato de mantenimiento con una empresa autorizada para todos estos sistemas contra incendios que hemos comentado?'",
-                     "normative_tips": "Tip RSCIEI: El RIPCI obliga a realizar mantenimientos trimestrales y anuales a todos los sistemas de PCI por parte de empresas mantenedoras habilitadas para garantizar su operatividad."
+                    "id": "mpci_mantenimiento_contrato",
+                    "label": "Mantenimiento PCI",
+                    "type": "textarea",
+                    "assistant_instructions": "Contrato con empresa mantenedora autorizada. Frecuencia.",
+                    "normative_tips": "Asegurador: Requiere evidencias de mantenimiento trimestral/semestral según RIPCI y pruebas semanales de bombas según NFPA 25. | Normativa: RIPCI / NFPA 25."
                 }
             ]
         },
         {
-            "id": "mantenimiento",
-            "title": "MANTENIMIENTO",
+            "id": "mantenimiento_industrial",
+            "title": "MANTENIMIENTO INDUSTRIAL",
             "fields": [
                 {
-                    "id": "mnt_gestion_programas",
-                    "label": "Gestión y Programas de Mantenimiento",
+                    "id": "mnt_tipo_gestion",
+                    "label": "Gestión y Personal",
                     "type": "textarea",
-                    "assistant_instructions": "Pregunta sobre la planificación del mantenimiento. '¿Siguen un programa de mantenimiento preventivo para las máquinas e instalaciones críticas? ¿Utilizan algún programa informático de gestión de mantenimiento (GMAO)?'",
-                    "normative_tips": "Tip: Un buen mantenimiento no solo previene averías, sino también incendios. Un programa de mantenimiento preventivo es esencial para equipos eléctricos, térmicos y mecánicos."
+                    "assistant_instructions": "Propio vs Externo. Uso de software GMAO.",
+                    "normative_tips": "Asegurador: El uso de GMAO garantiza trazabilidad. Un mantenimiento pobre es precursor directo de incendios y averías."
                 },
                 {
-                    "id": "mnt_pci",
-                    "label": "Mantenimiento de los Sistemas de Protección Contra Incendios",
+                    "id": "mnt_preventivo_predictivo",
+                    "label": "Tipos de Mantenimiento",
                     "type": "textarea",
-                    "assistant_instructions": "Pregunta específicamente por el mantenimiento de los sistemas de seguridad. '¿Tienen un contrato de mantenimiento con una empresa autorizada para todos sus sistemas contra incendios (extintores, detectores, BIEs, rociadores)?'",
-                    "normative_tips": "Normativa: El RIPCI obliga a realizar mantenimientos por empresas habilitadas. | Mercado Asegurador: Es un requisito indispensable. Los aseguradores exigen un contrato de mantenimiento según NFPA 25 (o equivalente) con una empresa cualificada. No basta con tener el contrato; se exige evidencia de que las inspecciones, pruebas y mantenimientos se realizan en tiempo y forma, y que las deficiencias detectadas se corrigen con agilidad. Suelen solicitar los informes de los últimos 2 años."
+                    "assistant_instructions": "¿Realizan preventivo? ¿Predictivo (vibraciones, termografías)? Paradas anuales.",
+                    "normative_tips": "Asegurador: El predictivo (análisis de aceites, vibraciones, termografía) es clave para asegurar la cobertura de Avería de Maquinaria."
                 }
             ]
         },
         {
             "id": "perdida_beneficio",
-            "title": "PÉRDIDA DE BENEFICIO",
+            "title": "PÉRDIDA DE BENEFICIO (ALCANCE DETALLADO)",
             "fields": [
                 {
-                    "id": "pb_equipos_cuellos_botella_array",
-                    "label": "Equipos e Instalaciones Críticas (Cuellos de Botella)",
+                    "id": "pb_dependencia_proveedores",
+                    "label": "Dependencia de Proveedores (MP)",
+                    "type": "textarea",
+                    "assistant_instructions": "Stock de seguridad, nº proveedores, origen, dificultad de reemplazo.",
+                    "normative_tips": "Asegurador: Proveedor único (Single Sourcing) sin alternativa validada es un agravante mayor de riesgo de contingencia."
+                },
+                {
+                    "id": "pb_dependencia_clientes",
+                    "label": "Dependencia de Clientes (PT)",
+                    "type": "textarea",
+                    "assistant_instructions": "Principales clientes, % ventas al mayor cliente, sectores.",
+                    "normative_tips": "Asegurador: Alta concentración en un cliente (>30-40%) implica riesgo financiero si ese cliente falla o cancela contratos tras un siniestro."
+                },
+                {
+                    "id": "pb_cuellos_botella_tiempos",
+                    "label": "Cuellos de Botella y Tiempos de Reposición",
                     "type": "array_of_objects",
-                    "assistant_instructions": "Informa al usuario de que vais a reconfirmar los 'cuellos de botella' desde el punto de vista de la continuidad del negocio. Pide que piense en la máquina o instalación cuyo fallo causaría la mayor pérdida económica.",
-                    "normative_tips": "Este análisis es la base de un BIA (Business Impact Analysis), un componente esencial de la gestión de la continuidad del negocio.",
-                    "allow_add_remove_rows": true,
-                    "item_label_template": "Cuello de Botella {{index + 1}}",
+                    "assistant_instructions": "Maquinaria clave: tiempo de reposición (meses) y coste extra.",
+                    "normative_tips": "Asegurador: Tiempos de reposición >12 meses requieren periodos de indemnización ampliados y encarecen la póliza.",
+                    "item_label_template": "Cuello Botella {{index + 1}}",
                     "item_schema": {
-                        "id": "pb_cuello_botella_item",
+                        "id": "cb_item",
                         "fields": [
-                            {"id": "item_nombre_equipo", "label": "Equipo/Instalación Crítica", "type": "text", "assistant_instructions": "Para cada cuello de botella, pregunta de qué equipo o instalación se trata."},
-                            {"id": "item_impacto_produccion", "label": "% Producción Afectada", "type": "number", "assistant_instructions": "Pregunta qué porcentaje de la producción total de la planta se vería afectado si ese equipo fallara."},
-                            {"id": "item_tiempo_recuperacion", "label": "Tiempo Estimado de Recuperación (Meses)", "type": "text", "assistant_instructions": "Pregunta por una estimación realista de cuántos meses tardarían en reparar o reemplazar el equipo y volver a la producción normal."},
-                            {"id": "item_alternativas", "label": "Alternativas (Otras líneas, plantas, etc.)", "type": "text", "assistant_instructions": "Pregunta si, en caso de fallo, podrían derivar la producción a otras líneas, a otra planta del grupo o subcontratar a un tercero."}
+                            {"id": "cb_equipo", "label": "Equipo/Línea", "type": "text"},
+                            {"id": "cb_tiempo", "label": "Tiempo Reposición (Meses)", "type": "number", "normative_tips": "Dato crítico para calcular el MPL (Pérdida Máxima Posible) en Beneficios."},
+                            {"id": "cb_impacto", "label": "% Impacto en Producción/Facturación", "type": "number", "assistant_instructions": "", "normative_tips": "¿Existe redundancia o la planta para al 100%?"}
                         ]
                     }
                 },
                 {
-                    "id": "pb_plan_continuidad_negocio",
+                    "id": "pb_interdependencia_grupo",
+                    "label": "Interdependencia de Grupo",
+                    "type": "textarea",
+                    "assistant_instructions": "¿Pertenecen a un grupo? ¿Si esta planta para, afecta a otras? Posibilidad de desviar producción.",
+                    "normative_tips": "Asegurador: La interdependencia propaga el siniestro a otras plantas (Efecto Dominó financiero); la capacidad de desvío lo mitiga."
+                },
+                {
+                    "id": "pb_estacionalidad",
+                    "label": "Estacionalidad y Producción bajo Pedido",
+                    "type": "textarea",
+                    "assistant_instructions": "¿Ventas estables o picos estacionales? % Producción bajo pedido.",
+                    "normative_tips": "Asegurador: Un siniestro justo antes del 'pico de campaña' maximiza la pérdida."
+                },
+                {
+                    "id": "pb_bcp",
                     "label": "Plan de Continuidad de Negocio (BCP)",
                     "type": "textarea",
-                    "assistant_instructions": "Pregunta sobre la planificación formal de la continuidad. '¿Disponen de un Plan de Continuidad de Negocio (BCP) documentado? ¿Han analizado el impacto financiero que tendría un siniestro grave y han definido estrategias para recuperarse?'",
-                    "normative_tips": "Normativa: Estándares como NFPA 1600 o ISO 22301 guían el desarrollo de un BCP. | Mercado Asegurador: Disponer de un BCP robusto y probado demuestra una gestión proactiva del riesgo, lo cual es muy valorado para la cobertura de Pérdida de Beneficios. El asegurador evaluará si el plan identifica de forma realista los plazos de recuperación, las alternativas de producción, la gestión de proveedores críticos y los planes de comunicación para minimizar el impacto financiero de un siniestro."
+                    "assistant_instructions": "Existencia de BCP, análisis de impacto (BIA), estrategias de recuperación.",
+                    "normative_tips": "Asegurador: Disponer de un BCP (ISO 22301) probado demuestra resiliencia y justifica mejores condiciones de aseguramiento."
+                }
+            ]
+        },
+        {
+            "id": "sostenibilidad_esg",
+            "title": "SOSTENIBILIDAD / ESG",
+            "fields": [
+                {
+                    "id": "esg_general",
+                    "label": "Políticas ESG",
+                    "type": "textarea",
+                    "assistant_instructions": "Aspectos ambientales, sociales y de gobernanza relevantes para el riesgo.",
+                    "normative_tips": "Asegurador: Factores ESG influyen en la reputación y riesgos legales; mala gestión ambiental puede excluir coberturas de RC Contaminación."
                 }
             ]
         }
