@@ -23,7 +23,7 @@ class AssistantRunner
     }
   }.freeze
 
-  attr_reader :risk_assistant, :thread_id, :last_field_id
+  attr_reader :risk_assistant, :thread_id, :last_field_id, :last_run_status, :last_run_error
   def initialize(risk_assistant)
     @risk_assistant = risk_assistant
     @thread_id      = risk_assistant.thread_id.presence || create_thread
@@ -177,19 +177,39 @@ class AssistantRunner
 
   # Inicia la run y devuelve el TEXTO del último mensaje
   def run_and_wait(timeout: 40)
+    @last_run_status = nil
+    @last_run_error  = nil
+
     run_id = start_run_with_instructions
+
+    unless run_id
+      @last_run_status ||= "not_started"
+      return ""
+    end
 
     status = nil
     timeout.times do
       sleep 1
-      status = run_status(run_id)
+      run_info       = run_details(run_id)
+      status         = run_info["status"]
+      @last_run_status = status
+      @last_run_error  = run_info["last_error"]
       break if %w[completed failed expired].include?(status)
     end
 
-    return "" unless %w[completed failed expired].include?(status)
+    if status == "completed"
+      text = extract_text(last_message(run_id: run_id))
+      return text if text.present?
+    end
 
-    extract_text(last_message(run_id: run_id))
+    # Si el status no fue el esperado o el mensaje vino vacío, intentamos recuperar
+    # el último mensaje del hilo como salvavidas.
+    fallback = extract_text(last_assistant_message)
+    return fallback if fallback.present?
+
+    ""
   end
+
 
   private
 
@@ -232,7 +252,11 @@ class AssistantRunner
   def start_run_with_instructions
     
     field    = next_pending_field
-    return unless field
+    field    = next_pending_field
+    unless field
+      @last_run_status ||= "no_pending_field"
+      return
+    end
     question = RiskFieldSet.question_for(field, include_tips: true)   # ← YA incluye opciones
     @last_field_id = field  
     # ↓ Recupera las instrucciones privadas que el JSON trae para ese campo
@@ -318,14 +342,19 @@ class AssistantRunner
       temperature: 0,
       response_format: { type: "json_object" }
     )
+    @last_run_status = resp["status"] if resp["status"].present?
+    @last_run_error  = resp["error"] || resp["last_error"] if resp.is_a?(Hash)
     Rails.logger.debug "↳ Instrucciones de campo: #{instr.truncate(120)}" if instr.present?
+    unless resp["id"].present?
+      Rails.logger.warn "AssistantRunner#start_run_with_instructions: run sin id devuelto (status=#{resp['status'] || 'unknown'})"
+    end
     resp["id"]
   end
 
  
 
-  def run_status(run_id)
-    get("#{BASE_URL}/threads/#{thread_id}/runs/#{run_id}")["status"]
+  def run_details(run_id)
+    get("#{BASE_URL}/threads/#{thread_id}/runs/#{run_id}")
   end
 
   def last_message(run_id: nil)
@@ -336,6 +365,11 @@ class AssistantRunner
       url += "?order=desc"
     end
     get(url)["data"].first
+  end
+
+  def last_assistant_message
+    get("#{BASE_URL}/threads/#{thread_id}/messages?order=desc")["data"]
+      .find { |msg| msg["role"] == "assistant" }
   end
 
   def extract_text(msg)
@@ -361,10 +395,13 @@ class AssistantRunner
     Rails.logger.debug "→ HTTP GET to #{url}"
     resp = HTTP.headers(HEADERS).get(url).body.to_s
     Rails.logger.debug "← Response: #{resp.truncate(200).gsub("\n", " ")}"
+
+    return {} if resp.blank?
+
     JSON.parse(resp)
-  rescue StandardError => e
+  rescue JSON::ParserError => e
     Rails.logger.debug "← Error fetching #{url}: #{e.class}: #{e.message}"
-    raise
+    {}
   end
 
 

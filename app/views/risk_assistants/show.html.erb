@@ -2,53 +2,47 @@
 <%# Chat Page – Bootstrap 5 Responsive con Sidebar intacto         %>
 <%# -------------------------------------------------------------- %>
 <div class="chat-container container-fluid py-3">
-  <!-- CABECERA + Botón hamburguesa -->
-  <div class="d-flex justify-content-between align-items-center mb-0">
-    <button class="btn btn-outline-secondary d-md-none"
+  <div class="d-flex justify-content-between align-items-center gap-2 mb-3">
+    <div>
+      <p class="text-muted mb-1 small">Asistente de riesgo</p>
+      <h1 class="h4 mb-0"><%= @risk_assistant.name %></h1>
+    </div>
+    <button class="btn btn-outline-primary d-lg-none"
             data-bs-toggle="offcanvas"
             data-bs-target="#sidebarCanvas">
-      <i class="bi bi-list"></i>
-      <h1 class="h4 mb-0"><%= @risk_assistant.name %></h1>
+      <i class="bi bi-layout-sidebar-inset"></i>
+      <span class="ms-1">Panel</span>
     </button>
   </div>
 
-  <!-- SIDEBAR -->
-  <aside class="fixed-sidebar">
-      <!-- Desktop -->
-      <div class="d-none d-md-block">
-        <div class="sidebar-box">
-          <%#── Sección de “Archivos subidos” ──────────────────────────────────── %>          
-          <%= render partial: "sidebar_nav",                     
-                    locals: {
-                       risk_assistant: @risk_assistant,
-                       sections: @sections,
-                       progress_by_section: @progress_by_section,
-                       overall_pct: @overall_pct
-                     } %>
-        </div>
-      </div>
-      <!-- Offcanvas móvil -->
-      <div class="offcanvas offcanvas-start d-md-none" id="sidebarCanvas">
-        <div class="offcanvas-header border-bottom">
-          <h5 class="offcanvas-title">Panel</h5>
-          <button class="btn-close" data-bs-dismiss="offcanvas"></button>
-        </div>
-        <div class="offcanvas-body p-0">
-          <div class="sidebar-box border-0 rounded-0">
-            <%= render partial: "sidebar_nav",
-                       locals: {
-                         risk_assistant: @risk_assistant,
-                         sections: @sections,
-                         progress_by_section: @progress_by_section,
-                         overall_pct: @overall_pct
-                       } %>
-          </div>
-        </div>
-      </div>
+  <div class="chat-layout">
+    <aside class="assistant-sidebar d-none d-lg-flex">
+      <%= render partial: "sidebar_nav",
+                 locals: {
+                   risk_assistant: @risk_assistant,
+                   sections: @sections,
+                   progress_by_section: @progress_by_section,
+                   overall_pct: @overall_pct
+                 } %>
     </aside>
 
-    <!-- MAIN / CHAT -->
-    <main class="chat-page chat-main">
+    <div class="offcanvas offcanvas-start d-lg-none" id="sidebarCanvas">
+      <div class="offcanvas-header border-bottom">
+        <h5 class="offcanvas-title">Panel del asistente</h5>
+        <button class="btn-close" data-bs-dismiss="offcanvas"></button>
+      </div>
+      <div class="offcanvas-body p-0">
+        <%= render partial: "sidebar_nav",
+                   locals: {
+                     risk_assistant: @risk_assistant,
+                     sections: @sections,
+                     progress_by_section: @progress_by_section,
+                     overall_pct: @overall_pct
+                   } %>
+      </div>
+    </div>
+
+    <main class="chat-page chat-main flex-grow-1">
       <h1 class="h1 mb-0"><%= @risk_assistant.name %></h1>
         <% display_msgs = @risk_assistant.messages.visible_to_user %>
 
@@ -103,6 +97,7 @@
         <% end %>
 
     </main>
+  </div>
 </div>
 
 <script>

@@ -276,16 +276,24 @@ class MessagesController < ApplicationController
     if assistant_text.blank?
       Rails.logger.warn("MessagesController#assistant_interaction: respuesta vacía del asistente")
 
+      details = []
+      details << "estado: #{runner.last_run_status}" if runner.last_run_status.present?
+      if runner.last_run_error&.dig("message").present?
+        details << "error: #{runner.last_run_error['message']}"
+      end
+
+      extra_info = details.any? ? " (#{details.join(' | ')})" : ""
+
       @risk_assistant.messages.create!(
         sender:      "assistant",
         role:        "assistant",
-        content:     "No he recibido respuesta del asistente. Por favor, inténtalo de nuevo.",
+        content:     "No he recibido respuesta del asistente#{extra_info}. Por favor, inténtalo de nuevo.",
         field_asked: @message.field_asked,
         thread_id:   runner.thread_id
       )
 
       return
-    end 
+    end
 
     parsed = AssistantResponseParser.call(assistant_text)
 

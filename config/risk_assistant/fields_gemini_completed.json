@@ -1,0 +1,2208 @@
+{
+  "form_title": "INFORME DE INSPECCIÓN DE RIESGOS (BORRADOR - COMPLETO)",
+  "version": "3.0.0",
+  "sections": [
+    {
+      "id": "informe_metadata",
+      "title": "INFORMACIÓN DEL INFORME",
+      "fields": [
+        {
+          "id": "metadata_revisores_aseguradoras",
+          "label": "Revisores por aseguradora (si aplica)",
+          "type": "array_of_objects",
+          "assistant_instructions": "Incluye, si aplica, revisores internos/aseguradora (p. ej. Allianz/Zurich) y qué apartados revisaron.",
+          "normative_tips": "Asegurador: La supervisión por ingeniería de riesgos reduce incertidumbre y puede mejorar condiciones. | Normativa (habitual): ISO 19011 como marco de auditoría.",
+          "allow_add_remove_rows": true,
+          "item_label_template": "Revisor {{index + 1}}",
+          "item_schema": {
+            "id": "metadata_revisores_aseguradoras_item",
+            "fields": [
+              {
+                "id": "aseguradora",
+                "label": "Aseguradora",
+                "type": "text",
+                "normative_tips": "Asegurador: Identifica criterios de suscripción y requerimientos técnicos específicos. | Normativa (habitual): Condiciones y guías internas de ingeniería de riesgos de la aseguradora."
+              },
+              {
+                "id": "revisor",
+                "label": "Nombre del revisor",
+                "type": "text",
+                "normative_tips": "Asegurador: Aporta trazabilidad y validación técnica del contenido. | Normativa (habitual): ISO 19011 (directrices de auditoría) como buena práctica."
+              },
+              {
+                "id": "alcance_revision",
+                "label": "Alcance/Secciones revisadas",
+                "type": "textarea",
+                "normative_tips": "Asegurador: Delimita el grado de confianza del informe y el peso suscriptor por secciones. | Normativa (habitual): Buenas prácticas de control documental."
+              }
+            ]
+          }
+        },
+        {
+          "id": "metadata_redactores_informe",
+          "label": "Nombre y cargo de las personas que redactan el informe",
+          "type": "array_of_objects",
+          "assistant_instructions": "Registra todas las personas que aportan información técnica y su rol.",
+          "normative_tips": "Asegurador: Fuente primaria competente reduce riesgo de omisiones y mejora la calidad del análisis. | Normativa (habitual): ISO 19011; ISO 9001 (control de información documentada).",
+          "allow_add_remove_rows": true,
+          "item_label_template": "Redactor {{index + 1}}",
+          "item_schema": {
+            "id": "metadata_redactores_informe_item",
+            "fields": [
+              {
+                "id": "nombre",
+                "label": "Nombre completo",
+                "type": "text",
+                "normative_tips": "Asegurador: La cualificación del informante afecta la credibilidad y la incertidumbre del riesgo. | Normativa (habitual): ISO 19011 (competencia del auditor/equipo)."
+              },
+              {
+                "id": "cargo",
+                "label": "Cargo",
+                "type": "text",
+                "normative_tips": "Asegurador: Un cargo técnico (mantenimiento/seguridad/planta) suele mejorar la calidad del dato. | Normativa (habitual): Buenas prácticas de gobernanza de seguridad (p.ej. ISO 45001)."
+              },
+              {
+                "id": "email",
+                "label": "Email (opcional)",
+                "type": "text",
+                "normative_tips": "Asegurador: Facilita trazabilidad y aclaraciones técnicas en suscripción. | Normativa (habitual): RGPD (minimización y finalidad)."
+              },
+              {
+                "id": "telefono",
+                "label": "Teléfono (opcional)",
+                "type": "text",
+                "normative_tips": "Asegurador: Acelera resolución de dudas críticas que afectan aceptabilidad. | Normativa (habitual): RGPD (minimización y finalidad)."
+              }
+            ]
+          }
+        },
+        {
+          "id": "metadata_fecha_visita",
+          "label": "Fecha de visita/inspección (AAAA-MM-DD)",
+          "type": "text",
+          "assistant_instructions": "Indica la fecha real de la visita a planta o del levantamiento.",
+          "normative_tips": "Asegurador: La vigencia del dato condiciona su fiabilidad (cambios recientes pueden alterar el riesgo). | Normativa (habitual): ISO 9001 (control documental)."
+        },
+        {
+          "id": "metadata_version_documento",
+          "label": "Versión / control de cambios",
+          "type": "text",
+          "assistant_instructions": "Número de versión del informe o de revisión.",
+          "normative_tips": "Asegurador: Control de versiones evita decisiones con información obsoleta. | Normativa (habitual): ISO 9001 (control de cambios)."
+        },
+        {
+          "id": "metadata_cliente",
+          "label": "Empresa / Razón social inspeccionada",
+          "type": "text",
+          "assistant_instructions": "Nombre legal de la empresa o centro inspeccionado.",
+          "normative_tips": "Asegurador: Identifica al riesgo y facilita verificación histórica (siniestralidad, actividad). | Normativa (habitual): RGPD/LOPDGDD (tratamiento de datos), y prácticas KYC internas."
+        },
+        {
+          "id": "metadata_centro",
+          "label": "Centro / Planta / Dirección corta (opcional)",
+          "type": "text",
+          "assistant_instructions": "Nombre del centro, si hay varias plantas del grupo.",
+          "normative_tips": "Asegurador: Permite segmentar exposición por emplazamiento y evitar confusiones de sumas aseguradas. | Normativa (habitual): Buenas prácticas de gestión de riesgos."
+        }
+      ]
+    },
+    {
+      "id": "descripcion_general_instalacion",
+      "title": "DESCRIPCIÓN GENERAL DE LA INSTALACIÓN",
+      "fields": [
+        {
+          "id": "dgi_actividad_tipos_productos",
+          "label": "Actividad / Tipos de productos",
+          "type": "textarea",
+          "assistant_instructions": "Describe actividad, productos, materias y servicios.",
+          "normative_tips": "Asegurador: Este dato influye en la probabilidad/severidad del siniestro y en el PML/EML y la continuidad (PB). | Normativa (habitual): Buenas prácticas de ingeniería de riesgos y normativa aplicable según sector."
+        },
+        {
+          "id": "dgi_tamano_empresa_trabajadores",
+          "label": "Tamaño de la empresa / Nº trabajadores",
+          "type": "text",
+          "assistant_instructions": "Número de trabajadores y contratas/ETT si aplica.",
+          "normative_tips": "Asegurador: Este dato influye en la probabilidad/severidad del siniestro y en el PML/EML y la continuidad (PB). | Normativa (habitual): Buenas prácticas de ingeniería de riesgos y normativa aplicable según sector."
+        },
+        {
+          "id": "dgi_situacion_riesgo",
+          "label": "Situación de riesgo (resumen)",
+          "type": "textarea",
+          "assistant_instructions": "Resumen ejecutivo de principales riesgos (incendio, explosión, eléctricos, PB, NatCat).",
+          "normative_tips": "Asegurador: Sintetiza drivers de prima/condiciones y orienta el foco del análisis (PML/EML/PB). | Normativa (habitual): Ingeniería de riesgos (FM/NFPA/RSCIEI según tema)."
+        },
+        {
+          "id": "dgi_capacidad_produccion_total",
+          "label": "Capacidad total de producción",
+          "type": "text",
+          "assistant_instructions": "Indica capacidad y unidades (t/año, u/h, etc.).",
+          "normative_tips": "Asegurador: Capacidad y utilización correlacionan con congestión de proceso y severidad de PB. | Normativa (habitual): Buenas prácticas de continuidad (ISO 22301)."
+        },
+        {
+          "id": "dgi_tipo_mercado",
+          "label": "Tipo de mercado",
+          "type": "text",
+          "assistant_instructions": "Sector cliente y mercados servidos.",
+          "normative_tips": "Asegurador: Determina criticidad de entregas y exposición contractual (PB/RC). | Normativa (habitual): Buenas prácticas de gestión contractual/continuidad."
+        },
+        {
+          "id": "dgi_venta_nacional_internacional",
+          "label": "Venta/Negocio nacional o internacional",
+          "type": "select",
+          "options": [
+            "Nacional",
+            "Internacional",
+            "Mixto"
+          ],
+          "assistant_instructions": "Selecciona alcance del negocio.",
+          "normative_tips": "Asegurador: Exportación suele aumentar dependencia logística y tiempos de recuperación tras siniestro. | Normativa (habitual): ISO 22301 (continuidad) y requisitos aduaneros/logísticos."
+        },
+        {
+          "id": "dgi_localizacion_exposicion_group",
+          "label": "Localización / Exposición. Riesgos colindantes / Lay out",
+          "type": "group",
+          "fields": [
+            {
+              "id": "dgi_senas_coordenadas",
+              "label": "Situación (señas y coordenadas)",
+              "type": "text",
+              "assistant_instructions": "Dirección completa y coordenadas GPS si se conocen.",
+              "normative_tips": "Asegurador: Este dato influye en la probabilidad/severidad del siniestro y en el PML/EML y la continuidad (PB). | Normativa (habitual): Buenas prácticas de ingeniería de riesgos y normativa aplicable según sector."
+            },
+            {
+              "id": "dgi_ubicacion_tipologia",
+              "label": "Ubicación (zona industrial, aislada, urbana, etc.)",
+              "type": "select",
+              "options": [
+                "Zona industrial",
+                "Aislada",
+                "Urbana",
+                "Mixta",
+                "Otra"
+              ],
+              "assistant_instructions": "Clasifica el entorno del emplazamiento.",
+              "normative_tips": "Asegurador: Entornos densos o urbanos incrementan exposición y complejidad de intervención; entornos aislados elevan tiempos de respuesta. | Normativa (habitual): RSCIEI/CTE (accesibilidad), y mapas de riesgos naturales."
+            },
+            {
+              "id": "dgi_fotografias_aereas",
+              "label": "Fotografías aéreas (adjuntar)",
+              "type": "file_multiple",
+              "assistant_instructions": "Adjunta ortofoto/drone/imagen satélite si disponible.",
+              "normative_tips": "Asegurador: Facilita evaluar exposición externa, accesos y distancias de seguridad, reduciendo incertidumbre del PML. | Normativa (habitual): RD 393/2007 (autoprotección: planos)."
+            },
+            {
+              "id": "dgi_planos_group",
+              "label": "Planos (layouts)",
+              "type": "group",
+              "fields": [
+                {
+                  "id": "dgi_layout_exterior",
+                  "label": "Lay out exterior (edificaciones e instalaciones exteriores)",
+                  "type": "file_multiple",
+                  "normative_tips": "Asegurador: Permite analizar exposición entre edificios, almacenamiento exterior y rutas de bomberos. | Normativa (habitual): RSCIEI (configuración y distancias); RD 393/2007."
+                },
+                {
+                  "id": "dgi_layout_interior",
+                  "label": "Lay out interior (equipos y líneas de producción / salas interiores)",
+                  "type": "file_multiple",
+                  "normative_tips": "Asegurador: La distribución interior determina congestión y propagación, así como diseño PCI. | Normativa (habitual): RSCIEI; RIPCI (adecuación de protección)."
+                },
+                {
+                  "id": "dgi_plano_colindantes",
+                  "label": "Colindantes (terceros, ríos, mares, etc.)",
+                  "type": "file_multiple",
+                  "normative_tips": "Asegurador: Identifica exposición externa (propagación, NatCat) para ajustar franquicias/condiciones. | Normativa (habitual): Mapas oficiales de peligrosidad (inundación) y RSCIEI (exposición)."
+                }
+              ],
+              "normative_tips": "Asegurador: Este dato influye en la probabilidad/severidad del siniestro y en el PML/EML y la continuidad (PB). | Normativa (habitual): Buenas prácticas de ingeniería de riesgos y normativa aplicable según sector."
+            },
+            {
+              "id": "dgi_colindantes_tabla",
+              "label": "Actividad y riesgos de los colindantes / Distancia a colindantes (m)",
+              "type": "array_of_objects",
+              "assistant_instructions": "Registra vecinos industriales, viviendas, vegetación, infraestructuras, ríos/mares, etc.",
+              "normative_tips": "Asegurador: La exposición externa suele dominar el PML en ambientes industriales densos. | Normativa (habitual): RSCIEI; cartografía oficial de riesgos naturales.",
+              "allow_add_remove_rows": true,
+              "item_label_template": "Colindante {{index + 1}}",
+              "item_schema": {
+                "id": "dgi_colindantes_tabla_item",
+                "fields": [
+                  {
+                    "id": "colindante",
+                    "label": "Colindante (identificación)",
+                    "type": "text",
+                    "normative_tips": "Asegurador: Identifica fuentes externas de incendio/explosión que elevan PML. | Normativa (habitual): RSCIEI (configuración/exposición)."
+                  },
+                  {
+                    "id": "actividad_riesgo",
+                    "label": "Actividad y riesgos del colindante",
+                    "type": "textarea",
+                    "normative_tips": "Asegurador: Riesgos como químicos, almacenamiento y talleres elevan probabilidad de propagación externa. | Normativa (habitual): RSCIEI/CTE según entorno."
+                  },
+                  {
+                    "id": "distancia_m",
+                    "label": "Distancia (m)",
+                    "type": "number",
+                    "normative_tips": "Asegurador: Distancias menores reducen la eficacia de cortafuegos naturales y penalizan condiciones. | Normativa (habitual): RSCIEI (distancias y configuración)."
+                  }
+                ]
+              }
+            },
+            {
+              "id": "dgi_aeropuertos_proximos",
+              "label": "Aeropuertos próximos",
+              "type": "textarea",
+              "assistant_instructions": "Indica aeropuerto(s) y distancia/tiempo aprox.",
+              "normative_tips": "Asegurador: Puede influir en exposición accidental y servidumbres, y en planes de emergencia. | Normativa (habitual): Requisitos locales/planes de emergencia; RD 393/2007."
+            }
+          ],
+          "assistant_instructions": "Completa datos de emplazamiento y adjunta planos/fotos.",
+          "normative_tips": "Asegurador: Localización y exposición externa condicionan NatCat, propagación y accesibilidad, afectando primas y aceptabilidad. | Normativa (habitual): RSCIEI; RD 393/2007; cartografía oficial (inundación/sismo)."
+        },
+        {
+          "id": "dgi_descripcion_edificaciones_actividades_por_zona",
+          "label": "Descripción general de edificaciones/instalaciones y actividades por edificio/zona",
+          "type": "textarea",
+          "normative_tips": "Asegurador: Permite entender compartimentación funcional y dónde se concentran peligros (proceso/almacenes/servicios). | Normativa (habitual): RSCIEI (sectorización y configuración)."
+        },
+        {
+          "id": "dgi_congestion_exterior",
+          "label": "Congestión de edificios, instalaciones y almacenamientos por el exterior",
+          "type": "textarea",
+          "normative_tips": "Asegurador: Alta congestión exterior aumenta propagación y dificulta acceso de bomberos, incrementando PML. | Normativa (habitual): RSCIEI (distancias/separación); RD 393/2007."
+        },
+        {
+          "id": "dgi_distancia_entre_edificaciones",
+          "label": "Distancia entre edificaciones",
+          "type": "textarea",
+          "normative_tips": "Asegurador: Distancias insuficientes elevan riesgo de salto de incendio y penalizan condiciones. | Normativa (habitual): RSCIEI (configuración y distancias)."
+        },
+        {
+          "id": "dgi_distancias_separacion_instalaciones_exteriores",
+          "label": "Distancias de separación entre edificaciones e instalaciones exteriores",
+          "type": "textarea",
+          "normative_tips": "Asegurador: Separa fuentes de ignición/combustible (trafo, gas, APQ) y reduce escenarios de pérdida total. | Normativa (habitual): RSCIEI; APQ; REBT/AT."
+        },
+        {
+          "id": "dgi_congestion_interior",
+          "label": "Congestión de instalaciones y almacenamientos en el interior de los edificios",
+          "type": "textarea",
+          "normative_tips": "Asegurador: Congestión interior y carga de fuego condicionan el diseño de rociadores y el PML. | Normativa (habitual): RSCIEI (carga de fuego); NFPA 13/UNE-EN 12845."
+        }
+      ]
+    },
+    {
+      "id": "construccion",
+      "title": "CONSTRUCCIÓN",
+      "fields": [
+        {
+          "id": "constr_tipo_establecimiento_industrial",
+          "label": "Tipo de establecimiento industrial (según configuración y separación)",
+          "type": "textarea",
+          "assistant_instructions": "Indica si ocupa parcialmente edificio con terceros, adosado/<=3m, >3m con franja libre de combustibles, o espacio abierto cubierto/parcialmente cubierto sin cerramientos laterales.",
+          "normative_tips": "Asegurador: Define exposición a propagación externa y el PML; configuraciones adosadas o sin separación penalizan prima. | Normativa (habitual): RSCIEI (configuración de establecimientos industriales)."
+        },
+        {
+          "id": "constr_superficie_total_parcela",
+          "label": "Superficie Total Parcela (m²)",
+          "type": "number",
+          "normative_tips": "Asegurador: La ocupación de parcela influye en distancias de seguridad y acceso de bomberos. | Normativa (habitual): RSCIEI (configuración y separación)."
+        },
+        {
+          "id": "constr_superficie_total_construida",
+          "label": "Superficie Total Construida (m²)",
+          "type": "number",
+          "normative_tips": "Asegurador: Superficie y compartimentación determinan extensión del siniestro y dimensionamiento PCI. | Normativa (habitual): RSCIEI; RIPCI."
+        },
+        {
+          "id": "constr_edificaciones_propiedad_alquiler",
+          "label": "Edificaciones en Propiedad/Alquiladas",
+          "type": "select",
+          "options": [
+            "Propiedad",
+            "Alquiler",
+            "Mixto",
+            "Leasing"
+          ],
+          "normative_tips": "Asegurador: Afecta interés asegurable, responsabilidades y cláusulas de subrogación/renuncia a recurso. | Normativa (habitual): Condiciones de póliza y derecho contractual."
+        },
+        {
+          "id": "constr_ano_construccion",
+          "label": "Año de construcción de edificaciones/instalaciones",
+          "type": "text",
+          "normative_tips": "Asegurador: Edificios antiguos pueden tener menor compartimentación y cumplimiento normativo, elevando probabilidad/severidad. | Normativa (habitual): RSCIEI vigente en el momento y CTE según aplique."
+        },
+        {
+          "id": "constr_sismo_necesidad",
+          "label": "Necesidad de cumplimiento Norma sismo-resistente (Sí/No)",
+          "type": "boolean",
+          "normative_tips": "Asegurador: Afecta la exposición catastrófica y la probabilidad de daños estructurales. | Normativa (habitual): NCSE (norma sismorresistente aplicable en España)."
+        },
+        {
+          "id": "constr_sismo_cumple",
+          "label": "En caso necesario, ¿cumple Norma sismo-resistente? (Sí/No)",
+          "type": "boolean",
+          "normative_tips": "Asegurador: Afecta la exposición catastrófica y la probabilidad de daños estructurales. | Normativa (habitual): NCSE (norma sismorresistente aplicable en España)."
+        },
+        {
+          "id": "constr_num_edificios_plantas_altura",
+          "label": "Nº edificios / Nº de plantas / Altura de los edificios",
+          "type": "textarea",
+          "normative_tips": "Asegurador: Altura y número de plantas afectan evacuación, acceso de bomberos y propagación vertical, impactando PML. | Normativa (habitual): RSCIEI; CTE DB-SI (cuando aplique)."
+        },
+        {
+          "id": "constr_distancias_seguridad_exteriores",
+          "label": "Distancias de seguridad entre edificios y zonas libres de almacenamientos / Sectores exteriores",
+          "type": "textarea",
+          "normative_tips": "Asegurador: Las franjas libres de combustibles reducen salto de llama y pérdida simultánea de varios edificios. | Normativa (habitual): RSCIEI (distancias y configuración)."
+        },
+        {
+          "id": "constr_sectores_incendio_compartimentacion",
+          "label": "Nº sectores de incendio interior / Compartimentación / EI paredes/puertas/huecos / pasos verticales",
+          "type": "textarea",
+          "assistant_instructions": "Incluye resistencia al fuego de paredes, puertas, huecos, sellado de pasos, paredes por encima de cubierta y patinillos/ascensores/montacargas.",
+          "normative_tips": "Asegurador: Un sector mal ejecutado (huecos sin sellar/puertas no EI) puede convertir el siniestro en pérdida total. | Normativa (habitual): RSCIEI; CTE DB-SI; UNE-EN 13501 (clasificación)."
+        },
+        {
+          "id": "constr_tabla_tipo_construccion",
+          "label": "TIPO DE CONSTRUCCIÓN (tabla por sector/edificio)",
+          "type": "array_of_objects",
+          "assistant_instructions": "Rellena por sector de incendio/edificio con materiales y porcentajes o m².",
+          "normative_tips": "Asegurador: Esta tabla es base para estimar combustibilidad del recinto, propagación y estabilidad al fuego, afectando PML y condiciones. | Normativa (habitual): RSCIEI; CTE DB-SI; Euroclases.",
+          "allow_add_remove_rows": true,
+          "item_label_template": "Sector {{index + 1}}",
+          "item_schema": {
+            "id": "constr_tabla_tipo_construccion_item",
+            "fields": [
+              {
+                "id": "sector",
+                "label": "Sector",
+                "type": "text",
+                "normative_tips": "Asegurador: Identifica el perímetro máximo de propagación previsto y el PML por compartimento. | Normativa (habitual): RSCIEI (sector de incendio)."
+              },
+              {
+                "id": "edificios_areas",
+                "label": "Edificios/Áreas",
+                "type": "text",
+                "normative_tips": "Asegurador: Localiza actividades y congestión dentro del sector para ajuste de protección. | Normativa (habitual): RSCIEI."
+              },
+              {
+                "id": "superficie_m2",
+                "label": "Superficie del sector (m²)",
+                "type": "number",
+                "normative_tips": "Asegurador: Sectores mayores incrementan la pérdida potencial y pueden exigir rociadores/medidas adicionales. | Normativa (habitual): RSCIEI; UNE-EN 12845/NFPA 13."
+              },
+              {
+                "id": "cubierta",
+                "label": "Cubierta (material, % o m², certificaciones)",
+                "type": "text",
+                "normative_tips": "Asegurador: Afecta la capacidad de primera intervención y control inicial del conato. | Normativa (habitual): RIPCI (RD 513/2017); UNE pertinentes (BIE/hidrantes)."
+              },
+              {
+                "id": "cerramiento",
+                "label": "Cerramiento/Fachada (material, % o m²)",
+                "type": "text",
+                "normative_tips": "Asegurador: Los materiales y la estabilidad al fuego condicionan velocidad de propagación y colapso estructural. | Normativa (habitual): RSCIEI (RD 2267/2004); Clasificación Euroclases (UNE-EN 13501); CTE DB-SI."
+              },
+              {
+                "id": "particiones_interiores",
+                "label": "Particiones interiores (material, % o m²)",
+                "type": "text",
+                "normative_tips": "Asegurador: Particiones combustibles facilitan propagación interior y penalizan riesgo. | Normativa (habitual): Euroclases UNE-EN 13501; RSCIEI."
+              },
+              {
+                "id": "estructura",
+                "label": "Estructura (material y protección)",
+                "type": "text",
+                "normative_tips": "Asegurador: Los materiales y la estabilidad al fuego condicionan velocidad de propagación y colapso estructural. | Normativa (habitual): RSCIEI (RD 2267/2004); Clasificación Euroclases (UNE-EN 13501); CTE DB-SI."
+              },
+              {
+                "id": "clasif_allianz",
+                "label": "Clasificación (No/Ligeramente/Combustible) (opcional)",
+                "type": "select",
+                "options": [
+                  "No combustible",
+                  "Ligeramente combustible",
+                  "Combustible",
+                  "No evaluado"
+                ],
+                "normative_tips": "Asegurador: Clasificaciones cualitativas ayudan a comparar riesgos entre aseguradoras y ajustar términos. | Normativa (habitual): Euroclases/criterios aseguradora."
+              },
+              {
+                "id": "observaciones",
+                "label": "Observaciones",
+                "type": "textarea",
+                "normative_tips": "Asegurador: Aquí se registran desviaciones (panel PUR, falta ignifugado, sellados), clave para recomendaciones. | Normativa (habitual): RSCIEI; CTE DB-SI; RIPCI."
+              }
+            ]
+          }
+        },
+        {
+          "id": "constr_tabla_clase_materiales",
+          "label": "Tabla guía de materiales (no combustible / ligeramente combustible / combustible)",
+          "type": "array_of_objects",
+          "assistant_instructions": "Tabla auxiliar para homogeneizar criterios de clasificación de materiales.",
+          "normative_tips": "Asegurador: Reduce discrepancias al clasificar materiales (p.ej. PIR FM vs PUR) y mejora comparabilidad de riesgos. | Normativa (habitual): UNE-EN 13501 y fichas técnicas/certificados.",
+          "allow_add_remove_rows": true,
+          "item_label_template": "Clase {{index + 1}}",
+          "item_schema": {
+            "id": "constr_tabla_clase_materiales_item",
+            "fields": [
+              {
+                "id": "clase_material",
+                "label": "Clase de material",
+                "type": "select",
+                "options": [
+                  "No combustible",
+                  "Ligeramente combustible",
+                  "Combustible"
+                ],
+                "normative_tips": "Asegurador: La clase resume reacción al fuego y guía la aceptación del riesgo. | Normativa (habitual): UNE-EN 13501 (Euroclases); criterios aseguradora."
+              },
+              {
+                "id": "ejemplos_cerr_cub_pared",
+                "label": "Ejemplos (cerramiento/cubierta/paredes interiores)",
+                "type": "textarea",
+                "normative_tips": "Asegurador: Identificar correctamente el material evita infravalorar la carga de fuego. | Normativa (habitual): UNE-EN 13501; fichas técnicas."
+              },
+              {
+                "id": "ejemplos_estructura",
+                "label": "Ejemplos (estructura)",
+                "type": "textarea",
+                "normative_tips": "Asegurador: La estabilidad al fuego de la estructura determina colapso y pérdida total. | Normativa (habitual): RSCIEI; CTE DB-SI; UNE-EN 13501."
+              }
+            ]
+          }
+        },
+        {
+          "id": "constr_plano_sectores_construcciones_combustibles",
+          "label": "Plano ubicación edificaciones con sectores y construcciones combustibles (adjuntar) + fotos generales por sector",
+          "type": "file_multiple",
+          "assistant_instructions": "Adjunta plano con sectores y marca construcciones combustibles; añade fotos generales por sector.",
+          "normative_tips": "Asegurador: Evidencia visual reduce incertidumbre y permite validar sectorización/materiales para estimar PML. | Normativa (habitual): RD 393/2007 (planos); RSCIEI."
+        },
+        {
+          "id": "constr_existen_camaras_frigorificas",
+          "label": "¿Existen cámaras frigoríficas?",
+          "type": "boolean",
+          "normative_tips": "Asegurador: Cámaras con panel combustible incrementan severidad del incendio y exigen protección específica. | Normativa (habitual): RSCIEI; NFPA/FM para cámaras con paneles."
+        },
+        {
+          "id": "constr_tabla_camaras_frigorificas",
+          "label": "Cámaras frigoríficas (tabla)",
+          "type": "array_of_objects",
+          "assistant_instructions": "Detalla cada cámara: panel, sector, colindancias y protección.",
+          "normative_tips": "Asegurador: Es uno de los puntos más críticos (panel combustible + carga de fuego); define aceptabilidad y exigencias de rociadores interiores. | Normativa (habitual): RSCIEI; UNE-EN 12845/NFPA 13; criterios FM.",
+          "allow_add_remove_rows": true,
+          "item_label_template": "Cámara {{index + 1}}",
+          "item_schema": {
+            "id": "constr_tabla_camaras_frigorificas_item",
+            "fields": [
+              {
+                "id": "num",
+                "label": "Nº cámara",
+                "type": "text",
+                "normative_tips": "Asegurador: Identificación para localizar y verificar protección dedicada. | Normativa (habitual): RD 393/2007 (planos)"
+              },
+              {
+                "id": "superficie_m2",
+                "label": "Superficie (m²)",
+                "type": "number",
+                "normative_tips": "Asegurador: Superficie condiciona carga de fuego y dimensionamiento de PCI interior. | Normativa (habitual): RSCIEI; NFPA 13/UNE-EN 12845."
+              },
+              {
+                "id": "aislamiento_panel",
+                "label": "Tipo de aislamiento del panel",
+                "type": "select",
+                "options": [
+                  "Lana de roca / fibra de vidrio (no combustible)",
+                  "PIR (certificado FM/tercero)",
+                  "PIR (no certificado)",
+                  "PUR",
+                  "EPS",
+                  "Desconocido"
+                ],
+                "normative_tips": "Asegurador: Los materiales y la estabilidad al fuego condicionan velocidad de propagación y colapso estructural. | Normativa (habitual): RSCIEI (RD 2267/2004); Clasificación Euroclases (UNE-EN 13501); CTE DB-SI."
+              },
+              {
+                "id": "sector_incendio",
+                "label": "Sector de incendio",
+                "type": "text",
+                "normative_tips": "Asegurador: Localiza compartimentación; cámaras deberían estar en sectores controlables con PCI específica. | Normativa (habitual): RSCIEI."
+              },
+              {
+                "id": "colindantes",
+                "label": "Colindantes",
+                "type": "text",
+                "normative_tips": "Asegurador: Colindancias con producción/almacén determinan propagación y PML. | Normativa (habitual): RSCIEI."
+              },
+              {
+                "id": "protecciones_pci",
+                "label": "Protección (detección/rociadores/preacción, etc.)",
+                "type": "textarea",
+                "normative_tips": "Asegurador: Este dato influye en la probabilidad/severidad del siniestro y en el PML/EML y la continuidad (PB). | Normativa (habitual): Buenas prácticas de ingeniería de riesgos y normativa aplicable según sector."
+              }
+            ]
+          }
+        },
+        {
+          "id": "constr_plano_camaras_frigorificas",
+          "label": "Plano ubicación cámaras frigoríficas (adjuntar)",
+          "type": "file_multiple",
+          "normative_tips": "Asegurador: Facilita verificar separación, sectorización y cobertura de rociadores/detección dentro de cámaras. | Normativa (habitual): RD 393/2007; RSCIEI."
+        },
+        {
+          "id": "constr_fotos_camaras_frigorificas",
+          "label": "Fotos exterior e interior de cámaras frigoríficas (adjuntar)",
+          "type": "file_multiple",
+          "normative_tips": "Asegurador: Permite validar material de panel, sellados, penetraciones y orden/limpieza, reduciendo incertidumbre. | Normativa (habitual): Buenas prácticas; RSCIEI."
+        }
+      ]
+    },
+    {
+      "id": "actividad_operacional",
+      "title": "ACTIVIDAD OPERACIONAL",
+      "fields": [
+        {
+          "id": "ao_organigrama_general",
+          "label": "Organigrama general (adjuntar)",
+          "type": "file",
+          "normative_tips": "Asegurador: Evidencia roles/responsabilidades para seguridad, mantenimiento y respuesta a emergencias. | Normativa (habitual): ISO 45001; ISO 9001."
+        },
+        {
+          "id": "ao_num_trabajadores_detalle",
+          "label": "Nº trabajadores (detalle por área si posible)",
+          "type": "textarea",
+          "normative_tips": "Asegurador: Influye en exposición humana, turnos, vigilancia y capacidad de primera intervención. | Normativa (habitual): LPRL."
+        },
+        {
+          "id": "ao_turnos_trabajo",
+          "label": "Turnos de trabajo",
+          "type": "text",
+          "normative_tips": "Asegurador: Turnos 24/7 pueden mitigar detección temprana; pero elevan desgaste de equipos. | Normativa (habitual): Buenas prácticas PRL."
+        },
+        {
+          "id": "ao_horarios_trabajo",
+          "label": "Horarios de trabajo",
+          "type": "text",
+          "normative_tips": "Asegurador: Identifica periodos no ocupados donde la transmisión a CRA/detección es crítica. | Normativa (habitual): RIPCI (mantenimiento/operatividad) y buenas prácticas."
+        },
+        {
+          "id": "ao_cambios_ultimos_anos",
+          "label": "Cambios en los últimos años (ampliaciones, nuevas líneas, etc.)",
+          "type": "textarea",
+          "normative_tips": "Asegurador: Cambios recientes pueden invalidar el diseño PCI o sectorización y aumentar riesgo temporal de obra. | Normativa (habitual): Gestión del cambio (MOC) buenas prácticas; RSCIEI/RIPCI."
+        },
+        {
+          "id": "ao_nuevos_proyectos",
+          "label": "Nuevos proyectos (en curso o previstos)",
+          "type": "textarea",
+          "normative_tips": "Asegurador: Proyectos pueden incrementar carga de fuego o introducir nuevos peligros, afectando condiciones futuras. | Normativa (habitual): Gestión del cambio; RSCIEI."
+        }
+      ]
+    },
+    {
+      "id": "proceso_productivo",
+      "title": "DESCRIPCIÓN DEL PROCESO PRODUCTIVO",
+      "fields": [
+        {
+          "id": "pp_tipo_actividad",
+          "label": "Tipo de actividad",
+          "type": "text",
+          "normative_tips": "Asegurador: Este dato influye en la probabilidad/severidad del siniestro y en el PML/EML y la continuidad (PB). | Normativa (habitual): Buenas prácticas de ingeniería de riesgos y normativa aplicable según sector."
+        },
+        {
+          "id": "pp_diagrama_proceso",
+          "label": "Diagrama del proceso (adjuntar)",
+          "type": "file",
+          "normative_tips": "Asegurador: Permite identificar fuentes de ignición, puntos calientes y cuellos de botella de PB. | Normativa (habitual): Buenas prácticas HAZOP/seguridad de proceso."
+        },
+        {
+          "id": "pp_descripcion_general",
+          "label": "Descripción general del proceso / fases / aportes de calor / presiones / productos peligrosos",
+          "type": "textarea",
+          "normative_tips": "Asegurador: Determina probabilidad de incendio/explosión y necesidad de salvaguardas (SIS, interlocks). | Normativa (habitual): Buenas prácticas de seguridad de proceso (HAZOP/SIL); ATEX/APQ si aplica; Reglamentos de equipos."
+        },
+        {
+          "id": "pp_materias_primas_intermedios_finales",
+          "label": "Materias primas / productos intermedios / productos finales",
+          "type": "textarea",
+          "normative_tips": "Asegurador: Define carga de fuego y potencial de incompatibilidades químicas que condicionan protección y sectorización. | Normativa (habitual): APQ/ATEX según materiales; RSCIEI."
+        },
+        {
+          "id": "pp_productos_auxiliares_proceso",
+          "label": "Productos auxiliares de proceso",
+          "type": "textarea",
+          "normative_tips": "Asegurador: Auxiliares (disolventes, aceites) suelen ser la fuente de ignición/carga de fuego oculta. | Normativa (habitual): APQ; buenas prácticas almacenamiento."
+        },
+        {
+          "id": "pp_riesgos_principales_proceso",
+          "label": "Riesgos principales de proceso",
+          "type": "textarea",
+          "normative_tips": "Asegurador: Resume peligros (polvos explosivos, hornos, reaccciones) que definen aceptabilidad y medidas mínimas. | Normativa (habitual): ATEX; APQ; RSCIEI; buenas prácticas HAZOP."
+        },
+        {
+          "id": "pp_producto_terceros",
+          "label": "Tipo de producto de terceros (si lo hubiese)",
+          "type": "textarea",
+          "normative_tips": "Asegurador: Productos de terceros pueden introducir riesgos no controlados o responsabilidades contractuales. | Normativa (habitual): Gestión de proveedores/contratas; ISO 9001."
+        },
+        {
+          "id": "pp_tabla_equipos_produccion",
+          "label": "Principales equipos de producción (tabla)",
+          "type": "array_of_objects",
+          "assistant_instructions": "Inventaria maquinaria crítica con valores y utilización.",
+          "normative_tips": "Asegurador: La criticidad y reposición de equipos determinan la exposición de PB y AM y el límite/periodo requeridos. | Normativa (habitual): ISO 22301; ISO 55001.",
+          "allow_add_remove_rows": true,
+          "item_label_template": "Equipo {{index + 1}}",
+          "item_schema": {
+            "id": "pp_tabla_equipos_produccion_item",
+            "fields": [
+              {
+                "id": "equipo",
+                "label": "Equipo / Línea",
+                "type": "text",
+                "normative_tips": "Asegurador: Identifica activos críticos y posibles cuellos de botella de PB. | Normativa (habitual): Buenas prácticas gestión de activos (ISO 55001)."
+              },
+              {
+                "id": "fabricante",
+                "label": "Fabricante",
+                "type": "text",
+                "normative_tips": "Asegurador: Ayuda a estimar disponibilidad de repuestos y tiempos de reposición. | Normativa (habitual): Gestión de continuidad."
+              },
+              {
+                "id": "ano_fabricacion",
+                "label": "Año de fabricación",
+                "type": "text",
+                "normative_tips": "Asegurador: Antigüedad correlaciona con fallos y obsolescencia, elevando AM/PB. | Normativa (habitual): Buenas prácticas mantenimiento."
+              },
+              {
+                "id": "capacidad_nominal",
+                "label": "Capacidad producción nominal unitaria",
+                "type": "text",
+                "normative_tips": "Asegurador: Determina elasticidad de producción y posibilidad de recuperar tras siniestro (PB). | Normativa (habitual): ISO 22301."
+              },
+              {
+                "id": "factor_utilizacion_pct",
+                "label": "Factor de utilización (%)",
+                "type": "number",
+                "normative_tips": "Asegurador: Utilización alta indica poca holgura; aumenta severidad de PB ante paradas. | Normativa (habitual): ISO 22301."
+              },
+              {
+                "id": "valor_eur",
+                "label": "Valor (€)",
+                "type": "number",
+                "normative_tips": "Asegurador: Base para suma asegurada y cálculo de pérdidas por daños materiales/AM. | Normativa (habitual): Tasación/valoración de activos."
+              },
+              {
+                "id": "cuello_botella",
+                "label": "¿Es cuello de botella?",
+                "type": "boolean",
+                "normative_tips": "Asegurador: Un SPOF incrementa la MPL de PB y puede requerir periodos de indemnización mayores. | Normativa (habitual): ISO 22301."
+              },
+              {
+                "id": "tiempo_reposicion",
+                "label": "Tiempo estimado de reposición",
+                "type": "text",
+                "normative_tips": "Asegurador: Impacta directamente el periodo de indemnización necesario en PB. | Normativa (habitual): ISO 22301."
+              }
+            ]
+          }
+        },
+        {
+          "id": "pp_control_seguridad_proceso",
+          "label": "Control / seguridad de proceso",
+          "type": "textarea",
+          "normative_tips": "Asegurador: Salvaguardas (SIS, enclavamientos, detecciones) reducen probabilidad de siniestro y mejoran aceptabilidad. | Normativa (habitual): Buenas prácticas SIL/IEC 61511 (si aplica), ATEX/APQ según caso."
+        }
+      ]
+    },
+    {
+      "id": "almacenamiento",
+      "title": "ALMACENAMIENTO",
+      "fields": [
+        {
+          "id": "alm_productos_granel",
+          "label": "¿Productos a granel?",
+          "type": "boolean",
+          "normative_tips": "Asegurador: Polvos a granel pueden implicar ATEX (explosión) y requieren control de polvo/venteo. | Normativa (habitual): ATEX; buenas prácticas de captación de polvo."
+        },
+        {
+          "id": "alm_productos_peligrosos_inflamables_ex",
+          "label": "¿Productos peligrosos / inflamables / EX (ATEX)?",
+          "type": "boolean",
+          "normative_tips": "Asegurador: Define el riesgo de incendio/explosión y la necesidad de almacenamientos y protecciones dedicadas. | Normativa (habitual): Reglamento APQ (RD 656/2017); ATEX si aplica; NFPA 30/30B (si aplica)."
+        },
+        {
+          "id": "alm_productos_aerosoles",
+          "label": "¿Productos aerosoles?",
+          "type": "boolean",
+          "normative_tips": "Asegurador: Aerosoles elevan severidad (incendio/deflagración) y requieren protección y almacenamiento específico. | Normativa (habitual): APQ; NFPA 30B (si aplica)."
+        },
+        {
+          "id": "alm_tabla_materia_prima",
+          "label": "MATERIA PRIMA (tabla)",
+          "type": "array_of_objects",
+          "assistant_instructions": "Rellena la tabla con el máximo de detalle por producto/almacén.",
+          "normative_tips": "Asegurador: El almacenamiento suele ser el principal driver de PML; altura, plástico y sectorización son críticos. | Normativa (habitual): RSCIEI; UNE-EN 12845/NFPA 13; APQ/ATEX si aplica.",
+          "allow_add_remove_rows": true,
+          "item_label_template": "Material {{index + 1}}",
+          "item_schema": {
+            "id": "alm_tabla_materia_prima_item",
+            "fields": [
+              {
+                "id": "tipo",
+                "label": "Tipo",
+                "type": "text",
+                "normative_tips": "Asegurador: Diferenciar MP/PI/PF/auxiliar ayuda a ubicar y sectorizar correctamente la carga de fuego. | Normativa (habitual): RSCIEI."
+              },
+              {
+                "id": "producto",
+                "label": "Producto",
+                "type": "text",
+                "normative_tips": "Asegurador: La naturaleza del producto determina combustible/inflamable/toxicidad y el PML. | Normativa (habitual): APQ/ATEX según producto; fichas SDS."
+              },
+              {
+                "id": "riesgo",
+                "label": "Riesgo (incendio/explosión/etc.)",
+                "type": "text",
+                "normative_tips": "Asegurador: Clasificación del riesgo guía exigencias de PCI y condiciones de póliza. | Normativa (habitual): RSCIEI; ATEX/APQ."
+              },
+              {
+                "id": "tipo_almacenamiento",
+                "label": "Tipo de almacenamiento",
+                "type": "text",
+                "normative_tips": "Asegurador: Configuración (estanterías/stack/silos) condiciona eficacia de rociadores y propagación. | Normativa (habitual): NFPA 13/UNE-EN 12845; RSCIEI."
+              },
+              {
+                "id": "embalaje",
+                "label": "Embalaje",
+                "type": "text",
+                "normative_tips": "Asegurador: El embalaje plástico/palets de plástico incrementa severidad y puede exigir densidades mayores o in-rack. | Normativa (habitual): NFPA 13; fichas FM Data Sheets."
+              },
+              {
+                "id": "cantidad",
+                "label": "Cantidad",
+                "type": "text",
+                "normative_tips": "Asegurador: Cantidad máxima determina carga de fuego y PML por sector. | Normativa (habitual): RSCIEI (carga de fuego); APQ si aplica."
+              },
+              {
+                "id": "ubicacion",
+                "label": "Ubicación",
+                "type": "text",
+                "normative_tips": "Asegurador: Ubicar junto a producción sin sectorizar eleva propagación y pérdida total. | Normativa (habitual): RSCIEI."
+              },
+              {
+                "id": "proteccion",
+                "label": "Protección",
+                "type": "text",
+                "normative_tips": "Asegurador: Este dato influye en la probabilidad/severidad del siniestro y en el PML/EML y la continuidad (PB). | Normativa (habitual): Buenas prácticas de ingeniería de riesgos y normativa aplicable según sector."
+              }
+            ]
+          }
+        },
+        {
+          "id": "alm_planos_fotos_mp",
+          "label": "Plano y fotos ubicación almacenes de MP (adjuntar)",
+          "type": "file_multiple",
+          "normative_tips": "Asegurador: Evidencia de disposición/altura y separación reduce incertidumbre y valida el diseño PCI. | Normativa (habitual): RD 393/2007; RSCIEI."
+        },
+        {
+          "id": "alm_tabla_producto_intermedio",
+          "label": "PRODUCTO INTERMEDIO (tabla)",
+          "type": "array_of_objects",
+          "assistant_instructions": "Rellena la tabla con el máximo de detalle por producto/almacén.",
+          "normative_tips": "Asegurador: El almacenamiento suele ser el principal driver de PML; altura, plástico y sectorización son críticos. | Normativa (habitual): RSCIEI; UNE-EN 12845/NFPA 13; APQ/ATEX si aplica.",
+          "allow_add_remove_rows": true,
+          "item_label_template": "Material {{index + 1}}",
+          "item_schema": {
+            "id": "alm_tabla_producto_intermedio_item",
+            "fields": [
+              {
+                "id": "tipo",
+                "label": "Tipo",
+                "type": "text",
+                "normative_tips": "Asegurador: Diferenciar MP/PI/PF/auxiliar ayuda a ubicar y sectorizar correctamente la carga de fuego. | Normativa (habitual): RSCIEI."
+              },
+              {
+                "id": "producto",
+                "label": "Producto",
+                "type": "text",
+                "normative_tips": "Asegurador: La naturaleza del producto determina combustible/inflamable/toxicidad y el PML. | Normativa (habitual): APQ/ATEX según producto; fichas SDS."
+              },
+              {
+                "id": "riesgo",
+                "label": "Riesgo (incendio/explosión/etc.)",
+                "type": "text",
+                "normative_tips": "Asegurador: Clasificación del riesgo guía exigencias de PCI y condiciones de póliza. | Normativa (habitual): RSCIEI; ATEX/APQ."
+              },
+              {
+                "id": "tipo_almacenamiento",
+                "label": "Tipo de almacenamiento",
+                "type": "text",
+                "normative_tips": "Asegurador: Configuración (estanterías/stack/silos) condiciona eficacia de rociadores y propagación. | Normativa (habitual): NFPA 13/UNE-EN 12845; RSCIEI."
+              },
+              {
+                "id": "embalaje",
+                "label": "Embalaje",
+                "type": "text",
+                "normative_tips": "Asegurador: El embalaje plástico/palets de plástico incrementa severidad y puede exigir densidades mayores o in-rack. | Normativa (habitual): NFPA 13; fichas FM Data Sheets."
+              },
+              {
+                "id": "cantidad",
+                "label": "Cantidad",
+                "type": "text",
+                "normative_tips": "Asegurador: Cantidad máxima determina carga de fuego y PML por sector. | Normativa (habitual): RSCIEI (carga de fuego); APQ si aplica."
+              },
+              {
+                "id": "ubicacion",
+                "label": "Ubicación",
+                "type": "text",
+                "normative_tips": "Asegurador: Ubicar junto a producción sin sectorizar eleva propagación y pérdida total. | Normativa (habitual): RSCIEI."
+              },
+              {
+                "id": "proteccion",
+                "label": "Protección",
+                "type": "text",
+                "normative_tips": "Asegurador: Este dato influye en la probabilidad/severidad del siniestro y en el PML/EML y la continuidad (PB). | Normativa (habitual): Buenas prácticas de ingeniería de riesgos y normativa aplicable según sector."
+              }
+            ]
+          }
+        },
+        {
+          "id": "alm_planos_fotos_pi",
+          "label": "Plano y fotos ubicación almacenes de PI (adjuntar)",
+          "type": "file_multiple",
+          "normative_tips": "Asegurador: Permite verificar sectorización y cobertura de protección en PI. | Normativa (habitual): RD 393/2007; RSCIEI."
+        },
+        {
+          "id": "alm_tabla_producto_final",
+          "label": "PRODUCTO FINAL (tabla)",
+          "type": "array_of_objects",
+          "assistant_instructions": "Rellena la tabla con el máximo de detalle por producto/almacén.",
+          "normative_tips": "Asegurador: El almacenamiento suele ser el principal driver de PML; altura, plástico y sectorización son críticos. | Normativa (habitual): RSCIEI; UNE-EN 12845/NFPA 13; APQ/ATEX si aplica.",
+          "allow_add_remove_rows": true,
+          "item_label_template": "Material {{index + 1}}",
+          "item_schema": {
+            "id": "alm_tabla_producto_final_item",
+            "fields": [
+              {
+                "id": "tipo",
+                "label": "Tipo",
+                "type": "text",
+                "normative_tips": "Asegurador: Diferenciar MP/PI/PF/auxiliar ayuda a ubicar y sectorizar correctamente la carga de fuego. | Normativa (habitual): RSCIEI."
+              },
+              {
+                "id": "producto",
+                "label": "Producto",
+                "type": "text",
+                "normative_tips": "Asegurador: La naturaleza del producto determina combustible/inflamable/toxicidad y el PML. | Normativa (habitual): APQ/ATEX según producto; fichas SDS."
+              },
+              {
+                "id": "riesgo",
+                "label": "Riesgo (incendio/explosión/etc.)",
+                "type": "text",
+                "normative_tips": "Asegurador: Clasificación del riesgo guía exigencias de PCI y condiciones de póliza. | Normativa (habitual): RSCIEI; ATEX/APQ."
+              },
+              {
+                "id": "tipo_almacenamiento",
+                "label": "Tipo de almacenamiento",
+                "type": "text",
+                "normative_tips": "Asegurador: Configuración (estanterías/stack/silos) condiciona eficacia de rociadores y propagación. | Normativa (habitual): NFPA 13/UNE-EN 12845; RSCIEI."
+              },
+              {
+                "id": "embalaje",
+                "label": "Embalaje",
+                "type": "text",
+                "normative_tips": "Asegurador: El embalaje plástico/palets de plástico incrementa severidad y puede exigir densidades mayores o in-rack. | Normativa (habitual): NFPA 13; fichas FM Data Sheets."
+              },
+              {
+                "id": "cantidad",
+                "label": "Cantidad",
+                "type": "text",
+                "normative_tips": "Asegurador: Cantidad máxima determina carga de fuego y PML por sector. | Normativa (habitual): RSCIEI (carga de fuego); APQ si aplica."
+              },
+              {
+                "id": "ubicacion",
+                "label": "Ubicación",
+                "type": "text",
+                "normative_tips": "Asegurador: Ubicar junto a producción sin sectorizar eleva propagación y pérdida total. | Normativa (habitual): RSCIEI."
+              },
+              {
+                "id": "proteccion",
+                "label": "Protección",
+                "type": "text",
+                "normative_tips": "Asegurador: Este dato influye en la probabilidad/severidad del siniestro y en el PML/EML y la continuidad (PB). | Normativa (habitual): Buenas prácticas de ingeniería de riesgos y normativa aplicable según sector."
+              }
+            ]
+          }
+        },
+        {
+          "id": "alm_planos_fotos_pf",
+          "label": "Plano y fotos ubicación almacenes de PT (adjuntar)",
+          "type": "file_multiple",
+          "normative_tips": "Asegurador: El PT concentra valor y carga de fuego; su layout condiciona PML y PB. | Normativa (habitual): RSCIEI; NFPA 13/UNE-EN 12845."
+        },
+        {
+          "id": "alm_tabla_producto_auxiliar",
+          "label": "PRODUCTO AUXILIAR (tabla)",
+          "type": "array_of_objects",
+          "assistant_instructions": "Rellena la tabla con el máximo de detalle por producto/almacén.",
+          "normative_tips": "Asegurador: El almacenamiento suele ser el principal driver de PML; altura, plástico y sectorización son críticos. | Normativa (habitual): RSCIEI; UNE-EN 12845/NFPA 13; APQ/ATEX si aplica.",
+          "allow_add_remove_rows": true,
+          "item_label_template": "Material {{index + 1}}",
+          "item_schema": {
+            "id": "alm_tabla_producto_auxiliar_item",
+            "fields": [
+              {
+                "id": "tipo",
+                "label": "Tipo",
+                "type": "text",
+                "normative_tips": "Asegurador: Diferenciar MP/PI/PF/auxiliar ayuda a ubicar y sectorizar correctamente la carga de fuego. | Normativa (habitual): RSCIEI."
+              },
+              {
+                "id": "producto",
+                "label": "Producto",
+                "type": "text",
+                "normative_tips": "Asegurador: La naturaleza del producto determina combustible/inflamable/toxicidad y el PML. | Normativa (habitual): APQ/ATEX según producto; fichas SDS."
+              },
+              {
+                "id": "riesgo",
+                "label": "Riesgo (incendio/explosión/etc.)",
+                "type": "text",
+                "normative_tips": "Asegurador: Clasificación del riesgo guía exigencias de PCI y condiciones de póliza. | Normativa (habitual): RSCIEI; ATEX/APQ."
+              },
+              {
+                "id": "tipo_almacenamiento",
+                "label": "Tipo de almacenamiento",
+                "type": "text",
+                "normative_tips": "Asegurador: Configuración (estanterías/stack/silos) condiciona eficacia de rociadores y propagación. | Normativa (habitual): NFPA 13/UNE-EN 12845; RSCIEI."
+              },
+              {
+                "id": "embalaje",
+                "label": "Embalaje",
+                "type": "text",
+                "normative_tips": "Asegurador: El embalaje plástico/palets de plástico incrementa severidad y puede exigir densidades mayores o in-rack. | Normativa (habitual): NFPA 13; fichas FM Data Sheets."
+              },
+              {
+                "id": "cantidad",
+                "label": "Cantidad",
+                "type": "text",
+                "normative_tips": "Asegurador: Cantidad máxima determina carga de fuego y PML por sector. | Normativa (habitual): RSCIEI (carga de fuego); APQ si aplica."
+              },
+              {
+                "id": "ubicacion",
+                "label": "Ubicación",
+                "type": "text",
+                "normative_tips": "Asegurador: Ubicar junto a producción sin sectorizar eleva propagación y pérdida total. | Normativa (habitual): RSCIEI."
+              },
+              {
+                "id": "proteccion",
+                "label": "Protección",
+                "type": "text",
+                "normative_tips": "Asegurador: Este dato influye en la probabilidad/severidad del siniestro y en el PML/EML y la continuidad (PB). | Normativa (habitual): Buenas prácticas de ingeniería de riesgos y normativa aplicable según sector."
+              }
+            ]
+          }
+        },
+        {
+          "id": "alm_planos_fotos_pa",
+          "label": "Plano y fotos ubicación almacenes de PA (adjuntar)",
+          "type": "file_multiple",
+          "normative_tips": "Asegurador: Auxiliares (químicos/aceites) pueden ser iniciadores de incendio; ubicación y segregación son clave. | Normativa (habitual): APQ; RSCIEI."
+        },
+        {
+          "id": "alm_checklist_evaluacion_x",
+          "label": "Check-list de evaluación (con columna de comentarios)",
+          "type": "array_of_objects",
+          "assistant_instructions": "Añade los ítems que evaluéis internamente para almacenamiento (orden/limpieza, pasillos, alturas, control plásticos, etc.).",
+          "normative_tips": "Asegurador: Un checklist consistente mejora control de riesgo y soporta decisiones de suscripción. | Normativa (habitual): Ingenierías de aseguradora; RSCIEI/NFPA según caso.",
+          "allow_add_remove_rows": true,
+          "item_label_template": "Ítem {{index + 1}}",
+          "item_schema": {
+            "id": "alm_checklist_evaluacion_x_item",
+            "fields": [
+              {
+                "id": "item",
+                "label": "Ítem evaluado",
+                "type": "text",
+                "normative_tips": "Asegurador: Estándariza la inspección y reduce omisiones que afectan a condiciones de póliza. | Normativa (habitual): Buenas prácticas auditoría ISO 19011."
+              },
+              {
+                "id": "estado",
+                "label": "Estado",
+                "type": "select",
+                "options": [
+                  "Cumple",
+                  "No cumple",
+                  "No aplica",
+                  "Pendiente"
+                ],
+                "normative_tips": "Asegurador: No conformidades suelen traducirse en recomendaciones obligatorias o ajustes de prima. | Normativa (habitual): RSCIEI/RIPCI/REBT/APQ según ítem."
+              },
+              {
+                "id": "comentarios",
+                "label": "Comentarios",
+                "type": "textarea",
+                "normative_tips": "Asegurador: Evidencia y contexto permiten priorizar acciones y valorar severidad real. | Normativa (habitual): Buenas prácticas de reporte técnico."
+              }
+            ]
+          }
+        },
+        {
+          "id": "alm_tabla_camaras_frigorificas",
+          "label": "Almacenamiento en Cámaras Frigoríficas (tabla)",
+          "type": "array_of_objects",
+          "assistant_instructions": "Rellena por cámara el almacenamiento real (producto, embalaje, etc.).",
+          "normative_tips": "Asegurador: El contenido (plástico/commodity) y la protección interna determinan si un incendio es controlable. | Normativa (habitual): NFPA 13/UNE-EN 12845; criterios aseguradora.",
+          "allow_add_remove_rows": true,
+          "item_label_template": "Cámara {{index + 1}}",
+          "item_schema": {
+            "id": "alm_tabla_camaras_frigorificas_item",
+            "fields": [
+              {
+                "id": "num_camara",
+                "label": "Nº cámara",
+                "type": "text",
+                "normative_tips": "Asegurador: Permite cruzar con la tabla de cámaras y verificar protección interior. | Normativa (habitual): RD 393/2007."
+              },
+              {
+                "id": "tipo_producto",
+                "label": "Tipo de producto almacenado",
+                "type": "text",
+                "normative_tips": "Asegurador: Determina carga de fuego y tipo de commodity para rociadores. | Normativa (habitual): NFPA 13/UNE-EN 12845; SDS si aplica."
+              },
+              {
+                "id": "tipo_almacenamiento",
+                "label": "Tipo almacenamiento",
+                "type": "text",
+                "normative_tips": "Asegurador: Estantería vs suelo cambia necesidades de in-rack/densidad. | Normativa (habitual): NFPA 13."
+              },
+              {
+                "id": "embalaje",
+                "label": "Embalaje",
+                "type": "text",
+                "normative_tips": "Asegurador: Plásticos (botellas, retractilado) aumentan severidad y requisitos de protección. | Normativa (habitual): NFPA 13/FM."
+              },
+              {
+                "id": "cantidad",
+                "label": "Cantidad",
+                "type": "text",
+                "normative_tips": "Asegurador: Cantidad máxima condiciona PML del compartimento frío. | Normativa (habitual): RSCIEI."
+              },
+              {
+                "id": "ubicacion",
+                "label": "Ubicación",
+                "type": "text",
+                "normative_tips": "Asegurador: Ubicación dentro de sector/edificio condiciona exposición a producción y evacuación. | Normativa (habitual): RSCIEI."
+              },
+              {
+                "id": "proteccion",
+                "label": "Protección",
+                "type": "text",
+                "normative_tips": "Asegurador: Este dato influye en la probabilidad/severidad del siniestro y en el PML/EML y la continuidad (PB). | Normativa (habitual): Buenas prácticas de ingeniería de riesgos y normativa aplicable según sector."
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "instalaciones_servicio",
+      "title": "INSTALACIONES DE SERVICIO",
+      "fields": [
+        {
+          "id": "is_instalaciones_conforme_norma",
+          "label": "Instalaciones de acuerdo a norma (observaciones)",
+          "type": "textarea",
+          "assistant_instructions": "Indica legalización/certificaciones y desviaciones conocidas.",
+          "normative_tips": "Asegurador: Cumplimiento y certificación reducen probabilidad de fallos e implican mejor control del riesgo. | Normativa (habitual): Reglamentos industriales aplicables (REBT, frigoríficas, equipos a presión, gas, etc.)."
+        },
+        {
+          "id": "is_instalacion_electrica_detalle",
+          "label": "Instalación eléctrica (subestaciones, salas, puesta a tierra, pararrayos, grupos, etc.)",
+          "type": "textarea",
+          "assistant_instructions": "Incluye compartimentación/ubicación, calidad eléctrica, mantenimiento/termografías si aplica.",
+          "normative_tips": "Asegurador: Los fallos eléctricos son causa frecuente de incendio y de paradas; redundancia reduce PB. | Normativa (habitual): REBT (RD 842/2002); Reglamento Alta Tensión (según aplique); UNE-EN 62305 (pararrayos/descargas)."
+        },
+        {
+          "id": "is_backup_redundancias_criticidad",
+          "label": "Back-up y redundancias / criticidad (impacto de paralización 25/50/75/100%)",
+          "type": "textarea",
+          "normative_tips": "Asegurador: Redundancias y criticidad definen exposición de PB y necesidad de límites/periodos mayores. | Normativa (habitual): ISO 22301 (continuidad)."
+        },
+        {
+          "id": "is_num_lineas_acometida",
+          "label": "Nº de líneas de acometida eléctrica",
+          "type": "text",
+          "normative_tips": "Asegurador: Doble acometida reduce probabilidad de parada total por fallo externo, mitigando PB. | Normativa (habitual): REBT/AT según tensión."
+        },
+        {
+          "id": "is_potencia_instalada",
+          "label": "Potencia instalada",
+          "type": "text",
+          "normative_tips": "Asegurador: Potencia elevada suele correlacionar con mayor energía disponible y criticidad de protección eléctrica. | Normativa (habitual): REBT/AT."
+        },
+        {
+          "id": "is_potencia_consumida",
+          "label": "Potencia consumida",
+          "type": "text",
+          "normative_tips": "Asegurador: Alto consumo sostenido puede aumentar calentamientos y riesgo eléctrico; requiere mantenimiento/predictivo. | Normativa (habitual): REBT; buenas prácticas termografía."
+        },
+        {
+          "id": "is_num_subestaciones",
+          "label": "Nº Subestaciones",
+          "type": "text",
+          "normative_tips": "Asegurador: Subestaciones en interior cerca de producción elevan exposición; ubicación exterior suele ser preferible. | Normativa (habitual): REBT/AT; RSCIEI (sectorización)."
+        },
+        {
+          "id": "is_relacion_transformacion",
+          "label": "Relación transformación (ej. 60kV/6kV, 6kV/400V)",
+          "type": "text",
+          "normative_tips": "Asegurador: Ayuda a dimensionar criticidad y detectar presencia de AT con riesgos específicos. | Normativa (habitual): Reglamento de Alta Tensión."
+        },
+        {
+          "id": "is_transformadores_tabla",
+          "label": "Transformadores (tabla)",
+          "type": "array_of_objects",
+          "assistant_instructions": "Incluye todos los transformadores, incluso repuestos.",
+          "normative_tips": "Asegurador: Un siniestro eléctrico puede ser origen de incendio y causa de PB; protección y separación son críticas. | Normativa (habitual): REBT/AT; RSCIEI; RIPCI.",
+          "allow_add_remove_rows": true,
+          "item_label_template": "Trafo {{index + 1}}",
+          "item_schema": {
+            "id": "is_transformadores_tabla_item",
+            "fields": [
+              {
+                "id": "num",
+                "label": "Nº",
+                "type": "text",
+                "normative_tips": "Asegurador: Inventario de activos críticos y repuestos para PB/AM. | Normativa (habitual): Gestión de activos/continuidad."
+              },
+              {
+                "id": "caracteristicas_tecnicas",
+                "label": "Características técnicas (relación, potencia, refrigeración, volumen de aceite, etc.)",
+                "type": "textarea",
+                "normative_tips": "Asegurador: Transformadores de aceite aumentan severidad (pool fire); tipo seco reduce riesgo. | Normativa (habitual): AT/REBT; diseño PCI según NFPA/FM."
+              },
+              {
+                "id": "fabricante",
+                "label": "Fabricante",
+                "type": "text",
+                "normative_tips": "Asegurador: Determina disponibilidad de repuestos y tiempos de reposición. | Normativa (habitual): ISO 22301."
+              },
+              {
+                "id": "ano_fabricacion",
+                "label": "Año fabricación",
+                "type": "text",
+                "normative_tips": "Asegurador: Antigüedad correlaciona con fallos y obsolescencia; afecta AM y PB. | Normativa (habitual): Buenas prácticas mantenimiento."
+              },
+              {
+                "id": "ubicacion",
+                "label": "Ubicación",
+                "type": "text",
+                "normative_tips": "Asegurador: Ubicación interior requiere sala sectorizada; exterior reduce exposición a producción. | Normativa (habitual): RSCIEI; REBT/AT."
+              },
+              {
+                "id": "proteccion",
+                "label": "Protección (diluvio, detección, etc.)",
+                "type": "text",
+                "normative_tips": "Asegurador: Este dato influye en la probabilidad/severidad del siniestro y en el PML/EML y la continuidad (PB). | Normativa (habitual): Buenas prácticas de ingeniería de riesgos y normativa aplicable según sector."
+              }
+            ]
+          }
+        },
+        {
+          "id": "is_otros_sistemas_group",
+          "label": "Otras instalaciones de servicio (detalle)",
+          "type": "group",
+          "fields": [
+            {
+              "id": "is_generacion_electrica",
+              "label": "Instalaciones de generación eléctrica (motores, FV, etc.)",
+              "type": "textarea",
+              "normative_tips": "Asegurador: Generación propia puede mejorar continuidad, pero FV en cubierta puede aumentar carga de fuego y complejidad de extinción. | Normativa (habitual): REBT; guías PCI/CTE (si aplica)."
+            },
+            {
+              "id": "is_bateria_litio",
+              "label": "Batería de litio para almacenamiento de energía (si aplica)",
+              "type": "textarea",
+              "normative_tips": "Asegurador: BESS incrementa riesgo de incendio difícil de extinguir; requiere segregación y detección/ventilación. | Normativa (habitual): Buenas prácticas (NFPA 855/UL 9540A si aplica) y requisitos aseguradora."
+            },
+            {
+              "id": "is_aparatos_presion",
+              "label": "Aparatos a presión",
+              "type": "textarea",
+              "normative_tips": "Asegurador: Riesgo de explosión; inspecciones y certificaciones afectan aceptabilidad y AM. | Normativa (habitual): Reglamento de equipos a presión."
+            },
+            {
+              "id": "is_calentamiento_proceso",
+              "label": "Sistema de calentamiento de proceso",
+              "type": "textarea",
+              "normative_tips": "Asegurador: Aceites térmicos/quemadores/sobrecalentamientos elevan riesgo de incendio; requiere protecciones y mantenimiento. | Normativa (habitual): Reglamentos industriales; buenas prácticas."
+            },
+            {
+              "id": "is_redes_gas_erm",
+              "label": "Redes de gas / Estación de regulación y medición (ERM)",
+              "type": "textarea",
+              "normative_tips": "Asegurador: Riesgo de fuga/explosión; ubicación y detección/corte son críticos. | Normativa (habitual): Reglamentación de gas; ATEX si aplica."
+            },
+            {
+              "id": "is_caldera_agua_vapor",
+              "label": "Caldera generadora de agua caliente y/o vapor",
+              "type": "textarea",
+              "normative_tips": "Asegurador: Riesgo de explosión/incendio; sala dedicada y revisiones reducen severidad. | Normativa (habitual): Reglamento de equipos a presión."
+            },
+            {
+              "id": "is_compresores_aire",
+              "label": "Compresores de aire",
+              "type": "textarea",
+              "normative_tips": "Asegurador: Riesgo de incendio por aceite/sobrecalentamiento; ventilación y mantenimiento predictivo son clave. | Normativa (habitual): Buenas prácticas mantenimiento; equipos a presión."
+            },
+            {
+              "id": "is_refrigeracion",
+              "label": "Sistema de refrigeración (amoniaco u otros gases)",
+              "type": "textarea",
+              "normative_tips": "Asegurador: Fugas (tóxicas/inflamables) y continuidad de cadena de frío impactan PB y responsabilidad. | Normativa (habitual): Reglamento de seguridad de instalaciones frigoríficas."
+            },
+            {
+              "id": "is_transporte_y_carga",
+              "label": "Sistemas de transporte (grúas, carretillas, carga baterías, surtidores combustible, etc.)",
+              "type": "textarea",
+              "normative_tips": "Asegurador: Carga de baterías, combustibles y tráfico interno incrementan ignición; segregación y ventilación reducen riesgo. | Normativa (habitual): APQ para combustibles; PRL; buenas prácticas."
+            },
+            {
+              "id": "is_otros",
+              "label": "Otros",
+              "type": "textarea",
+              "normative_tips": "Asegurador: Permite capturar riesgos no contemplados que puedan alterar el PML o condiciones. | Normativa (habitual): Reglamentos industriales aplicables."
+            }
+          ],
+          "assistant_instructions": "Describe sistemas auxiliares relevantes para operación y riesgos.",
+          "normative_tips": "Asegurador: Las instalaciones auxiliares son fuentes típicas de ignición y causa de PB; su estado y redundancia son decisivos. | Normativa (habitual): REBT; equipos a presión; frigoríficas; gas; APQ."
+        },
+        {
+          "id": "is_tabla_criticidad_sistemas",
+          "label": "Tabla de criticidad (paralización 25/50/75/100%)",
+          "type": "array_of_objects",
+          "assistant_instructions": "Lista electricidad, aire comprimido, vapor, frío, IT, agua proceso, etc., con su impacto y redundancia.",
+          "normative_tips": "Asegurador: Base para análisis de PB y recomendaciones de redundancia. | Normativa (habitual): ISO 22301.",
+          "allow_add_remove_rows": true,
+          "item_label_template": "Sistema {{index + 1}}",
+          "item_schema": {
+            "id": "is_tabla_criticidad_sistemas_item",
+            "fields": [
+              {
+                "id": "sistema",
+                "label": "Sistema/instalación",
+                "type": "text",
+                "normative_tips": "Asegurador: Identifica dependencias y SPOF que determinan PB. | Normativa (habitual): ISO 22301."
+              },
+              {
+                "id": "impacto_pct",
+                "label": "Impacto de parada (% producción)",
+                "type": "number",
+                "normative_tips": "Asegurador: Cuantifica la pérdida potencial por parada; clave para límites de PB. | Normativa (habitual): ISO 22301/BIA."
+              },
+              {
+                "id": "redundancia",
+                "label": "Redundancia/Back-up existente",
+                "type": "text",
+                "normative_tips": "Asegurador: Redundancia reduce severidad de PB y mejora aceptabilidad. | Normativa (habitual): ISO 22301."
+              },
+              {
+                "id": "tiempo_recuperacion",
+                "label": "Tiempo de recuperación estimado",
+                "type": "text",
+                "normative_tips": "Asegurador: Determina periodo de indemnización requerido. | Normativa (habitual): ISO 22301."
+              },
+              {
+                "id": "comentarios",
+                "label": "Comentarios",
+                "type": "textarea",
+                "normative_tips": "Asegurador: Justifica supuestos y soporta la valoración actuarial/ingeniería. | Normativa (habitual): Buenas prácticas."
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "gestion_seguridad_emergencia",
+      "title": "GESTIÓN DE LA SEGURIDAD / PROCEDIMIENTOS / PLANES DE EMERGENCIA",
+      "fields": [
+        {
+          "id": "gs_dependencia_departamento_seguridad",
+          "label": "Dependencia del departamento de seguridad (organigrama)",
+          "type": "textarea",
+          "normative_tips": "Asegurador: La gobernanza clara mejora cultura de seguridad y reduce probabilidad de siniestros por error humano. | Normativa (habitual): ISO 45001."
+        },
+        {
+          "id": "gs_cumplimiento_lprl_rsp",
+          "label": "Cumplimiento LPRL y RSP (observaciones)",
+          "type": "textarea",
+          "normative_tips": "Asegurador: Gobernanza y cultura preventiva reducen siniestralidad y fallos humanos. | Normativa (habitual): Ley 31/1995 (LPRL); RD 39/1997 (RSP)."
+        },
+        {
+          "id": "gs_num_personas_seguridad",
+          "label": "Nº personas del departamento de seguridad",
+          "type": "text",
+          "normative_tips": "Asegurador: Recursos suficientes facilitan implementación de medidas y auditorías; carencia eleva siniestralidad. | Normativa (habitual): LPRL."
+        },
+        {
+          "id": "gs_formacion_seguridad",
+          "label": "Formación del personal de seguridad",
+          "type": "textarea",
+          "normative_tips": "Asegurador: Competencia del personal reduce fallos y mejora respuesta ante emergencias. | Normativa (habitual): LPRL; ISO 45001."
+        },
+        {
+          "id": "gs_especialidades_seguridad",
+          "label": "Especialidades (seguridad trabajo, higiene, ergonomía, medicina)",
+          "type": "textarea",
+          "normative_tips": "Asegurador: Cobertura de especialidades reduce riesgos operativos y sancionadores; mejora aceptabilidad. | Normativa (habitual): LPRL/RSP."
+        },
+        {
+          "id": "gs_servicio_prevencion_externo",
+          "label": "Empresa externa de servicio de prevención",
+          "type": "text",
+          "normative_tips": "Asegurador: Un SPA competente mejora evaluación y seguimiento; influye en cultura preventiva. | Normativa (habitual): RD 39/1997 (RSP)."
+        },
+        {
+          "id": "gs_metodologias_analisis_riesgos",
+          "label": "Metodologías de análisis y evaluación (HAZOP, SIL, etc.)",
+          "type": "textarea",
+          "normative_tips": "Asegurador: Uso de metodologías formales reduce probabilidad de eventos mayores y mejora suscripción. | Normativa (habitual): IEC 61511/SIL (si aplica); buenas prácticas HAZOP."
+        },
+        {
+          "id": "gs_gestion_cambios_bypasses",
+          "label": "Gestión de cambios y by-passes",
+          "type": "textarea",
+          "normative_tips": "Asegurador: La falta de MOC es causa recurrente de eventos mayores; un sistema robusto reduce siniestralidad. | Normativa (habitual): Buenas prácticas de seguridad de proceso."
+        },
+        {
+          "id": "gs_procedimientos_seguridad",
+          "label": "Procedimientos (permisos trabajos en caliente, no fumar, orden y limpieza, etc.)",
+          "type": "textarea",
+          "normative_tips": "Asegurador: Hot Work controlado reduce incendios de contratistas y mejora condiciones de póliza. | Normativa (habitual): NFPA 51B; buenas prácticas contratistas."
+        },
+        {
+          "id": "gs_formacion_operarios",
+          "label": "Formación de operarios (inducción/refresco/puesto)",
+          "type": "textarea",
+          "normative_tips": "Asegurador: Reduce error humano y aumenta detección temprana y control de conatos. | Normativa (habitual): LPRL; ISO 45001."
+        },
+        {
+          "id": "gs_investigacion_incidentes",
+          "label": "Investigación de incidentes/accidentes (causa-raíz, lecciones)",
+          "type": "textarea",
+          "normative_tips": "Asegurador: Mejora aprendizaje organizativo y reduce recurrencia, bajando frecuencia de siniestros. | Normativa (habitual): ISO 45001; buenas prácticas RCA."
+        },
+        {
+          "id": "gs_kpis",
+          "label": "KPI’s de seguridad",
+          "type": "textarea",
+          "normative_tips": "Asegurador: Indicadores permiten seguimiento y evidencia de control del riesgo. | Normativa (habitual): ISO 45001."
+        },
+        {
+          "id": "gs_plan_autoproteccion",
+          "label": "Plan de autoprotección (elaboración, 1ª/2ª intervención, formación)",
+          "type": "textarea",
+          "normative_tips": "Asegurador: Mejora la respuesta organizada y reduce escalada de siniestros. | Normativa (habitual): RD 393/2007 (Norma Básica de Autoprotección)."
+        },
+        {
+          "id": "gs_seveso_iii",
+          "label": "Afectación SEVESO III (Sí/No y detalle)",
+          "type": "textarea",
+          "normative_tips": "Asegurador: SEVESO implica peligros mayores y controles específicos; condiciona aceptabilidad y límites. | Normativa (habitual): Directiva Seveso III y transposición en España."
+        },
+        {
+          "id": "gs_simulacros_periodicos",
+          "label": "Simulacros periódicos (frecuencia y alcance)",
+          "type": "textarea",
+          "normative_tips": "Asegurador: Mejora la respuesta organizada y reduce escalada de siniestros. | Normativa (habitual): RD 393/2007 (Norma Básica de Autoprotección)."
+        },
+        {
+          "id": "gs_bomberos_propios",
+          "label": "Bomberos profesionales propios (nº, equipos, vehículos, etc.)",
+          "type": "textarea",
+          "normative_tips": "Asegurador: Brigada profesional mejora control inicial y reduce PML, especialmente con respuesta pública lenta. | Normativa (habitual): Autoprotección (RD 393/2007) y planes internos."
+        },
+        {
+          "id": "gs_bomberos_publicos",
+          "label": "Bomberos públicos (distancia/tiempo; visitas a planta)",
+          "type": "textarea",
+          "normative_tips": "Asegurador: Tiempo de respuesta condiciona necesidad de autosuficiencia y reserva de agua; afecta PML. | Normativa (habitual): Planes de emergencia/Autoprotección."
+        }
+      ]
+    },
+    {
+      "id": "medios_proteccion_incendios",
+      "title": "MEDIOS DE PROTECCIÓN CONTRA INCENDIOS",
+      "fields": [
+        {
+          "id": "mpci_reglamentacion_considerada",
+          "label": "Reglamentación considerada (RSCIEI/RCPIEI, NFPA, FM, otros)",
+          "type": "textarea",
+          "normative_tips": "Asegurador: El estándar de diseño define robustez del sistema y la confianza en su desempeño, afectando prima. | Normativa (habitual): RSCIEI (RD 2267/2004); RIPCI (RD 513/2017); UNE-EN 12845; NFPA/FM."
+        },
+        {
+          "id": "mpci_medios_manuales_group",
+          "label": "Medios manuales de extinción",
+          "type": "group",
+          "fields": [
+            {
+              "id": "mpci_extintores",
+              "label": "Extintores (tipo/agente; nº; ubicación; accesibilidad)",
+              "type": "textarea",
+              "normative_tips": "Asegurador: Afecta la capacidad de primera intervención y control inicial del conato. | Normativa (habitual): RIPCI (RD 513/2017); UNE pertinentes (BIE/hidrantes)."
+            },
+            {
+              "id": "mpci_bies",
+              "label": "BIEs (tipo 25/45; nº; presión estática en BIE más alejada; ubicación)",
+              "type": "textarea",
+              "normative_tips": "Asegurador: Afecta la capacidad de primera intervención y control inicial del conato. | Normativa (habitual): RIPCI (RD 513/2017); UNE pertinentes (BIE/hidrantes)."
+            },
+            {
+              "id": "mpci_hidrantes",
+              "label": "Hidrantes (públicos y/o propios; tipo; nº; ubicación)",
+              "type": "textarea",
+              "normative_tips": "Asegurador: Afecta la capacidad de primera intervención y control inicial del conato. | Normativa (habitual): RIPCI (RD 513/2017); UNE pertinentes (BIE/hidrantes)."
+            },
+            {
+              "id": "mpci_otros_manual",
+              "label": "Otros medios manuales (columnas secas, lanzas, monitores, etc.)",
+              "type": "textarea",
+              "normative_tips": "Asegurador: Afecta la capacidad de primera intervención y control inicial del conato. | Normativa (habitual): RIPCI (RD 513/2017); UNE pertinentes (BIE/hidrantes)."
+            }
+          ],
+          "normative_tips": "Asegurador: Determina capacidad de primera intervención y soporte a bomberos; insuficiencias elevan PML. | Normativa (habitual): RIPCI y UNE aplicables."
+        },
+        {
+          "id": "mpci_deteccion_alarma_group",
+          "label": "Sistemas de detección y alarma",
+          "type": "group",
+          "fields": [
+            {
+              "id": "mpci_deteccion_existe",
+              "label": "¿Existe detección de incendios?",
+              "type": "boolean",
+              "normative_tips": "Asegurador: Acelera la respuesta y reduce el tiempo de crecimiento del incendio, especialmente fuera de horario. | Normativa (habitual): UNE-EN 54 / UNE 23007; NFPA 72 (si aplica); RIPCI (RD 513/2017)."
+            },
+            {
+              "id": "mpci_tipo_deteccion_areas",
+              "label": "Tipo de detección y áreas protegidas",
+              "type": "textarea",
+              "normative_tips": "Asegurador: Acelera la respuesta y reduce el tiempo de crecimiento del incendio, especialmente fuera de horario. | Normativa (habitual): UNE-EN 54 / UNE 23007; NFPA 72 (si aplica); RIPCI (RD 513/2017)."
+            },
+            {
+              "id": "mpci_reglamento_diseno_deteccion",
+              "label": "Reglamento/estándar considerado para diseño de detección",
+              "type": "text",
+              "normative_tips": "Asegurador: Acelera la respuesta y reduce el tiempo de crecimiento del incendio, especialmente fuera de horario. | Normativa (habitual): UNE-EN 54 / UNE 23007; NFPA 72 (si aplica); RIPCI (RD 513/2017)."
+            },
+            {
+              "id": "mpci_transmision_alarmas",
+              "label": "Transmisión de alarmas a zona 24h o CRA 24h",
+              "type": "textarea",
+              "normative_tips": "Asegurador: Sin transmisión 24h la detección pierde eficacia fuera de horario, elevando severidad del siniestro. | Normativa (habitual): UNE-EN 54/UNE 23007; buenas prácticas aseguradora."
+            }
+          ],
+          "normative_tips": "Asegurador: Detección temprana reduce el tamaño del incendio antes de intervención, afectando PML. | Normativa (habitual): UNE-EN 54/UNE 23007; RIPCI."
+        },
+        {
+          "id": "mpci_auto_extincion_group",
+          "label": "Medios automáticos de extinción",
+          "type": "group",
+          "fields": [
+            {
+              "id": "mpci_tipo_extincion_areas",
+              "label": "Tipo de instalación de extinción / Áreas protegidas",
+              "type": "textarea",
+              "normative_tips": "Asegurador: Cobertura y tipo (rociadores/espuma/gas) determinan control del incendio y aceptabilidad. | Normativa (habitual): UNE-EN 12845/NFPA 13; NFPA 11 (espuma) si aplica; RIPCI."
+            },
+            {
+              "id": "mpci_diseno_adecuado",
+              "label": "Diseño adecuado (Sí/No) + observaciones",
+              "type": "textarea",
+              "normative_tips": "Asegurador: Diseño incorrecto (densidad insuficiente, obstrucciones) puede equivaler a no tener protección, elevando PML. | Normativa (habitual): UNE-EN 12845/NFPA 13; NFPA 25 (mantenimiento)."
+            },
+            {
+              "id": "mpci_mantenimiento_estado",
+              "label": "Inspección y mantenimiento (estado y adecuación)",
+              "type": "textarea",
+              "normative_tips": "Asegurador: Falta de mantenimiento es causa principal de fallo de sistemas; afecta aceptabilidad. | Normativa (habitual): RIPCI; NFPA 25."
+            }
+          ],
+          "normative_tips": "Asegurador: Los sistemas automáticos son el principal mitigador del riesgo de incendio en industria. | Normativa (habitual): UNE-EN 12845/NFPA 13; RIPCI; NFPA 25."
+        },
+        {
+          "id": "mpci_agua_group",
+          "label": "Sistema de abastecimiento de agua PCI",
+          "type": "group",
+          "fields": [
+            {
+              "id": "mpci_fuente_alimentacion_agua",
+              "label": "Fuente de alimentación (red, depósito, pozo, etc.)",
+              "type": "textarea",
+              "normative_tips": "Asegurador: Fiabilidad de la fuente condiciona la disponibilidad real del sistema PCI durante el siniestro. | Normativa (habitual): NFPA 22; UNE 23500 (si aplica)."
+            },
+            {
+              "id": "mpci_redes_suministro_agua",
+              "label": "Redes de suministro (externo/interno; diámetros; anillo o no)",
+              "type": "textarea",
+              "normative_tips": "Asegurador: Redes en anillo y diámetros adecuados reducen vulnerabilidad por roturas y mejoran caudal. | Normativa (habitual): UNE 23500; NFPA 24."
+            },
+            {
+              "id": "mpci_equipos_bombeo",
+              "label": "Equipos de bombeo (exclusivos o no; nº; tipo; características)",
+              "type": "textarea",
+              "normative_tips": "Asegurador: Redundancia (eléctrica + diésel) y exclusividad para incendio son claves para desempeño y aceptabilidad. | Normativa (habitual): NFPA 20; UNE 23500."
+            },
+            {
+              "id": "mpci_pruebas_bombas",
+              "label": "Pruebas de bombas (frecuencia y evidencias)",
+              "type": "textarea",
+              "normative_tips": "Asegurador: Pruebas periódicas confirman disponibilidad; sin ellas se asume fallo potencial. | Normativa (habitual): NFPA 25; RIPCI."
+            }
+          ],
+          "normative_tips": "Asegurador: Sin agua fiable, el resto de PCI pierde eficacia; es un factor crítico de PML. | Normativa (habitual): NFPA 20/22/25; UNE 23500; RIPCI."
+        },
+        {
+          "id": "mpci_documentacion_adjunta",
+          "label": "Documentación PCI (planos, memorias, certificados, pruebas) (adjuntar)",
+          "type": "file_multiple",
+          "normative_tips": "Asegurador: Evidencia documental soporta la validez del diseño y mantenimiento, mejorando condiciones. | Normativa (habitual): RIPCI; UNE/NFPA según sistema."
+        }
+      ]
+    },
+    {
+      "id": "seguridad_fisica",
+      "title": "SEGURIDAD FÍSICA / VIGILANCIA",
+      "fields": [
+        {
+          "id": "sf_proteccion_fisica_parcela",
+          "label": "Protección física de parcela (vallados/muros/rejas/bolardos, etc.)",
+          "type": "textarea",
+          "normative_tips": "Asegurador: Este dato influye en la probabilidad/severidad del siniestro y en el PML/EML y la continuidad (PB). | Normativa (habitual): Buenas prácticas de ingeniería de riesgos y normativa aplicable según sector."
+        },
+        {
+          "id": "sf_num_accesos_parcela",
+          "label": "Nº de accesos a la parcela",
+          "type": "number",
+          "normative_tips": "Asegurador: Más accesos elevan superficie de ataque y necesidad de control; menos control aumenta robo/sabotaje. | Normativa (habitual): Buenas prácticas seguridad patrimonial."
+        },
+        {
+          "id": "sf_control_accesos_parcela",
+          "label": "Control de accesos a la parcela",
+          "type": "textarea",
+          "normative_tips": "Asegurador: Este dato influye en la probabilidad/severidad del siniestro y en el PML/EML y la continuidad (PB). | Normativa (habitual): Buenas prácticas de ingeniería de riesgos y normativa aplicable según sector."
+        },
+        {
+          "id": "sf_iluminacion_parcela",
+          "label": "Iluminación interior parcela y alrededor de edificios",
+          "type": "textarea",
+          "normative_tips": "Asegurador: Buena iluminación disuade intrusión y facilita vigilancia/detección de incidentes. | Normativa (habitual): Buenas prácticas seguridad."
+        },
+        {
+          "id": "sf_medidas_antintrusion_edificios",
+          "label": "Medidas físicas anti-intrusión en edificios (puertas, cerraduras, rejas, vidrio, etc.)",
+          "type": "textarea",
+          "normative_tips": "Asegurador: Reduce probabilidad de intrusión/robo e incendio intencionado, mejorando la aceptabilidad. | Normativa (habitual): Normativa de Seguridad Privada (España)."
+        },
+        {
+          "id": "sf_control_acceso_edificios",
+          "label": "Control de acceso a edificios",
+          "type": "textarea",
+          "normative_tips": "Asegurador: Este dato influye en la probabilidad/severidad del siniestro y en el PML/EML y la continuidad (PB). | Normativa (habitual): Buenas prácticas de ingeniería de riesgos y normativa aplicable según sector."
+        },
+        {
+          "id": "sf_deteccion_intrusion",
+          "label": "Sistemas de detección de intrusión (perimetral/volumétrica)",
+          "type": "textarea",
+          "normative_tips": "Asegurador: Acelera la respuesta y reduce el tiempo de crecimiento del incendio, especialmente fuera de horario. | Normativa (habitual): UNE-EN 54 / UNE 23007; NFPA 72 (si aplica); RIPCI (RD 513/2017)."
+        },
+        {
+          "id": "sf_transmision_alarmas_intrusion",
+          "label": "Transmisión alarmas intrusión a zona 24h o CRA 24h",
+          "type": "textarea",
+          "normative_tips": "Asegurador: Conexión a CRA y respuesta reduce probabilidad de robo y de incendio intencionado, mejorando condiciones. | Normativa (habitual): Normativa de seguridad privada."
+        },
+        {
+          "id": "sf_otros_sistemas",
+          "label": "Otros sistemas (CCTV, cajas fuertes, etc.)",
+          "type": "textarea",
+          "normative_tips": "Asegurador: CCTV y control documental reducen fraude y mejoran investigación post-siniestro. | Normativa (habitual): Seguridad privada; RGPD por videovigilancia."
+        },
+        {
+          "id": "sf_vigilancia_detalle",
+          "label": "Vigilancia (empresa, nº vigilantes/turno, rondas, actuación emergencias, etc.)",
+          "type": "textarea",
+          "normative_tips": "Asegurador: Vigilancia 24/7 es una de las medidas más valoradas para robo e incendio intencionado; reduce frecuencia. | Normativa (habitual): Seguridad privada; planes de autoprotección."
+        }
+      ]
+    },
+    {
+      "id": "mantenimiento_industrial",
+      "title": "MANTENIMIENTO",
+      "fields": [
+        {
+          "id": "mnt_dependencia_departamento",
+          "label": "Dependencia del departamento de mantenimiento (organización)",
+          "type": "textarea",
+          "normative_tips": "Asegurador: Un mantenimiento trazable reduce averías e incendios y mejora asegurabilidad de AM/PB. | Normativa (habitual): Buenas prácticas (p.ej. ISO 55001/ISO 17359) y requisitos de aseguradora."
+        },
+        {
+          "id": "mnt_programa_maquinaria_proceso",
+          "label": "Programa de mantenimiento de maquinaria de proceso",
+          "type": "textarea",
+          "normative_tips": "Asegurador: Un mantenimiento trazable reduce averías e incendios y mejora asegurabilidad de AM/PB. | Normativa (habitual): Buenas prácticas (p.ej. ISO 55001/ISO 17359) y requisitos de aseguradora."
+        },
+        {
+          "id": "mnt_programa_instalaciones_servicio",
+          "label": "Programa de mantenimiento de instalaciones de servicio",
+          "type": "textarea",
+          "normative_tips": "Asegurador: Un mantenimiento trazable reduce averías e incendios y mejora asegurabilidad de AM/PB. | Normativa (habitual): Buenas prácticas (p.ej. ISO 55001/ISO 17359) y requisitos de aseguradora."
+        },
+        {
+          "id": "mnt_tecnicos_propios",
+          "label": "Técnicos propios (nº, formación, experiencia)",
+          "type": "textarea",
+          "normative_tips": "Asegurador: Recursos y competencia del equipo propio reducen averías e incendios por mantenimiento deficiente. | Normativa (habitual): ISO 45001; buenas prácticas ISO 55001."
+        },
+        {
+          "id": "mnt_mantenimiento_propio_alcance",
+          "label": "Mantenimiento propio (alcance)",
+          "type": "textarea",
+          "normative_tips": "Asegurador: Define control interno sobre activos críticos; alcance insuficiente eleva fallo y PB. | Normativa (habitual): ISO 55001."
+        },
+        {
+          "id": "mnt_mantenimiento_externo_alcance",
+          "label": "Mantenimiento externo (alcance, empresas)",
+          "type": "textarea",
+          "normative_tips": "Asegurador: Contratistas cualificados y SLAs mejoran fiabilidad; falta de control eleva riesgo. | Normativa (habitual): Gestión de contratas; ISO 45001."
+        },
+        {
+          "id": "mnt_empresas_prestigio",
+          "label": "Empresas de mantenimiento de reconocido prestigio técnico",
+          "type": "textarea",
+          "normative_tips": "Asegurador: Proveedores reconocidos reducen incertidumbre sobre calidad y cumplimiento. | Normativa (habitual): ISO 9001 (evaluación de proveedores)."
+        },
+        {
+          "id": "mnt_formacion_personal",
+          "label": "Formación del personal de mantenimiento",
+          "type": "textarea",
+          "normative_tips": "Asegurador: Formación reduce errores que causan incendios/averías. | Normativa (habitual): LPRL; ISO 45001."
+        },
+        {
+          "id": "mnt_experiencia_personal",
+          "label": "Experiencia del personal de mantenimiento",
+          "type": "textarea",
+          "normative_tips": "Asegurador: Experiencia incrementa detección de fallos incipientes, reduciendo AM y PB. | Normativa (habitual): Buenas prácticas."
+        },
+        {
+          "id": "mnt_gmao",
+          "label": "GMAO / Órdenes de trabajo (trazabilidad)",
+          "type": "textarea",
+          "normative_tips": "Asegurador: Trazabilidad evidencia control del riesgo y suele ser requisito para coberturas AM. | Normativa (habitual): ISO 55001/ISO 9001 (información documentada)."
+        },
+        {
+          "id": "mnt_tipo_mantenimiento",
+          "label": "Tipo de mantenimiento (preventivo/predictivo/correctivo)",
+          "type": "textarea",
+          "normative_tips": "Asegurador: Predictivo reduce probabilidad de fallo catastrófico e incendios; mejora asegurabilidad AM. | Normativa (habitual): ISO 17359 (monitorización de condición)."
+        },
+        {
+          "id": "mnt_monitorizacion_variables",
+          "label": "Monitorización (vibraciones, termografía, análisis aceites, etc.)",
+          "type": "textarea",
+          "normative_tips": "Asegurador: Detecta puntos calientes/fallos eléctricos y mecánicos antes del siniestro, reduciendo frecuencia y severidad. | Normativa (habitual): Buenas prácticas; ISO 17359."
+        },
+        {
+          "id": "mnt_inspecciones_periodicas",
+          "label": "Inspecciones periódicas por personal especializado (sí/no y detalle)",
+          "type": "textarea",
+          "normative_tips": "Asegurador: Inspecciones formales reducen fallos en activos críticos y dan confianza al suscriptor. | Normativa (habitual): Reglamentos industriales aplicables (REBT, presión, etc.)."
+        },
+        {
+          "id": "mnt_empresas_inspecciones",
+          "label": "Empresas encargadas de inspecciones periódicas",
+          "type": "textarea",
+          "normative_tips": "Asegurador: Empresas acreditadas reducen incertidumbre sobre inspección y cumplimiento. | Normativa (habitual): Requisitos de organismos de control (OCA) según reglamento."
+        },
+        {
+          "id": "mnt_parada_anual",
+          "label": "Parada anual de mantenimiento (sí/no y alcance)",
+          "type": "textarea",
+          "normative_tips": "Asegurador: Paradas planificadas permiten revisión profunda, reduciendo probabilidad de fallo e incendio. | Normativa (habitual): Buenas prácticas de mantenimiento."
+        },
+        {
+          "id": "mnt_estado_conservacion",
+          "label": "Estado de conservación de las instalaciones",
+          "type": "textarea",
+          "normative_tips": "Asegurador: Estado deficiente eleva probabilidad de siniestro y puede implicar exclusiones/recargos. | Normativa (habitual): RSCIEI/RIPCI/REBT según hallazgos."
+        }
+      ]
+    },
+    {
+      "id": "perdida_beneficio",
+      "title": "PÉRDIDA DE BENEFICIO",
+      "fields": [
+        {
+          "id": "pb_materia_prima_group",
+          "label": "Materia prima. Proveedores MP",
+          "type": "group",
+          "fields": [
+            {
+              "id": "pb_mp_stock",
+              "label": "Stock MP (ton/días/semanas/meses) en planta/almacén (fijo + flotante)",
+              "type": "textarea",
+              "normative_tips": "Asegurador: Mayor stock reduce dependencia (mitiga PB por proveedores) pero aumenta carga de fuego/PML. | Normativa (habitual): ISO 22301; RSCIEI."
+            },
+            {
+              "id": "pb_mp_num_proveedores",
+              "label": "Nº proveedores",
+              "type": "number",
+              "normative_tips": "Asegurador: Diversificación reduce riesgo de contingencia; proveedor único agrava PB. | Normativa (habitual): ISO 22301 (gestión de proveedores)."
+            },
+            {
+              "id": "pb_mp_exigen_stocks",
+              "label": "¿Se exige a proveedores mantener stocks determinados?",
+              "type": "textarea",
+              "normative_tips": "Asegurador: Acuerdos de stock con proveedor reducen interrupción; mejora perfil PB. | Normativa (habitual): ISO 22301."
+            },
+            {
+              "id": "pb_mp_origen",
+              "label": "Origen de los proveedores",
+              "type": "textarea",
+              "normative_tips": "Asegurador: Origen lejano puede alargar recuperación (logística/aduanas), elevando PB. | Normativa (habitual): ISO 22301."
+            },
+            {
+              "id": "pb_mp_pct_mayor_proveedor",
+              "label": "% de MP suministrada por el mayor proveedor",
+              "type": "number",
+              "normative_tips": "Asegurador: Concentración alta incrementa riesgo de contingencia; puede exigir extensiones específicas. | Normativa (habitual): ISO 22301."
+            },
+            {
+              "id": "pb_mp_transporte",
+              "label": "Transporte MP",
+              "type": "textarea",
+              "normative_tips": "Asegurador: Dependencia de un modo/route incrementa vulnerabilidad; diversificación mitiga PB. | Normativa (habitual): ISO 22301."
+            },
+            {
+              "id": "pb_mp_suministro_alternativo",
+              "label": "Suministro alternativo (otros proveedores) y % sobre total",
+              "type": "textarea",
+              "normative_tips": "Asegurador: Alternativas validadas reducen duración de PB; sin alternativas aumenta MPL. | Normativa (habitual): ISO 22301."
+            },
+            {
+              "id": "pb_mp_extracoste",
+              "label": "Extra-coste producción por terceros/otras plantas",
+              "type": "textarea",
+              "normative_tips": "Asegurador: Extra-costes impactan el cálculo de PB (incremento de coste de explotación). | Normativa (habitual): Condiciones de póliza PB y contabilidad."
+            }
+          ],
+          "normative_tips": "Asegurador: La resiliencia de suministro determina la exposición a PB por contingencia (proveedores). | Normativa (habitual): ISO 22301."
+        },
+        {
+          "id": "pb_semielaborado_group",
+          "label": "Producto semielaborado",
+          "type": "group",
+          "fields": [
+            {
+              "id": "pb_ps_stock",
+              "label": "Stock PS (ton/días/semanas/meses)",
+              "type": "textarea",
+              "normative_tips": "Asegurador: Stock amortigua paradas de proceso; reduce PB pero puede aumentar PML de almacenamiento. | Normativa (habitual): ISO 22301; RSCIEI."
+            },
+            {
+              "id": "pb_ps_suministro_alternativo",
+              "label": "Suministro alternativo (otras plantas/proveedores)",
+              "type": "textarea",
+              "normative_tips": "Asegurador: Alternativas reducen duración de PB y mejoran perfil de riesgo. | Normativa (habitual): ISO 22301."
+            },
+            {
+              "id": "pb_ps_extracoste",
+              "label": "Extra-coste (externos/grupo)",
+              "type": "textarea",
+              "normative_tips": "Asegurador: Afecta a la cobertura de gastos adicionales para mantener operaciones (PB). | Normativa (habitual): Condiciones PB."
+            }
+          ],
+          "normative_tips": "Asegurador: Determina capacidad de continuar operaciones ante roturas parciales del proceso. | Normativa (habitual): ISO 22301."
+        },
+        {
+          "id": "pb_producto_terminado_group",
+          "label": "Producto terminado (PT). Clientes",
+          "type": "group",
+          "fields": [
+            {
+              "id": "pb_pt_stock",
+              "label": "Stock PT (ton/días/semanas/meses) en planta",
+              "type": "textarea",
+              "normative_tips": "Asegurador: Stock PT puede reducir pérdida de ventas tras siniestro, pero aumenta PML por carga de fuego y valor. | Normativa (habitual): ISO 22301; RSCIEI."
+            },
+            {
+              "id": "pb_pt_num_clientes",
+              "label": "Nº clientes",
+              "type": "number",
+              "normative_tips": "Asegurador: Diversificación de clientes reduce riesgo financiero y volatilidad tras siniestro. | Normativa (habitual): Buenas prácticas de continuidad."
+            },
+            {
+              "id": "pb_pt_exigen_stocks",
+              "label": "¿Clientes exigen stocks en planta? (Sí/No) Cantidades",
+              "type": "textarea",
+              "normative_tips": "Asegurador: Obligación de stock puede agravar PML en almacenamiento y penalizar si no hay protección adecuada. | Normativa (habitual): RSCIEI/NFPA 13 (por carga de fuego) y contratos."
+            },
+            {
+              "id": "pb_pt_sectores_venta",
+              "label": "Sectores de venta",
+              "type": "textarea",
+              "normative_tips": "Asegurador: Sectores sensibles (automoción, alimentación) pueden penalizar PB por penalizaciones contractuales. | Normativa (habitual): Gestión contractual/continuidad."
+            },
+            {
+              "id": "pb_pt_pct_venta_sector",
+              "label": "% de venta según sector",
+              "type": "textarea",
+              "normative_tips": "Asegurador: Concentración sectorial determina impacto de campañas/supply chain, afectando MPL PB. | Normativa (habitual): ISO 22301."
+            },
+            {
+              "id": "pb_pt_pct_mayor_cliente",
+              "label": "% de PT vendido al mayor cliente",
+              "type": "number",
+              "normative_tips": "Asegurador: Alta concentración eleva riesgo de pérdida de contratos tras siniestro; puede requerir límites mayores. | Normativa (habitual): ISO 22301."
+            },
+            {
+              "id": "pb_pt_transporte",
+              "label": "Transporte PT",
+              "type": "textarea",
+              "normative_tips": "Asegurador: Dependencia logística impacta continuidad; fallos pueden extender PB incluso sin DM. | Normativa (habitual): ISO 22301."
+            },
+            {
+              "id": "pb_pt_produccion_alternativa",
+              "label": "Producción alternativa (grupo/terceros) y % sobre total necesario",
+              "type": "textarea",
+              "normative_tips": "Asegurador: Capacidad alternativa reduce duración de PB y mejora aceptabilidad. | Normativa (habitual): ISO 22301."
+            },
+            {
+              "id": "pb_pt_extracoste",
+              "label": "Extra-coste por plantas del grupo/terceros",
+              "type": "textarea",
+              "normative_tips": "Asegurador: Afecta cálculo de gastos adicionales (PB) y necesidades de cobertura. | Normativa (habitual): Condiciones PB."
+            }
+          ],
+          "normative_tips": "Asegurador: Determina el perfil de pérdida de ingresos y la resiliencia comercial tras un siniestro. | Normativa (habitual): ISO 22301."
+        },
+        {
+          "id": "pb_flexibilidad_group",
+          "label": "Flexibilidad y redundancia de procesos e instalaciones auxiliares",
+          "type": "group",
+          "fields": [
+            {
+              "id": "pb_tipo_proceso",
+              "label": "Tipo de proceso (lineal/diversificado)",
+              "type": "text",
+              "normative_tips": "Asegurador: Procesos lineales suelen tener más SPOF; elevan severidad de PB. | Normativa (habitual): ISO 22301."
+            },
+            {
+              "id": "pb_lineas_unicas_o_duplicadas",
+              "label": "Líneas únicas o duplicidad de líneas",
+              "type": "textarea",
+              "normative_tips": "Asegurador: Duplicidad reduce PB y mejora continuidad; líneas únicas agravan MPL. | Normativa (habitual): ISO 22301."
+            },
+            {
+              "id": "pb_cuellos_botella",
+              "label": "Cuellos de botella en líneas/maquinaria",
+              "type": "textarea",
+              "normative_tips": "Asegurador: Identifica activos que determinan la duración real de la parada (PB). | Normativa (habitual): ISO 22301/BIA."
+            },
+            {
+              "id": "pb_maquinaria_nacional_internacional",
+              "label": "Maquinaria nacional/internacional",
+              "type": "textarea",
+              "normative_tips": "Asegurador: Importaciones pueden alargar reposición, elevando periodo de indemnización necesario. | Normativa (habitual): ISO 22301."
+            }
+          ],
+          "normative_tips": "Asegurador: Define la MPL PB por ausencia de redundancia; clave para límites/periodos. | Normativa (habitual): ISO 22301."
+        },
+        {
+          "id": "pb_tabla_pct_por_linea",
+          "label": "% producción y % facturación por línea/equipo",
+          "type": "array_of_objects",
+          "assistant_instructions": "Para cada línea/equipo principal, indica su % del total.",
+          "normative_tips": "Asegurador: Base cuantitativa para estimar PB y priorizar recomendaciones de redundancia. | Normativa (habitual): ISO 22301.",
+          "allow_add_remove_rows": true,
+          "item_label_template": "Línea {{index + 1}}",
+          "item_schema": {
+            "id": "pb_tabla_pct_por_linea_item",
+            "fields": [
+              {
+                "id": "linea_maquinaria",
+                "label": "Línea de producción / maquinaria",
+                "type": "text",
+                "normative_tips": "Asegurador: Permite cuantificar impacto por pérdida de una línea (PB). | Normativa (habitual): ISO 22301/BIA."
+              },
+              {
+                "id": "pct_produccion",
+                "label": "% Producción total",
+                "type": "number",
+                "normative_tips": "Asegurador: Cuantifica dependencia; valores altos elevan severidad de PB. | Normativa (habitual): ISO 22301."
+              },
+              {
+                "id": "pct_facturacion",
+                "label": "% Facturación total",
+                "type": "number",
+                "normative_tips": "Asegurador: Relaciona activos con ingresos; clave para MPL y límites PB. | Normativa (habitual): ISO 22301."
+              }
+            ]
+          }
+        },
+        {
+          "id": "pb_tabla_reposicion_equipos",
+          "label": "Tiempo reposición equipos principales y cuello de botella hasta vuelta a normalidad",
+          "type": "array_of_objects",
+          "assistant_instructions": "Incluye tiempos realistas (fabricación + transporte + montaje + ramp-up).",
+          "normative_tips": "Asegurador: Tabla crítica para dimensionar periodo de indemnización y MPL PB. | Normativa (habitual): ISO 22301.",
+          "allow_add_remove_rows": true,
+          "item_label_template": "Equipo {{index + 1}}",
+          "item_schema": {
+            "id": "pb_tabla_reposicion_equipos_item",
+            "fields": [
+              {
+                "id": "equipo_linea",
+                "label": "Línea de producción / maquinaria",
+                "type": "text",
+                "normative_tips": "Asegurador: Identifica SPOF; base para PB y AM. | Normativa (habitual): ISO 22301; ISO 55001."
+              },
+              {
+                "id": "tiempo_reposicion",
+                "label": "Tiempo de reposición",
+                "type": "text",
+                "normative_tips": "Asegurador: Determina duración de PB; tiempos largos requieren periodos/limites mayores. | Normativa (habitual): ISO 22301."
+              },
+              {
+                "id": "tiempo_montaje",
+                "label": "Tiempo de montaje/puesta en marcha",
+                "type": "text",
+                "normative_tips": "Asegurador: Puede superar el reposicionamiento y extender PB; influye en MPL. | Normativa (habitual): ISO 22301."
+              },
+              {
+                "id": "coste_reemplazo",
+                "label": "Coste de reemplazo",
+                "type": "text",
+                "normative_tips": "Asegurador: Impacta sumas aseguradas y AM; puede condicionar coaseguro. | Normativa (habitual): Tasación de activos."
+              }
+            ]
+          }
+        },
+        {
+          "id": "pb_tabla_reposicion_instalaciones_servicio",
+          "label": "Instalaciones de servicio críticas (impacto % producción/facturación y reposición)",
+          "type": "array_of_objects",
+          "assistant_instructions": "Incluye servicios que pueden causar parada parcial o total.",
+          "normative_tips": "Asegurador: Los servicios auxiliares suelen ser SPOF; tabla clave para recomendaciones de redundancia. | Normativa (habitual): ISO 22301.",
+          "allow_add_remove_rows": true,
+          "item_label_template": "Instalación {{index + 1}}",
+          "item_schema": {
+            "id": "pb_tabla_reposicion_instalaciones_servicio_item",
+            "fields": [
+              {
+                "id": "instalacion",
+                "label": "Instalación de servicio (transformadores, calderas, frío, etc.)",
+                "type": "text",
+                "normative_tips": "Asegurador: Identifica dependencias no productivas que pueden parar toda la planta. | Normativa (habitual): ISO 22301."
+              },
+              {
+                "id": "pct_produccion_afectada",
+                "label": "% Producción afectada",
+                "type": "number",
+                "normative_tips": "Asegurador: Cuantifica severidad de PB por fallo del servicio. | Normativa (habitual): ISO 22301."
+              },
+              {
+                "id": "pct_facturacion_afectada",
+                "label": "% Facturación afectada",
+                "type": "number",
+                "normative_tips": "Asegurador: Traduce dependencia a impacto financiero; clave para límites PB. | Normativa (habitual): ISO 22301."
+              },
+              {
+                "id": "tiempo_reposicion",
+                "label": "Tiempo de reposición",
+                "type": "text",
+                "normative_tips": "Asegurador: Determina duración esperada de PB por servicios auxiliares. | Normativa (habitual): ISO 22301."
+              }
+            ]
+          }
+        },
+        {
+          "id": "pb_it_backup",
+          "label": "Equipos informáticos (backup, protecciones, etc.)",
+          "type": "textarea",
+          "normative_tips": "Asegurador: IT es crítico para recuperar operación y facturación; backups offline reducen riesgo ciber y PB. | Normativa (habitual): ISO 27001; ISO 22301."
+        },
+        {
+          "id": "pb_interdependencia_group",
+          "label": "Producción / Interdependencia entre plantas del grupo",
+          "type": "group",
+          "fields": [
+            {
+              "id": "pb_turnos_trabajo",
+              "label": "Turnos de trabajo",
+              "type": "text",
+              "normative_tips": "Asegurador: Afecta capacidad de recuperación acelerada (turnos extra) tras siniestro. | Normativa (habitual): ISO 22301."
+            },
+            {
+              "id": "pb_estabilidad_ventas",
+              "label": "Estabilidad anual (regular o estacionaria)",
+              "type": "text",
+              "normative_tips": "Asegurador: Estacionalidad cambia el momento de peor pérdida potencial de PB. | Normativa (habitual): ISO 22301."
+            },
+            {
+              "id": "pb_meses_mayor_produccion",
+              "label": "Meses de mayor producción y % del total",
+              "type": "textarea",
+              "normative_tips": "Asegurador: Define el peor momento de PB y dimensionamiento de límites. | Normativa (habitual): ISO 22301."
+            },
+            {
+              "id": "pb_meses_menor_produccion",
+              "label": "Meses de menor producción y % del total",
+              "type": "textarea",
+              "normative_tips": "Asegurador: Ayuda a planificar periodos de mantenimiento y estrategias de recuperación. | Normativa (habitual): ISO 22301."
+            },
+            {
+              "id": "pb_produccion_bajo_pedido",
+              "label": "Producción bajo pedido (Sí/No) y %",
+              "type": "textarea",
+              "normative_tips": "Asegurador: Producción bajo pedido suele tener menor stock amortiguador, elevando PB tras siniestro. | Normativa (habitual): ISO 22301."
+            },
+            {
+              "id": "pb_num_plantas_grupo",
+              "label": "Número de plantas del grupo (una/varias) (describir)",
+              "type": "textarea",
+              "normative_tips": "Asegurador: Más plantas pueden aportar continuidad (capacidad alternativa), mitigando PB. | Normativa (habitual): ISO 22301."
+            },
+            {
+              "id": "pb_interdependencia",
+              "label": "Interdependencia entre plantas (Sí/No) (describir)",
+              "type": "textarea",
+              "normative_tips": "Asegurador: Interdependencia puede propagar impacto y elevar exposición agregada. | Normativa (habitual): ISO 22301."
+            },
+            {
+              "id": "pb_diagrama_interdependencia",
+              "label": "Diagrama de interdependencia entre centros del grupo (adjuntar)",
+              "type": "file",
+              "normative_tips": "Asegurador: Permite cuantificar propagación de PB y dependencia logística/productiva. | Normativa (habitual): ISO 22301."
+            },
+            {
+              "id": "pb_pct_paralizacion_otras_plantas",
+              "label": "% de paralización de otras plantas si hay siniestro en esta",
+              "type": "textarea",
+              "normative_tips": "Asegurador: Cuantifica efecto dominó y necesidad de límites agregados. | Normativa (habitual): ISO 22301."
+            },
+            {
+              "id": "pb_produccion_alternativa",
+              "label": "Producción alternativa (plantas del grupo/terceros) y extracoste",
+              "type": "textarea",
+              "normative_tips": "Asegurador: Capacidad alternativa reduce PB; extracoste afecta gastos adicionales cubiertos. | Normativa (habitual): ISO 22301; condiciones PB."
+            }
+          ],
+          "normative_tips": "Asegurador: Determina exposición de PB por efecto dominó y capacidad real de desvío de producción. | Normativa (habitual): ISO 22301."
+        },
+        {
+          "id": "pb_bcp_group",
+          "label": "Plan de continuidad de negocio elaborado e implantado",
+          "type": "group",
+          "fields": [
+            {
+              "id": "pb_bcp_existe",
+              "label": "¿Existe un plan BCP/SGCN implantado?",
+              "type": "boolean",
+              "normative_tips": "Asegurador: BCP probado reduce duración de PB y mejora condiciones (especialmente en grandes riesgos). | Normativa (habitual): ISO 22301."
+            },
+            {
+              "id": "pb_sgcn_alcance",
+              "label": "Sistema de gestión continuidad (alcance, política, roles)",
+              "type": "textarea",
+              "normative_tips": "Asegurador: Claridad de roles y alcance incrementa eficacia del plan en crisis. | Normativa (habitual): ISO 22301."
+            },
+            {
+              "id": "pb_bia",
+              "label": "Business Impact Analysis (BIA)",
+              "type": "textarea",
+              "normative_tips": "Asegurador: BIA fundamenta MPL y priorización de recuperación; aumenta confianza en estimaciones. | Normativa (habitual): ISO 22301."
+            },
+            {
+              "id": "pb_analisis_impacto",
+              "label": "Análisis de impacto (proveedores, clientes, productos, áreas geográficas, escenarios críticos)",
+              "type": "textarea",
+              "normative_tips": "Asegurador: Matiza severidad y ayuda a dimensionar límites y periodos de PB. | Normativa (habitual): ISO 22301."
+            },
+            {
+              "id": "pb_estrategia_minimizacion",
+              "label": "Estrategia de minimización de pérdidas",
+              "type": "textarea",
+              "normative_tips": "Asegurador: Estrategias (capacidad alternativa, stocks, acuerdos) reducen duración de PB. | Normativa (habitual): ISO 22301."
+            },
+            {
+              "id": "pb_plan_contingencia",
+              "label": "Plan de contingencia / Plan de Continuidad de Negocio",
+              "type": "textarea",
+              "normative_tips": "Asegurador: La existencia de planes accionables reduce incertidumbre de recuperación. | Normativa (habitual): ISO 22301."
+            },
+            {
+              "id": "pb_implementacion_adecuada",
+              "label": "Implementación adecuada (evidencias)",
+              "type": "textarea",
+              "normative_tips": "Asegurador: Evidencias (simulacros, pruebas) son clave para credibilidad; mejora condiciones. | Normativa (habitual): ISO 22301."
+            },
+            {
+              "id": "pb_revision_periodica",
+              "label": "Revisión periódica del plan",
+              "type": "textarea",
+              "normative_tips": "Asegurador: Revisión asegura vigencia frente a cambios de proceso; reduce riesgo residual. | Normativa (habitual): ISO 22301."
+            }
+          ],
+          "normative_tips": "Asegurador: Un BCP robusto es uno de los principales mitigadores de PB en industria. | Normativa (habitual): ISO 22301."
+        }
+      ]
+    },
+    {
+      "id": "sostenibilidad_esg",
+      "title": "SOSTENIBILIDAD / ESG",
+      "fields": [
+        {
+          "id": "esg_resumen",
+          "label": "Sostenibilidad / ESG (resumen)",
+          "type": "textarea",
+          "normative_tips": "Asegurador: Riesgos ambientales y de gobernanza pueden afectar RC/contaminación y reputación; buena gestión mejora asegurabilidad. | Normativa (habitual): ISO 14001; requisitos regulatorios de medio ambiente; políticas ESG."
+        }
+      ]
+    },
+    {
+      "id": "escenarios_perdidas_riesgos",
+      "title": "ESCENARIOS DE PÉRDIDAS / RIESGOS",
+      "fields": [
+        {
+          "id": "escenarios_perdidas_riesgos",
+          "label": "Escenarios de pérdidas/riesgos (daños materiales, avería maquinaria, PB)",
+          "type": "textarea",
+          "normative_tips": "Asegurador: Facilita estimar PML/EML y priorizar mejoras; base para términos y pricing. | Normativa (habitual): Buenas prácticas de ingeniería de riesgos; FM/NFPA/RSCIEI según escenario."
+        },
+        {
+          "id": "escenarios_recomendaciones",
+          "label": "Recomendaciones de mitigación (priorizadas)",
+          "type": "textarea",
+          "normative_tips": "Asegurador: Recomendaciones reducen riesgo residual y pueden ser garantías/condiciones para asegurar. | Normativa (habitual): RSCIEI; RIPCI; REBT; APQ; ATEX según recomendación."
+        }
+      ]
+    },
+    {
+      "id": "otros",
+      "title": "OTROS",
+      "fields": [
+        {
+          "id": "otros_observaciones",
+          "label": "Otros / Observaciones",
+          "type": "textarea",
+          "normative_tips": "Asegurador: Captura factores atípicos que pueden cambiar el perfil de riesgo o requerir exclusiones. | Normativa (habitual): Depende del hallazgo."
+        }
+      ]
+    }
+  ]
+}

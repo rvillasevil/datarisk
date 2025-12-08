@@ -1,84 +1,86 @@
-<nav class="sidebar-modern">
-  <div class="sidebar-header d-flex align-items-center gap-3">
-    <div class="sidebar-avatar d-inline-flex align-items-center justify-content-center">
-      <i class="bi bi-shield-check"></i>
+<nav class="assistant-nav">
+  <div class="assistant-nav__header">
+    <div class="assistant-nav__identity">
+      <div class="assistant-nav__avatar">
+        <i class="bi bi-shield-check"></i>
+      </div>
+      <div class="assistant-nav__title">
+        <p class="text-muted mb-0 small">Asistente de riesgo</p>
+        <p class="fw-semibold mb-0 text-truncate"><%= risk_assistant.name %></p>
+      </div>
     </div>
-    <div class="sidebar-title">
-      <p class="text-muted mb-0">Asistente de riesgo</p>
-      <p class="fw-semibold mb-0 text-truncate"><%= risk_assistant.name %></p>
-    </div>
-    <%= link_to risk_assistants_path, class: "icon-button", title: "Volver a mis empresas" do %>
+    <%= link_to risk_assistants_path, class: "assistant-nav__icon-btn", title: "Volver a mis empresas" do %>
       <i class="bi bi-arrow-left-short"></i>
     <% end %>
   </div>
 
-  <div class="sidebar-quick-actions d-flex gap-2">
-    <%= link_to summary_risk_assistant_path(risk_assistant), class: "quick-pill" do %>
+  <div class="assistant-nav__quick-links">
+    <%= link_to summary_risk_assistant_path(risk_assistant), class: "assistant-pill" do %>
       <i class="bi bi-clipboard-data"></i>
       <span>Resumen</span>
     <% end %>
-    <%= link_to risk_assistant_resume_path(risk_assistant), class: "quick-pill" do %>
+    <%= link_to risk_assistant_resume_path(risk_assistant), class: "assistant-pill" do %>
       <i class="bi bi-graph-up-arrow"></i>
       <span>Progreso</span>
     <% end %>
   </div>
 
-  <div class="sidebar-section">
-    <div class="sidebar-section-title">
+  <div class="assistant-nav__section">
+    <p class="assistant-nav__section-title">
       <i class="bi bi-journal-richtext"></i>
-      <span>Navegación</span>
-    </div>
-    <ul class="nav flex-column sidebar-nav-list">
-      <li class="nav-item">
-        <%= link_to summary_risk_assistant_path(risk_assistant), class: "nav-link" do %>
-          <i class="bi bi-collection"></i>
-          <div>
+      Navegación
+    </p>
+    <div class="list-group gap-2">
+      <%= link_to summary_risk_assistant_path(risk_assistant), class: "assistant-nav__link list-group-item list-group-item-action" do %>
+        <div class="d-flex align-items-start gap-3">
+          <div class="assistant-nav__icon bg-primary-subtle text-primary"><i class="bi bi-collection"></i></div>
+          <div class="flex-grow-1">
             <div class="fw-semibold">Datos recopilados</div>
             <small class="text-muted">Consulta toda la información registrada</small>
           </div>
-        <% end %>
-      </li>
-      <li class="nav-item">
-        <%= link_to risk_assistant_resume_path(risk_assistant), class: "nav-link" do %>
-          <i class="bi bi-speedometer2"></i>
-          <div>
+        </div>
+      <% end %>
+      <%= link_to risk_assistant_resume_path(risk_assistant), class: "assistant-nav__link list-group-item list-group-item-action" do %>
+        <div class="d-flex align-items-start gap-3">
+          <div class="assistant-nav__icon bg-success-subtle text-success"><i class="bi bi-speedometer2"></i></div>
+          <div class="flex-grow-1">
             <div class="fw-semibold">Panel de avance</div>
             <small class="text-muted">Ve el progreso y los campos pendientes</small>
           </div>
-        <% end %>
-      </li>
-    </ul>
+        </div>
+      <% end %>
+    </div>
   </div>
 
-  <div class="sidebar-section">
-    <div class="sidebar-section-title">
+  <div class="assistant-nav__section">
+    <p class="assistant-nav__section-title">
       <i class="bi bi-folder-check"></i>
-      <span>Archivos</span>
-    </div>
+      Archivos
+    </p>
     <% if risk_assistant.uploaded_files.attached? %>
-      <div class="uploaded-files list-group">
+      <div class="assistant-files">
         <% @risk_assistant.uploaded_files.each do |file| %>
-          <div class="list-group-item uploaded-file-card d-flex align-items-center justify-content-between">
-            <div class="d-flex align-items-center gap-2 flex-grow-1">
-              <div class="file-chip">
+          <div class="assistant-file">
+            <div class="d-flex align-items-center gap-3 flex-grow-1">
+              <div class="assistant-file__badge">
                 <i class="bi <%= file_icon_for(file) %>"></i>
               </div>
               <div class="flex-grow-1">
                 <%= link_to file.filename.to_s,
                             url_for(file),
                             target: "_blank",
-                            class: "file-name stretched-link" %>
+                            class: "assistant-file__name" %>
                 <div class="text-muted small">Tamaño: <%= number_to_human_size(file.byte_size) %></div>
               </div>
             </div>
-            <div class="d-flex align-items-center gap-2 ms-2">
+            <div class="d-flex align-items-center gap-2">
               <%= link_to rails_blob_path(file, disposition: "attachment"),
-                          class: "icon-button", title: "Descargar" do %>
+                          class: "assistant-nav__icon-btn", title: "Descargar" do %>
                 <i class="bi bi-download"></i>
               <% end %>
               <%= link_to file_risk_assistant_path(@risk_assistant, file),
                           data: { turbo_method: :delete, turbo_confirm: "¿Eliminar archivo?" },
-                          class: "icon-button text-danger", title: "Eliminar" do %>
+                          class: "assistant-nav__icon-btn text-danger", title: "Eliminar" do %>
                 <i class="bi bi-trash"></i>
               <% end %>
             </div>
@@ -90,12 +92,12 @@
     <% end %>
   </div>
 
-  <div class="sidebar-section">
-    <div class="sidebar-section-title">
+  <div class="assistant-nav__section">
+    <p class="assistant-nav__section-title">
       <i class="bi bi-activity"></i>
-      <span>Progreso</span>
-    </div>
-    <div class="glass-card">
+      Progreso
+    </p>
+    <div class="assistant-progress">
       <%= render partial: "sidebar",
                  locals: {
                    sections: sections,
