@@ -2,18 +2,6 @@
 <%# Chat Page – Bootstrap 5 Responsive con Sidebar intacto         %>
 <%# -------------------------------------------------------------- %>
 <div class="chat-container container-fluid py-3">
-  <div class="d-flex justify-content-between align-items-center gap-2 mb-3">
-    <div>
-      <p class="text-muted mb-1 small">Asistente de riesgo</p>
-      <h1 class="h4 mb-0"><%= @risk_assistant.name %></h1>
-    </div>
-    <button class="btn btn-outline-primary d-lg-none"
-            data-bs-toggle="offcanvas"
-            data-bs-target="#sidebarCanvas">
-      <i class="bi bi-layout-sidebar-inset"></i>
-      <span class="ms-1">Panel</span>
-    </button>
-  </div>
 
   <div class="chat-layout">
     <aside class="assistant-sidebar d-none d-lg-flex">

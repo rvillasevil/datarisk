@@ -266,6 +266,7 @@ class MessagesController < ApplicationController
   end
 
   def assistant_interaction(current_thread)
+    
     runner = AssistantRunner.new(@risk_assistant)
     runner.submit_user_message(content: @message.content, file_id: nil)
 

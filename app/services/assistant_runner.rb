@@ -342,19 +342,16 @@ class AssistantRunner
       temperature: 0,
       response_format: { type: "json_object" }
     )
-    @last_run_status = resp["status"] if resp["status"].present?
-    @last_run_error  = resp["error"] || resp["last_error"] if resp.is_a?(Hash)
     Rails.logger.debug "↳ Instrucciones de campo: #{instr.truncate(120)}" if instr.present?
-    unless resp["id"].present?
-      Rails.logger.warn "AssistantRunner#start_run_with_instructions: run sin id devuelto (status=#{resp['status'] || 'unknown'})"
-    end
     resp["id"]
   end
 
  
 
-  def run_details(run_id)
-    get("#{BASE_URL}/threads/#{thread_id}/runs/#{run_id}")
+  def run_status(run_id)
+    return "" if run_id.blank?
+
+    get("#{BASE_URL}/threads/#{thread_id}/runs/#{run_id}")["status"]
   end
 
   def last_message(run_id: nil)
@@ -365,11 +362,6 @@ class AssistantRunner
       url += "?order=desc"
     end
     get(url)["data"].first
-  end
-
-  def last_assistant_message
-    get("#{BASE_URL}/threads/#{thread_id}/messages?order=desc")["data"]
-      .find { |msg| msg["role"] == "assistant" }
   end
 
   def extract_text(msg)

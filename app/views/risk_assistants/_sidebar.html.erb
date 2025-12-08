@@ -21,18 +21,3 @@
     <% end %>
   </div>
 </div>
-
-<div class="card shadow-sm small">
-  <div class="card-header">
-    <h6 class="mb-0">Últimos valores</h6>
-  </div>
-  <ul class="list-group list-group-flush small">
-    <% risk_assistant.messages.order(created_at: :desc).limit(50).each do |m| %>
-      <% next unless m.key.present? %>
-      <li class="list-group-item d-flex justify-content-between">
-        <span class="fw-semibold"><%= m.key %></span>
-        <span class="text-muted"><%= m.value %></span>
-      </li>
-    <% end %>
-  </ul>
-</div>

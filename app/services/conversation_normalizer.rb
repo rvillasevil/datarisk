@@ -44,13 +44,23 @@ class ConversationNormalizer
     }
 
     response = HTTP.headers(HEADERS).post(OPENAI_URL, json: body)
-    parsed_text = response.parse.dig("choices", 0, "message", "content").to_s.strip
-    JSON.parse(parsed_text)
+    parsed_text = response.parse.dig("choices", 0, "message", "content").to_s
+    JSON.parse(normalize_json_text(parsed_text))
   rescue JSON::ParserError => e
     Rails.logger.warn("ConversationNormalizer: respuesta no JSON: #{e.message}")
     {}
   rescue => e
     Rails.logger.error("ConversationNormalizer error: #{e.class} – #{e.message}")
     {}
+  end
+
+  def self.normalize_json_text(text)
+    stripped = text.to_s.strip
+
+    cleaned = stripped.gsub(/\A```(?:json)?\s*/i, "").gsub(/```\s*\z/, "").strip
+    return cleaned if cleaned.start_with?("{") || cleaned.start_with?("[")
+
+    match = cleaned.match(/(\{.*\}|\[.*\])/m)
+    match ? match[1] : cleaned
   end
 end
