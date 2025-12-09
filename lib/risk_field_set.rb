@@ -12,7 +12,7 @@ class RiskFieldSet
   CONFIG_DIR = Rails.root.join("config", "risk_assistant")
   YAML_PATH  = CONFIG_DIR.join("fields.yml")
   # JSON schema describing all fields in Gemini format
-  FIRST_JSON = CONFIG_DIR.join("fields_gemini_completed.json")
+  FIRST_JSON = CONFIG_DIR.join("fields_gemini.json")
   JSON_PATH  = Pathname.new(FIRST_JSON)
 
   Field = Struct.new(

@@ -277,6 +277,20 @@ class MessagesController < ApplicationController
     if assistant_text.blank?
       Rails.logger.warn("MessagesController#assistant_interaction: respuesta vacía del asistente")
 
+      if runner.last_run_status == "no_pending_field"
+        message = "No quedan campos pendientes que completar. Si necesitas revisar o actualizar algún dato, indícalo y te ayudaré."
+
+        @risk_assistant.messages.create!(
+          sender:      "assistant",
+          role:        "assistant",
+          content:     message,
+          field_asked: nil,
+          thread_id:   runner.thread_id
+        )
+
+        return message
+      end      
+
       details = []
       details << "estado: #{runner.last_run_status}" if runner.last_run_status.present?
       if runner.last_run_error&.dig("message").present?

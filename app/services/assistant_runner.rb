@@ -354,6 +354,12 @@ class AssistantRunner
     get("#{BASE_URL}/threads/#{thread_id}/runs/#{run_id}")["status"]
   end
 
+  def run_details(run_id)
+    return {} if run_id.blank?
+
+    get("#{BASE_URL}/threads/#{thread_id}/runs/#{run_id}")
+  end
+
   def last_message(run_id: nil)
     url = "#{BASE_URL}/threads/#{thread_id}/messages"
     if run_id

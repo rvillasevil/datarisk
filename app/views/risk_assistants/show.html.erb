@@ -32,7 +32,7 @@
 
     <main class="chat-page chat-main flex-grow-1">
       <h1 class="h1 mb-0"><%= @risk_assistant.name %></h1>
-        <% display_msgs = @risk_assistant.messages.visible_to_user %>
+        <% display_msgs = @risk_assistant.messages.visible_to_user.order(:created_at) %>
 
         <div class="chat-history">
           <% if display_msgs.empty? %>

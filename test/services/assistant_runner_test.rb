@@ -106,6 +106,24 @@ class AssistantRunnerTest < ActiveSupport::TestCase
     end
   end
 
+  test 'run_and_wait retrieves run details and returns last message text' do
+    runner = build_runner
+
+    runner.stub :start_run_with_instructions, "run_123" do
+      run_details_calls = []
+
+      runner.stub :run_details, ->(run_id) { run_details_calls << run_id; { "status" => "completed" } } do
+        runner.stub :last_message, ->(run_id:) {
+          { "content" => [ { "type" => "text", "text" => { "value" => "Hola" } } ] }
+        } do
+          assert_equal "Hola", runner.run_and_wait(timeout: 1)
+          assert_equal ["run_123"], run_details_calls
+          assert_equal "completed", runner.last_run_status
+        end
+      end
+    end
+  end
+
   test 'returns next missing field in arrays without count field' do
     child1 = { id: 'items.name', type: :string }
     child2 = { id: 'items.qty', type: :string }
