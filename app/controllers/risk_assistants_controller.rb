@@ -23,70 +23,7 @@
                                    .where.not(value: [nil, ""])
                                    .order(:created_at)
 
-      # Catálogo de secciones definido en config/risk_assistant/*
-      catalogue = RiskFieldSet.all
-
-      # Títulos de las secciones en el orden configurado
-      @sections = catalogue.map { |_id, sec| sec[:title] }
-
-      # ------------------------------------------------------------
-      # 1. Mensajes con clave (key) y valor (value) no vacíos
-      # ------------------------------------------------------------
-      keyed = @risk_assistant
-                .messages
-                .where.not(key: [nil, ""])
-                .where.not(value: [nil, ""])      # evita «valor vacío»
-                .order(:created_at)
-
-      # — normalizamos label → id:
-      completed_by_id = {}
-      keyed.each do |msg|
-        raw_label = msg.key.to_s.strip.downcase          # ej. "nombre de la empresa..."
-        id_sym    = RiskFieldSet.label_to_id[raw_label]  # ⇒ :nombre  |  nil si no mapea
-        next unless id_sym
-
-        completed_by_id[id_sym] = msg.value
-      end
-
-      # ------------------------------------------------------------
-      # 2. Catálogo de secciones
-      # ------------------------------------------------------------
-      catalogue = RiskFieldSet.all
-
-      @sections_data = catalogue.map do |sec_id, sec_h|
-        ids         = sec_h[:fields].map { |f| f[:id].to_sym }
-        completed_h = completed_by_id.slice(*ids)
-        pending_arr = sec_h[:fields].reject { |f| completed_h.key?(f[:id].to_sym) }
-
-        { id: sec_id, title: sec_h[:title], completed: completed_h, pending: pending_arr }
-      end
-
-      # --------------------------
-      # 1) ids de campos completados
-      # --------------------------
-      filled_ids = @risk_assistant
-                    .messages
-                    .where.not(key: nil)          # key guarda el id del campo
-                    .pluck(:key)                  # => ["nombre", "direccion_riesgo", ...]
-                    .map(&:to_sym)
-                    .to_set                        # búsqueda O(1)
-
-      # --------------------------
-      # 2) progreso por sección
-      # --------------------------
-      @progress_by_section = catalogue.each_with_object({}) do |(sec_key, sec_cfg), h|
-        total = sec_cfg[:fields].size
-        done  = sec_cfg[:fields].count { |f| filled_ids.include?(f[:id].to_sym) }
-        pct   = total.zero? ? 0 : ((done * 100.0) / total).round
-        h[sec_key] = { title: sec_cfg[:title], done:, total:, pct: }
-      end
-
-      # --------------------------
-      # 3) progreso global (opcional)
-      # --------------------------
-      total_fields = RiskFieldSet.flat_fields.size
-      total_done   = filled_ids.size
-      @overall_pct = total_fields.zero? ? 0 : ((total_done * 100.0) / total_fields).round    
+      prepare_sidebar_data
     end
 
     def new
@@ -134,8 +71,13 @@
     end
 
     # GET /risk_assistants/:id/resume
+    # GET /risk_assistants/:id/resume
     def resume
       @risk_assistant = owner_or_self.risk_assistants.find(params[:id])
+      
+      # Preparar datos sidebar
+      prepare_sidebar_data
+
       # Columnas del modelo Message
       @columns = Message.column_names
       # Solo los mensajes de este RiskAssistant
@@ -153,6 +95,7 @@
       end
       # Actualiza solo los campos permitidos
       if message.update(message_params)
+        RiskDataSyncService.call(@risk_assistant)
         redirect_to tabla_datos_risk_assistant_path(@risk_assistant),
                     notice: "Mensaje ##{message.id} actualizado."
       else
@@ -175,6 +118,7 @@
         content:       params[:content] || params[:value]
       )
       if msg.persisted?
+        RiskDataSyncService.call(@risk_assistant)
         redirect_to risk_assistant_resume_path(@risk_assistant), notice: "Mensaje ##{msg.id} añadido."
       else
         flash.now[:alert] = "No se pudo crear el mensaje: #{msg.errors.full_messages.join(', ')}"
@@ -187,6 +131,10 @@
       # Aquí cargamos todo lo que necesitemos para la vista
       @sections = RiskFieldSet.all
       @messages = @risk_assistant.messages
+      
+      # Preparar datos sidebar
+      prepare_sidebar_data
+
       render :summary
     end
 
@@ -248,6 +196,41 @@
     # Permite editar todos los campos de Message excepto id, conversation_id, created_at, updated_at
     def message_params
       params.require(:message).permit(Message.column_names - %w[id risk_assistant_id created_at updated_at])
+    end
+
+    def prepare_sidebar_data
+      # Catálogo de secciones definido en config/risk_assistant/*
+      catalogue = RiskFieldSet.all
+    
+      # Títulos de las secciones en el orden configurado
+      @sections = catalogue.map { |_id, sec| sec[:title] }
+    
+      # --------------------------
+      # 1) ids de campos completados
+      # --------------------------
+      filled_ids = @risk_assistant
+                    .messages
+                    .where.not(key: nil)          # key guarda el id del campo
+                    .pluck(:key)                  # => ["nombre", "direccion_riesgo", ...]
+                    .map(&:to_sym)
+                    .to_set                        # búsqueda O(1)
+    
+      # --------------------------
+      # 2) progreso por sección
+      # --------------------------
+      @progress_by_section = catalogue.each_with_object({}) do |(sec_key, sec_cfg), h|
+        total = sec_cfg[:fields].size
+        done  = sec_cfg[:fields].count { |f| filled_ids.include?(f[:id].to_sym) }
+        pct   = total.zero? ? 0 : ((done * 100.0) / total).round
+        h[sec_key] = { title: sec_cfg[:title], done:, total:, pct: }
+      end
+    
+      # --------------------------
+      # 3) progreso global (opcional)
+      # --------------------------
+      total_fields = RiskFieldSet.flat_fields.size
+      total_done   = filled_ids.size
+      @overall_pct = total_fields.zero? ? 0 : ((total_done * 100.0) / total_fields).round    
     end
 
     def fetch_response_from_openai(message)
@@ -342,7 +325,6 @@
             { role: "developer", content: context },
             { role: "user",      content: prompt  }
           ],
-          max_tokens:  5000,
           temperature: 0.8
         }
       )

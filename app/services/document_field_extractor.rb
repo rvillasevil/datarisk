@@ -10,8 +10,6 @@ class DocumentFieldExtractor
     "Content-Type"  => "application/json"
   }.freeze
 
-   MAX_TOKENS = ENV.fetch('DOCUMENT_FIELD_EXTRACTOR_MAX_TOKENS', 2000).to_i
-
   # Dado un texto extraído de uno o varios ficheros, devuelve un hash con dos claves:
   #   :values    => { campo_id => valor }
   #   :warnings  => { campo_id => mensaje_de_advertencia }
@@ -57,7 +55,6 @@ class DocumentFieldExtractor
     body = {
       model: OPENAI_MODEL,
       temperature: 0.7,
-      max_tokens: MAX_TOKENS,
       messages: [
         { role: "user", content: prompt }
       ]
@@ -116,7 +113,6 @@ class DocumentFieldExtractor
     body = {
       model: OPENAI_MODEL,
       temperature: 0,
-      max_tokens: 500,
       messages: [
         { role: "user", content: prompt }
       ]

@@ -1,68 +1,102 @@
-<div class="container py-4">
-  <h1 class="mb-4">Resumen de mensajes para RiskAssistant #<%= @risk_assistant.id %></h1>
+<div class="chat-container container-fluid py-3">
 
-  <% if notice %>
-    <div class="alert alert-success"><%= notice %></div>
-  <% end %>
-  <% if alert %>
-    <div class="alert alert-danger"><%= alert %></div>
-  <% end %>
+  <div class="chat-layout">
+    <aside class="assistant-sidebar d-none d-lg-flex">
+      <%= render partial: "sidebar_nav",
+                 locals: {
+                   risk_assistant: @risk_assistant,
+                   sections: @sections,
+                   progress_by_section: @progress_by_section,
+                   overall_pct: @overall_pct
+                 } %>
+    </aside>
 
-  <table class="table table-bordered align-middle">
-    <thead class="table-light">
-      <tr>
-        <th scope="col" style="width: 5%;">ID</th>
-        <th scope="col" style="width: 15%;">Apartado</th>
-        <th scope="col" style="width: 60%;">Contenido editable</th>
-        <th scope="col" style="width: 20%;">Acciones</th>
-      </tr>
-    </thead>
-    <tbody>
-      <% @records.each do |record| %>
-        <% next if record.key.blank? %>
-        <tr>
-          <td><%= record.id %></td>
-          <td><%= record.key.capitalize %></td>
-          <td>
-            <%= form_with url: update_message_risk_assistant_path(@risk_assistant), method: :patch, local: true, class: "d-flex flex-column" do %>
-              <%= hidden_field_tag :message_id, record.id %>
-              <%= text_area_tag "message[value]", record.value, rows: 4, class: "form-control mb-2" %>
-              <%= submit_tag "Guardar", class: "btn btn-primary align-self-start" %>
+    <div class="offcanvas offcanvas-start d-lg-none" id="sidebarCanvas">
+      <div class="offcanvas-header border-bottom">
+        <h5 class="offcanvas-title">Panel del asistente</h5>
+        <button class="btn-close" data-bs-dismiss="offcanvas"></button>
+      </div>
+      <div class="offcanvas-body p-0">
+        <%= render partial: "sidebar_nav",
+                   locals: {
+                     risk_assistant: @risk_assistant,
+                     sections: @sections,
+                     progress_by_section: @progress_by_section,
+                     overall_pct: @overall_pct
+                   } %>
+      </div>
+    </div>
+
+    <main class="chat-page chat-main flex-grow-1" style="overflow-y: auto;">
+      <div class="container py-4">
+        <h1 class="mb-4">Resumen de mensajes para RiskAssistant #<%= @risk_assistant.id %></h1>
+      
+        <% if notice %>
+          <div class="alert alert-success"><%= notice %></div>
+        <% end %>
+        <% if alert %>
+          <div class="alert alert-danger"><%= alert %></div>
+        <% end %>
+      
+        <table class="table table-bordered align-middle">
+          <thead class="table-light">
+            <tr>
+              <th scope="col" style="width: 5%;">ID</th>
+              <th scope="col" style="width: 15%;">Apartado</th>
+              <th scope="col" style="width: 60%;">Contenido editable</th>
+              <th scope="col" style="width: 20%;">Acciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% @records.each do |record| %>
+              <% next if record.key.blank? %>
+              <tr>
+                <td><%= record.id %></td>
+                <td><%= record.key.capitalize %></td>
+                <td>
+                  <%= form_with url: update_message_risk_assistant_path(@risk_assistant), method: :patch, local: true, class: "d-flex flex-column" do %>
+                    <%= hidden_field_tag :message_id, record.id %>
+                    <%= text_area_tag "message[value]", record.value, rows: 4, class: "form-control mb-2" %>
+                    <%= submit_tag "Guardar", class: "btn btn-primary align-self-start" %>
+                  <% end %>
+                </td>
+                <td class="text-center">
+                  <%= button_to "Eliminar", 
+                                update_message_risk_assistant_path(@risk_assistant),
+                                params: { message_id: record.id },
+                                method: :delete,
+                                data: { confirm: "¿Estás seguro de que deseas eliminar este mensaje?" },
+                                class: "btn btn-danger" %>
+                </td>
+              </tr>
             <% end %>
-          </td>
-          <td class="text-center">
-            <%= button_to "Eliminar", 
-                          update_message_risk_assistant_path(@risk_assistant),
-                          params: { message_id: record.id },
-                          method: :delete,
-                          data: { confirm: "¿Estás seguro de que deseas eliminar este mensaje?" },
-                          class: "btn btn-danger" %>
-          </td>
-        </tr>
-      <% end %>
-    </tbody>
-  </table>
-
-  <hr>
-
-  <h3 class="mb-3">Agregar nuevos datos</h3>
-  <%= form_with url: create_message_risk_assistant_path(@risk_assistant), method: :post, local: true do |f| %>
-    <div class="mb-3">
-      <%= f.label :role, "Rol", class: "form-label" %>
-      <%= f.select :role, options_for_select([['User', 'user'], ['Assistant', 'assistant']], 'user'), {}, class: "form-select" %>
-    </div>
-    <div class="mb-3">
-      <%= f.label :key, "Key", class: "form-label" %>
-      <%= f.text_field :key, class: "form-control" %>
-    </div>
-    <div class="mb-3">
-      <%= f.label :value, "Value", class: "form-label" %>
-      <%= f.text_area :value, rows: 5, class: "form-control" %>
-    </div>
-    <%= f.submit "Agregar mensaje", class: "btn btn-success" %>
-  <% end %>
-  <%= link_to 'Volver a Panel general', risk_assistants_path, class: 'btn btn-secondary mt-3' %>
+          </tbody>
+        </table>
+      
+        <hr>
+      
+        <h3 class="mb-3">Agregar nuevos datos</h3>
+        <%= form_with url: create_message_risk_assistant_path(@risk_assistant), method: :post, local: true do |f| %>
+          <div class="mb-3">
+            <%= f.label :role, "Rol", class: "form-label" %>
+            <%= f.select :role, options_for_select([['User', 'user'], ['Assistant', 'assistant']], 'user'), {}, class: "form-select" %>
+          </div>
+          <div class="mb-3">
+            <%= f.label :key, "Key", class: "form-label" %>
+            <%= f.text_field :key, class: "form-control" %>
+          </div>
+          <div class="mb-3">
+            <%= f.label :value, "Value", class: "form-label" %>
+            <%= f.text_area :value, rows: 5, class: "form-control" %>
+          </div>
+          <%= f.submit "Agregar mensaje", class: "btn btn-success" %>
+        <% end %>
+        <%= link_to 'Volver a Panel general', risk_assistants_path, class: 'btn btn-secondary mt-3' %>
+      </div>
+    </main>
+  </div>
 </div>
+
 
 
 

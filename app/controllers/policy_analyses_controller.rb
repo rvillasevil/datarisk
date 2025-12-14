@@ -87,8 +87,7 @@ class PolicyAnalysesController < ApplicationController
         { role: "system", content: system },
         { role: "user",   content: user   }
       ],
-      temperature: 0.0,
-      max_tokens:  1000
+      temperature: 0.0
     }.to_json
 
     res = Net::HTTP.start(uri.hostname, uri.port, use_ssl: true) { |http| http.request(req) }

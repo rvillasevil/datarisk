@@ -188,8 +188,9 @@ class AssistantRunner
     end
 
     status = nil
-    timeout.times do
-      sleep 1
+    max_retries = timeout * 10
+    max_retries.times do
+      sleep 0.1
       run_info       = run_details(run_id)
       status         = run_info["status"]
       @last_run_status = status
@@ -251,7 +252,6 @@ class AssistantRunner
   # ------------------------------------------------------------
   def start_run_with_instructions
     
-    field    = next_pending_field
     field    = next_pending_field
     unless field
       @last_run_status ||= "no_pending_field"

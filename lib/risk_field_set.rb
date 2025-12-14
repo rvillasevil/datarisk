@@ -12,7 +12,7 @@ class RiskFieldSet
   CONFIG_DIR = Rails.root.join("config", "risk_assistant")
   YAML_PATH  = CONFIG_DIR.join("fields.yml")
   # JSON schema describing all fields in Gemini format
-  FIRST_JSON = CONFIG_DIR.join("fields_gemini.json")
+  FIRST_JSON = CONFIG_DIR.join("fields_gemini_completed.json")
   JSON_PATH  = Pathname.new(FIRST_JSON)
 
   Field = Struct.new(
@@ -21,6 +21,7 @@ class RiskFieldSet
     :normative_tips,  
     :parent, :array_of_objects, :item_label_template,
     :array_count_source_field_id, :row_index_path,
+    :allow_add_remove_rows, # <-- Added missing attribute
     keyword_init: true
   ) unless const_defined?(:Field)
 
@@ -255,7 +256,27 @@ class RiskFieldSet
     end
 
     def field_hash_for(id)
-      by_id[id.to_sym]
+      # 1. Intento directo
+      direct = by_id[id.to_sym]
+      return direct if direct
+
+      # 2. Si tiene índice (array), buscamos la definición base
+      #    y devolvemos una copia con el id concreto.
+      id_str = id.to_s
+      if id_str =~ /\.\d+(\.|$)/
+        # Quitamos los segmentos numéricos para hallar el "padre"
+        parts = id_str.split('.')
+        base_parts = parts.reject { |p| p =~ /\A\d+\z/ }
+        base_id    = base_parts.join('.')
+
+        definition = by_id[base_id.to_sym]
+        if definition
+          # Retornamos la def pero con el id específico (con índices)
+          return definition.merge(id: id_str)
+        end
+      end
+
+      nil
     end    
 
     public :next_field_hash, :next_field_id   
@@ -321,8 +342,15 @@ class RiskFieldSet
         full_id = [id_prefix, node["id"]].compact.join(".")
 
         case node["type"]
-        when "subsection"
-          walk_fields_rec(node["fields"] || [], section, parent_array_id, id_prefix)
+        when "subsection", "group"
+          # Preservation of the group/subsection node so it can be rendered as a header
+          group_field = json_to_field(node, section,
+                                      id_override: full_id,
+                                      parent: parent_array_id)
+          
+          children = walk_fields_rec(node["fields"] || [], section, parent_array_id, id_prefix)
+          
+          [group_field] + children
 
         when "array_of_objects"
           array_id   = node["id"]
@@ -357,6 +385,10 @@ class RiskFieldSet
                       parent: nil,
                       in_array: false)
 
+      if node["id"] == "metadata_revisores_aseguradoras"
+        # puts "DEBUG: json_to_field metadata... keys=#{node.keys} allow=#{node['allow_add_remove_rows']}" 
+      end
+
       opts =
         if node["options"].is_a?(Array)
           node["options"].map { |o| o["label"].to_s }
@@ -384,7 +416,8 @@ class RiskFieldSet
         assistant_instructions: node["assistant_instructions"],
         item_label_template: node["item_label_template"],
         array_count_source_field_id: node["array_count_source_field_id"],
-        row_index_path: node["row_index_path"]
+        row_index_path: node["row_index_path"],
+        allow_add_remove_rows: node["allow_add_remove_rows"]
       ).to_h
     end
 

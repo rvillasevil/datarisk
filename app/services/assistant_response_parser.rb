@@ -4,7 +4,9 @@ class AssistantResponseParser
 
   def self.call(raw_response)
     return unless raw_response.present?
-    parsed = JSON.parse(raw_response)
+
+    clean_json = raw_response.to_s.gsub(/^```json\s*|```$/, "").strip
+    parsed = JSON.parse(clean_json)
     return unless parsed.is_a?(Hash)
 
     missing = REQUIRED_KEYS - parsed.keys
@@ -14,7 +16,16 @@ class AssistantResponseParser
     parsed
   rescue JSON::ParserError => e
     Rails.logger.warn("AssistantResponseParser: respuesta no es JSON válido (#{e.message})")
-    nil
+    
+    # Fallback: asumir que es texto plano del asistente
+    {
+      "campo_actual"          => nil,
+      "estado_del_campo"      => "pendiente",
+      "valor"                 => nil,
+      "siguiente_campo"       => nil,
+      "mensaje_para_usuario"  => raw_response,
+      "explicacion_normativa" => nil
+    }
   rescue ArgumentError => e
     Rails.logger.warn("AssistantResponseParser: #{e.message}")
     nil

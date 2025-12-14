@@ -204,8 +204,7 @@ class PolicyAnalyzer
         { role: "system",  content: system },
         { role: "user",    content: user   }
       ],
-      temperature: 0.0,
-      max_tokens: 5000
+      temperature: 0.0
     }.to_json
 
     Rails.logger.debug "[PolicyAnalyzer##{@analysis.id}] → HTTP a OpenAI (model=#{MODEL}, tokens=2000, temp=0.0)"

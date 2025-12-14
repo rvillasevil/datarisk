@@ -242,6 +242,7 @@ class MessagesController < ApplicationController
         content:   "He extraído y confirmado automáticamente los siguientes campos del documento:\n\n#{todos_confirmaciones}",
         thread_id: current_thread
       )
+      RiskDataSyncService.call(@risk_assistant)
       return true  
     end
 
@@ -344,6 +345,7 @@ class MessagesController < ApplicationController
           thread_id:     runner.thread_id
         )
         answers_snapshot[campo_actual.to_s] = valor
+        RiskDataSyncService.call(@risk_assistant)
       elsif validation_error.present? && campo_actual.present?
         mensaje = "El dato para #{RiskFieldSet.label_for(campo_actual)} no es válido: #{validation_error}." \
                   " Por favor, indícalo de nuevo."
@@ -359,6 +361,14 @@ class MessagesController < ApplicationController
                              else
                                RiskFieldSet.next_field_hash(answers_snapshot)&.dig(:id)
                              end
+
+    Rails.logger.info "MessagesController: generated question_text: #{question_text.truncate(100)}"
+    
+    parts = [question_text]
+
+    Rails.logger.info "MessagesController: generated question_text: #{question_text.truncate(100)}"
+    
+    parts = [question_text]
       end
 
       field_for_question ||= campo_actual.presence || @message.field_asked
@@ -467,6 +477,9 @@ class MessagesController < ApplicationController
 
     question_text = if sanitized_text.present?
                       sanitized_text
+                    elsif parsed.is_a?(Hash) && parsed["mensaje_para_usuario"].present?
+                      # Optimization: Use the text directly from the JSON if valid
+                      parsed["mensaje_para_usuario"]
                     else
                       ParagraphGenerator.generate(
                         question: base_question,
@@ -477,8 +490,29 @@ class MessagesController < ApplicationController
                     end
 
     parts = [question_text]
-    norm_explanation = NormativeExplanationGenerator.generate(question_field, question: question_text)
-    parts << "Explicación normativa: #{norm_explanation}"
+
+
+    # Optimization: Use normative explanation from JSON if available
+    # Optimization: Use normative explanation from JSON if available
+    # If not present but parsing failed (plain text), we might skip it to save time
+    if parsed.is_a?(Hash) && parsed["explicacion_normativa"].present?
+      parts << "Explicación normativa: #{parsed["explicacion_normativa"]}"
+    elsif parsed.is_a?(Hash) && !parsed["explicacion_normativa"].nil? 
+       # Key explicitly nil -> means assistant chose not to provide it? or schema mismatch?
+       # We fallback to generator only if strictly needed.
+       # For max speed, let's only generate if we have a valid field question.
+       norm_explanation = NormativeExplanationGenerator.generate(question_field, question: question_text)
+       parts << "Explicación normativa: #{norm_explanation}"
+    else
+       # Case: Plain text response (parsed is fallback hash with nil explanation)
+       # To speed up, we can SKIP normative explanation for fallback plain text responses
+       # OR run it only if the user specifically requested "strict mode" (which we assume is not the case for speed)
+       
+       # Decision: SKIP generator if we are in fallback mode (plain text response) to satisfy user request for speed.
+       # If we really need it, we can uncomment below:
+       # norm_explanation = NormativeExplanationGenerator.generate(question_field, question: question_text)
+       # parts << "Explicación normativa: #{norm_explanation}"
+    end
 
     final_content = parts.join("\n")
 
@@ -502,6 +536,8 @@ class MessagesController < ApplicationController
         thread_id: runner.thread_id
       )
     end
+
+    RiskDataSyncService.call(@risk_assistant)
 
     assistant_response_for_snapshot    
 
@@ -588,20 +624,11 @@ class MessagesController < ApplicationController
 
     assistant_content = assistant_output.presence || assistant_output_for_snapshot(thread_id)
 
-    normalized_payload = ConversationNormalizer.call(
-      risk_assistant: @risk_assistant,
-      last_user_message: @message&.content,
-      last_assistant_message: assistant_content.to_s
-    )
-
-    ConversationSnapshot.create!(
-      risk_assistant: @risk_assistant,
+    ConversationSnapshotJob.perform_later(
+      risk_assistant_id: @risk_assistant.id,
       thread_id: thread_id,
       last_user_message: @message&.content,
-      last_assistant_message: assistant_content,
-      messages_dump: collect_messages_for_context(@risk_assistant),
-      normalized_payload: normalized_payload,
-      status: normalized_payload.present? ? "normalized" : "captured"
+      last_assistant_message: assistant_content.to_s
     )
   rescue => e
     Rails.logger.error "ConversationSnapshot error: #{e.class} – #{e.message}"
@@ -647,7 +674,6 @@ class MessagesController < ApplicationController
           { role: "developer", content: context },
           { role: "user", content: prompt }
         ],
-        max_tokens: 600,
         temperature: 0.7
       }.to_json
     )
