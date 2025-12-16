@@ -24,4 +24,19 @@ module ApplicationHelper
       "bi-file-earmark"
     end
   end
+
+  # Helper for safe data access into JSONB structure
+  # Given a key like "section.subsection.field", it digs into the hash
+  def fetch_data(data, key)
+    return nil if data.nil?
+    parts = key.to_s.split(".")
+    parts.reduce(data) do |current, part|
+      break nil unless current.is_a?(Hash) || (current.is_a?(Array) && part.match?(/\A\d+\z/))
+      if current.is_a?(Array)
+        current[part.to_i]
+      else
+        current[part]
+      end
+    end
+  end
 end

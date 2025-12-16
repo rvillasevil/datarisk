@@ -119,6 +119,7 @@ class MessagesController < ApplicationController
       thread_id: current_thread
     )
 
+    RiskDataSyncService.call(@risk_assistant)
     AssistantRunner.new(@risk_assistant).ask_next!
   end
 
@@ -159,6 +160,9 @@ class MessagesController < ApplicationController
       end
     end
    
+
+   
+    file.rewind
     extracted_text = TextExtractor.call(file)
 
     doc_type = nil
@@ -385,6 +389,32 @@ class MessagesController < ApplicationController
         thread_id:   runner.thread_id
       )
 
+      # [PATCH] Ensure we process inline markers valid even if JSON state is not "confirmado" (or fallback)
+       # This handles cases where Assistant says "##key## is &&val&&" but JSON state is pending/null
+       text_to_scan = parsed["mensaje_para_usuario"].to_s
+       pairs = text_to_scan.scan(/##(?<field_id>[^#()]+?)(?:\s*\((?<item_label>[^)]+)\))?##.*?&&\s*(?<value>.*?)\s*&&/m)
+       
+       pairs.each do |field_id, item_label, val|
+         clean_id = field_id.to_s.strip
+         Message.save_unique!(
+           risk_assistant: @risk_assistant,
+           key:           clean_id,
+           value:         val,
+           item_label:    item_label,
+           content:       "✅ Perfecto, #{RiskFieldSet.label_for(clean_id)} es &&#{val}&&.",
+           sender:        "assistant_confirmation",
+           role:          "developer",
+           value_state:   "confirmado",
+           value_source:  "assistant",
+           field_asked:   nil,
+           thread_id:     runner.thread_id
+         )
+         # Also ensure we track this for next question logic
+         field_for_question = nil if field_for_question.to_s == clean_id.to_s
+       end
+       # [END PATCH]
+       
+      RiskDataSyncService.call(@risk_assistant)
       return assistant_response_for_snapshot
     end
 
@@ -548,7 +578,7 @@ class MessagesController < ApplicationController
   end
 
   def set_risk_assistant
-    @risk_assistant = owner_or_self.risk_assistants.find(params[:risk_assistant_id])
+    @risk_assistant = risk_assistants_scope.find(params[:risk_assistant_id])
   end
 
   # ---------- subida de fichero + asociación al thread ----------
@@ -701,4 +731,3 @@ class MessagesController < ApplicationController
     Rails.logger.error("Error al procesar la respuesta: #{e.message}")
     {}
   end
-

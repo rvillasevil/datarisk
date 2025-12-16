@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2025_12_14_154423) do
+ActiveRecord::Schema[7.0].define(version: 2025_12_15_182652) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -304,7 +304,9 @@ ActiveRecord::Schema[7.0].define(version: 2025_12_14_154423) do
     t.boolean "client_owned", default: false, null: false
     t.string "field_catalog_version"
     t.jsonb "data", default: {}
+    t.string "guest_token"
     t.index ["data"], name: "index_risk_assistants_on_data", using: :gin
+    t.index ["guest_token"], name: "index_risk_assistants_on_guest_token"
     t.index ["user_id"], name: "index_risk_assistants_on_user_id"
     t.index ["user_id"], name: "index_risk_assistants_on_user_id_unique_for_client", unique: true, where: "client_owned"
   end

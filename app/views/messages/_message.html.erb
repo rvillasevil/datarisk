@@ -1,29 +1,77 @@
-<% row_cls = message.sender == 'user' ? 'user' : 'assistant' %>
-<div class="message-row <%= row_cls %>">
-  <div class="message-box <%= row_cls %>">
-    <div class="header">
-      <strong><%= message.sender.capitalize %></strong>
-      <small><%= l message.created_at, format: :short %></small>
+<% is_user = message.sender == 'user' %>
+<% 
+   bubble_class = is_user ? 'bg-primary text-white rounded-bottom-right-0' : 'bg-white text-dark shadow-sm border rounded-bottom-left-0' 
+   align_class  = is_user ? 'justify-content-end' : 'justify-content-start'
+   container_max_width = is_user ? '75%' : '85%'
+%>
+
+<div class="d-flex <%= align_class %> mb-3 message-row" id="message-<%= message.id %>">
+  
+  <% unless is_user %>
+    <div class="flex-shrink-0 me-2 mt-1">
+      <div class="avatar bg-gradient-primary text-white rounded-circle d-flex align-items-center justify-content-center shadow-sm" style="width: 32px; height: 32px; font-size: 0.8rem;">
+        <i class="bi bi-robot"></i>
+      </div>
     </div>
-    <div class="body">
+  <% end %>
+
+  <div class="message-bubble p-3 rounded-4 <%= bubble_class %>" style="max-width: <%= container_max_width %>; position: relative;">
+    <% if message.sender == 'assistant' %>
+       <div class="mb-1 d-flex align-items-center gap-2">
+         <span class="fw-bold small text-primary">InsurAI</span>
+         <span class="text-muted small" style="font-size: 0.7rem;"><%= l message.created_at, format: :short %></span>
+       </div>
+    <% end %>
+
+    <div class="message-content" style="font-size: 0.95rem; line-height: 1.5;">
       <% content = sanitized_content(message).sub(/\A✅ El campo [^\r\n]*[\r\n]*/, '') %>
       <% lines = content.split(/\r?\n/) %>
-      <% question_lines = lines.reject { |l| l.start_with?('Tip normativo:', 'Explicación normativa:') } %>
+      <% question_lines = lines.reject { |l| l.start_with?('Tip normativo:', 'Explicación normativa:', '⚠️') } %>
       <% tip_line = lines.find { |l| l.start_with?('Tip normativo:') } %>
       <% norm_line = lines.find { |l| l.start_with?('Explicación normativa:') } %>
+      <% warning_lines = lines.select { |l| l.start_with?('⚠️') } %>
 
-      <%= simple_format(question_lines.join("\n")) if question_lines.any? %>
-      <% if tip_line.present? %>
-        <% tip_text = tip_line.sub('Tip normativo:', '').strip %>
-        <p><strong>Tip normativo:</strong> <%= tip_text %></p>
-      <% end %>
-      <% if norm_line.present? %>
-        <% norm_text = norm_line.sub('Explicación normativa:', '').strip %>
-        <div class="normative-explanation alert alert-warning mt-2">
-          <p class="mb-1"><strong>Explicación normativa</strong></p>
-          <p class="mb-0"><%= norm_text %></p>
+      <% if warning_lines.any? %>
+        <div class="alert alert-warning py-2 px-3 small mb-2 border-warning text-warning-emphasis bg-warning-subtle rounded-3">
+          <% warning_lines.each do |w| %>
+            <div><%= w %></div>
+          <% end %>
         </div>
       <% end %>
+
+      <%= simple_format(question_lines.join("\n"), class: "mb-0") if question_lines.any? %>
+
+      <% if tip_line.present? %>
+        <div class="mt-2 pt-2 border-top border-secondary border-opacity-10">
+          <small class="d-block fw-bold opacity-75"><i class="bi bi-lightbulb me-1"></i>Tip:</small>
+          <small class="opacity-75"><%= tip_line.sub('Tip normativo:', '').strip %></small>
+        </div>
+      <% end %>
+
+      <% if norm_line.present? %>
+         <div class="mt-3 p-2 bg-info-subtle border border-info-subtle rounded-3 text-dark small">
+            <strong class="d-block text-info-emphasis mb-1"><i class="bi bi-book me-1"></i>Normativa</strong>
+            <%= norm_line.sub('Explicación normativa:', '').strip %>
+         </div>
+      <% end %>
     </div>
+    
+    <% if message.files.attached? %>
+      <div class="mt-2 pt-2 border-top border-white border-opacity-25">
+        <% message.files.each do |file| %>
+          <div class="d-flex align-items-center gap-2 p-2 rounded bg-black bg-opacity-10 mb-1">
+             <i class="bi bi-paperclip"></i>
+             <span class="small text-truncate" style="max-width: 200px;"><%= file.filename %></span>
+          </div>
+        <% end %>
+      </div>
+    <% end %>
+
+    <% if is_user %>
+      <div class="text-end mt-1">
+        <span class="text-white-50 small" style="font-size: 0.7rem;"><%= l message.created_at, format: :short %></span>
+      </div>
+    <% end %>
   </div>
+
 </div>

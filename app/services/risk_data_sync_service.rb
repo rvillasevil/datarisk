@@ -5,23 +5,27 @@ class RiskDataSyncService
   end
 
   def call(risk_assistant)
-    # Start with an empty hash
-    data_map = {}
+    begin
+      # Start with an empty hash
+      data_map = {}
 
-    # Iterate over all confirmed/valid messages
-    # We order by created_at to ensure latest values overwrite if there are duplicates (though keys should be unique)
-    msgs = risk_assistant.messages.where.not(key: [nil, ""]).order(:created_at)
-    Rails.logger.info "RiskDataSyncService: Syncing #{msgs.count} messages for RA ##{risk_assistant.id}"
-    
-    msgs.each do |message|
-      # Rails.logger.debug "RiskDataSyncService: processing key='#{message.key}' value='#{message.value}'"
-      deep_set!(data_map, message.key, message.value)
+      # Iterate over all confirmed/valid messages
+      # We order by created_at to ensure latest values overwrite if there are duplicates (though keys should be unique)
+      msgs = risk_assistant.messages.where.not(key: [nil, ""]).order(:created_at)
+      Rails.logger.info "RiskDataSyncService: Syncing #{msgs.count} messages for RA ##{risk_assistant.id}"
+      
+      msgs.each do |message|
+        # Rails.logger.debug "RiskDataSyncService: processing key='#{message.key}' value='#{message.value}'"
+        deep_set!(data_map, message.key, message.value)
+      end
+
+      Rails.logger.info "RiskDataSyncService: Final data_map keys: #{data_map.keys}"
+
+      # Save to the JSONB column
+      risk_assistant.update_column(:data, data_map)
+    rescue StandardError => e
+      Rails.logger.error "RiskDataSyncService Error: #{e.message}\n#{e.backtrace.join("\n")}"
     end
-
-    Rails.logger.info "RiskDataSyncService: Final data_map keys: #{data_map.keys}"
-
-    # Save to the JSONB column
-    risk_assistant.update_column(:data, data_map)
   end
 
   private

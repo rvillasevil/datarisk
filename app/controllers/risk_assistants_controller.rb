@@ -2,7 +2,7 @@
     before_action :authenticate_user!
     before_action :require_client!
     before_action :require_authorized_user!
-    before_action :set_risk_assistant, only: [:show, :generate_report, :report, :update_message, :create_message, :summary, :destroy_file]    
+    before_action :set_risk_assistant, only: [:show, :generate_report, :report, :update_message, :create_message, :summary, :destroy_file, :resume]    
     
     def index
       @risk_assistants = risk_assistants_scope
@@ -27,11 +27,11 @@
     end
 
     def new
-      @risk_assistant = owner_or_self.risk_assistants.new
+      @risk_assistant = current_user.risk_assistants.new
     end
   
     def create
-      @risk_assistant = owner_or_self.risk_assistants.new(risk_assistant_params)
+      @risk_assistant = current_user.risk_assistants.new(risk_assistant_params)
   
       if @risk_assistant.save
         redirect_to risk_assistant_path(@risk_assistant), notice: 'RiskAssistant creado con éxito.'
@@ -43,7 +43,7 @@
     end
   
     def destroy
-      @risk_assistant = current_user.risk_assistants.find(params[:id])
+      @risk_assistant = risk_assistants_scope.find(params[:id])
   
       if @risk_assistant.destroy
         flash[:notice] = "RiskAssistant eliminado con éxito."
@@ -55,7 +55,6 @@
     end
     
     def report
-      @risk_assistant = owner_or_self.risk_assistants.find(params[:id])
       @messages = @risk_assistant.messages
       @message = @risk_assistant.messages.last
       @report_markdown = fetch_response_from_openai(@message)
@@ -73,8 +72,6 @@
     # GET /risk_assistants/:id/resume
     # GET /risk_assistants/:id/resume
     def resume
-      @risk_assistant = owner_or_self.risk_assistants.find(params[:id])
-      
       # Preparar datos sidebar
       prepare_sidebar_data
 

@@ -5,16 +5,19 @@ class ApplicationController < ActionController::Base
   private
   
   def risk_assistants_scope
-    if current_user&.guest? && current_user.owner.present?
-      current_user.owner.risk_assistants
+    return RiskAssistant.none unless current_user
+
+    if current_user.owner?
+      owned_ids = [current_user.id] + current_user.clients.pluck(:id)
+      RiskAssistant.where(user_id: owned_ids)
     else
-      owner_or_self.risk_assistants
+      current_user.risk_assistants
     end
   end
   helper_method :risk_assistants_scope
 
   def owner_or_self
-    current_user.owner || current_user
+    current_user
   end
   helper_method :owner_or_self
 
