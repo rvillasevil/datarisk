@@ -46,6 +46,7 @@
               <tr>
                 <th>Correo electrónico</th>
                 <th>Token</th>
+                <th>Acceso</th>
                 <th>Estado</th>
                 <th>Creado</th>
               </tr>
@@ -55,6 +56,7 @@
                 <tr>
                   <td><%= invitation.email.presence || 'No especificado' %></td>
                   <td><code><%= invitation.token %></code></td>
+                  <td><%= link_to 'Entrar', new_token_session_path(token: invitation.token), class: 'btn btn-sm btn-outline-primary' %></td>
                   <td><%= invitation.accepted_at? ? 'Aceptado' : 'Pendiente' %></td>
                   <td><%= l(invitation.created_at, format: :short) %></td>
                 </tr>
@@ -72,7 +74,7 @@
       <%= form_with url: user_clients_path(@user), scope: :user, local: true do |form| %>
         <div class="mb-3">
           <%= form.label :email, 'Correo electrónico del cliente', class: 'form-label' %>
-          <%= form.email_field :email, class: 'form-control', required: true %>
+          <%= form.email_field :email, class: 'form-control' %>
         </div>
         <div class="mb-3">
           <%= form.label :token, 'Token (opcional)', class: 'form-label' %>

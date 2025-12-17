@@ -1,6 +1,4 @@
 <div class="container py-4">
-  
-
   <% if notice %>
     <div class="alert alert-success"><%= notice %></div>
   <% end %>
@@ -8,7 +6,12 @@
     <div class="alert alert-danger"><%= alert %></div>
   <% end %>
 
-  <!-- Cabecera tabla -->
+  <% unless current_user.can_create_risk_assistant? %>
+    <div class="alert alert-warning">
+      Limite de tomas de datos alcanzado para cuentas invitadas (maximo <%= User::MAX_GUEST_RISK_ASSISTANTS %>).
+    </div>
+  <% end %>
+
   <div class="row text-center fw-semibold border-bottom pb-2 mb-3">
     <div class="col-md-4 text-start"><h2 class="h3 mb-3">Clientes</h2></div>
     <div class="col-md-2">Informe descriptivo</div>
@@ -17,11 +20,10 @@
     <div class="col-md-2">Eliminar</div>
   </div>
 
-  <!-- Listado de risk_assistants -->
   <% @risk_assistants.order(created_at: :asc).each do |risk_assistant| %>
     <div class="row align-items-center py-2 border-bottom">
       <div class="col-md-4 text-start">
-        <%= link_to "#{risk_assistant.name}", risk_assistant_path(risk_assistant), class: "text-decoration-none" %>
+        <%= link_to risk_assistant.name, risk_assistant_path(risk_assistant), class: "text-decoration-none" %>
       </div>
       <div class="col-md-2 text-center">
         <%= link_to "Report", report_risk_assistant_path(risk_assistant), class: "btn btn-outline-primary btn-sm" %>
@@ -33,14 +35,16 @@
         <%= link_to "Tabla resumen", risk_assistant_resume_path(risk_assistant), class: "btn btn-outline-secondary btn-sm" %>
       </div>
       <div class="col-md-2 text-center">
-        <%= link_to "Eliminar", risk_assistant, data: { turbo_method: :delete, turbo_confirm: "¿Estas seguro?" }, class: "btn btn-danger btn-sm" %>
+        <%= link_to "Eliminar", risk_assistant, data: { turbo_method: :delete, turbo_confirm: "Estas seguro?" }, class: "btn btn-danger btn-sm" %>
       </div>
     </div>
   <% end %>
 
   <div class="mt-4 text-center">
-    <%= link_to "Añadir empresa", new_risk_assistant_path, class: "btn btn-success btn-lg" %>
+    <% if current_user.can_create_risk_assistant? %>
+      <%= link_to "Anadir empresa", new_risk_assistant_path, class: "btn btn-success btn-lg" %>
+    <% else %>
+      <button class="btn btn-secondary btn-lg" disabled>Maximo de <%= User::MAX_GUEST_RISK_ASSISTANTS %> tomas de datos</button>
+    <% end %>
   </div>
 </div>
-
-

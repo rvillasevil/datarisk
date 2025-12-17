@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2025_12_15_182652) do
+ActiveRecord::Schema[7.0].define(version: 2025_12_17_090000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -92,7 +92,9 @@ ActiveRecord::Schema[7.0].define(version: 2025_12_15_182652) do
     t.datetime "accepted_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "user_id"
     t.index ["owner_id"], name: "index_client_invitations_on_owner_id"
+    t.index ["user_id"], name: "index_client_invitations_on_user_id"
   end
 
   create_table "clients", force: :cascade do |t|
@@ -397,6 +399,7 @@ ActiveRecord::Schema[7.0].define(version: 2025_12_15_182652) do
     t.integer "role", default: 0, null: false
     t.string "company_name"
     t.bigint "owner_id"
+    t.boolean "admin", default: false, null: false
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["owner_id"], name: "index_users_on_owner_id"
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
@@ -407,6 +410,7 @@ ActiveRecord::Schema[7.0].define(version: 2025_12_15_182652) do
   add_foreign_key "actividad_procesos", "risk_assistants"
   add_foreign_key "almacenamientos", "risk_assistants"
   add_foreign_key "assistant_run_logs", "risk_assistants"
+  add_foreign_key "client_invitations", "users"
   add_foreign_key "client_invitations", "users", column: "owner_id"
   add_foreign_key "clients", "users"
   add_foreign_key "conversation_snapshots", "risk_assistants"

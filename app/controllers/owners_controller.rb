@@ -1,12 +1,8 @@
 class OwnersController < ApplicationController
   before_action :authenticate_user!
-  before_action :require_owner!
+  before_action :require_admin!, only: :dashboard
 
-  def dashboard; end
-
-  private
-
-  def require_owner!
-    redirect_to(root_path, alert: 'Solo los owners pueden acceder.') unless current_user&.owner?
+  def dashboard
+    redirect_to dashboard_path
   end
 end

@@ -6,6 +6,7 @@ class RiskAssistant < ApplicationRecord
 
   validates :user_id, uniqueness: true, if: -> { user.client? }
   validates :name, presence: true
+  validate :guest_cannot_exceed_limit, on: :create
 
   before_validation :sync_client_owned
   before_validation :sync_field_catalog_version
@@ -62,6 +63,14 @@ class RiskAssistant < ApplicationRecord
   def sync_field_catalog_version
     return unless has_attribute?(:field_catalog_version)
     self.field_catalog_version ||= RiskFieldSet.catalog_version
+  end
+
+  def guest_cannot_exceed_limit
+    return unless user&.guest?
+    limit = User::MAX_GUEST_RISK_ASSISTANTS
+    if user.risk_assistants.count >= limit
+      errors.add(:base, "Las cuentas invitadas solo pueden crear #{limit} tomas de datos.")
+    end
   end
 
 end

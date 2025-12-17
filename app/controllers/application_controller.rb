@@ -7,12 +7,9 @@ class ApplicationController < ActionController::Base
   def risk_assistants_scope
     return RiskAssistant.none unless current_user
 
-    if current_user.owner?
-      owned_ids = [current_user.id] + current_user.clients.pluck(:id)
-      RiskAssistant.where(user_id: owned_ids)
-    else
-      current_user.risk_assistants
-    end
+    return RiskAssistant.all if current_user.admin?
+
+    current_user.risk_assistants
   end
   helper_method :risk_assistants_scope
 
@@ -21,15 +18,19 @@ class ApplicationController < ActionController::Base
   end
   helper_method :owner_or_self
 
+  def require_admin!
+    redirect_to(root_path, alert: 'Solo el usuario administrador puede acceder.') unless current_user&.admin?
+  end
+
   def require_authorized_user!
-    redirect_to root_path, alert: 'Acceso no autorizado' unless current_user&.owner? || current_user&.client? || current_user&.guest?
+    redirect_to root_path, alert: 'Acceso no autorizado' unless current_user&.admin? || current_user&.owner? || current_user&.client? || current_user&.guest?
   end
   alias_method :require_client!, :require_authorized_user!
 
   protected
 
   def after_sign_in_path_for(resource)
-    resource.owner? ? owner_dashboard_path : client_dashboard_path
+    dashboard_path
   end  
 
   def configure_permitted_parameters

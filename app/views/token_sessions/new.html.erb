@@ -1,0 +1,15 @@
+<div class="container py-5" style="max-width: 520px;">
+  <h1 class="h3 mb-3">Acceso con token</h1>
+  <p class="text-muted">Introduce el código que te ha facilitado el administrador.</p>
+
+  <%= form_with url: token_session_path, method: :post, local: true do |f| %>
+    <div class="mb-3">
+      <%= label_tag :token, 'Token', class: 'form-label' %>
+      <%= text_field_tag :token, @token, class: 'form-control', placeholder: 'Ej: a1b2c3d4e5', autocomplete: 'one-time-code' %>
+    </div>
+    <div class="d-grid">
+      <%= f.submit 'Entrar', class: 'btn btn-primary' %>
+    </div>
+  <% end %>
+</div>
+

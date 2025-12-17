@@ -30,6 +30,9 @@ Rails.application.routes.draw do
   resource :guest_upgrade, only: :create, controller: 'users/guest_upgrades'  
 
   get 'owners/dashboard', to: 'owners#dashboard', as: :owner_dashboard 
+  get 'clients/dashboard', to: 'clients#dashboard', as: :legacy_client_dashboard
+  get 'dashboard', to: 'dashboard#show', as: :dashboard
+  resource :token_session, only: %i[new create]
 
   get 'client_invitations/accept', to: 'invitations#accept', as: :accept_client_invitation
 

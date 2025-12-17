@@ -347,10 +347,57 @@
           "type": "textarea"
         },
         {
-          "assistant_instructions": "Incluye resistencia al fuego de paredes, puertas, huecos, sellado de pasos, paredes por encima de cubierta y patinillos/ascensores/montacargas.",
+          "assistant_instructions": "Incluye RF/EI/REI de paredes, puertas, huecos y sellados; materiales no combustibles del sector; posibles continuidades en cubierta/falsos techos que rompan el sector; existencia de barreras cortafuegos; y si todos los pasos de instalaciones estan sellados correctamente para mantener la RF (pasamuros, bandejas, tuberias, conductos, patinillos, ascensores/montacargas).",
           "id": "constr_sectores_incendio_compartimentacion",
           "label": "Nº sectores de incendio interior / Compartimentación / EI paredes/puertas/huecos / pasos verticales",
           "normative_tips": "Asegurador: Un sector mal ejecutado (huecos sin sellar/puertas no EI) puede convertir el siniestro en pérdida total. | Normativa (habitual): RSCIEI; CTE DB-SI; UNE-EN 13501 (clasificación).",
+          "type": "textarea"
+        },
+        {
+          "assistant_instructions": "Identifica los materiales NO combustibles principales que conforman la sectorizacion del sector (muros, cerramientos, forjados, barreras, sellados). Indica ubicacion por sector si aplica.",
+          "id": "constr_sectorizacion_materiales_no_combustibles",
+          "label": "Sectorizacion: materiales no combustibles del sector",
+          "normative_tips": "Asegurador: Materiales no combustibles y soluciones RF fiables reducen la probabilidad de propagacion y el PML. | Normativa (habitual): RSCIEI; CTE DB-SI; UNE-EN 13501.",
+          "type": "textarea"
+        },
+        {
+          "assistant_instructions": "Indica el tipo de RF de la sectorizacion: EI/REI (minutos) de muros, puertas, sellados y pasos de instalaciones, y si hay certificaciones.",
+          "id": "constr_sectorizacion_tipo_rf",
+          "label": "Sectorizacion: tipo de RF (EI/REI, minutos)",
+          "normative_tips": "Asegurador: La RF efectiva determina si el incendio queda confinado; impacta aceptabilidad y condiciones. | Normativa (habitual): RSCIEI; CTE DB-SI; UNE-EN 13501.",
+          "type": "text"
+        },
+        {
+          "assistant_instructions": "Segun lo indicado, confirma si existen continuidades en la cubierta/falsos techos/camaras que atraviesen la linea de sectorizacion (p. ej. paneles continuos, plenum, lucernarios, canalones, pasos). Indica como se interrumpe.",
+          "id": "constr_sectorizacion_continuidades_cubierta",
+          "label": "Sectorizacion: continuidades en la cubierta que puedan romper el sector",
+          "normative_tips": "Asegurador: Continuidades no tratadas pueden anular la sectorizacion y convertir el siniestro en perdida total. | Normativa (habitual): CTE DB-SI; RSCIEI.",
+          "type": "textarea"
+        },
+        {
+          "id": "constr_sectorizacion_barreras_cortafuegos_existen",
+          "label": "¿Existen barreras cortafuegos que mantengan la sectorizacion? (S/N)",
+          "normative_tips": "Asegurador: Barreras en cubierta/falsos techos evitan propagacion oculta entre sectores. | Normativa (habitual): RSCIEI; CTE DB-SI.",
+          "type": "boolean"
+        },
+        {
+          "assistant_instructions": "Segun la respuesta anterior: si es Si, detalla ubicacion (cubierta, falsos techos, camaras), tipo (muro, pantalla, franja, sellado), continuidad y RF (EI/REI). Si es No, indica 'No aplica'.",
+          "id": "constr_sectorizacion_barreras_cortafuegos_detalle",
+          "label": "Barreras cortafuegos: ubicacion, tipo y RF",
+          "normative_tips": "Asegurador: La continuidad y la certificacion de barreras determina su eficacia real. | Normativa (habitual): UNE-EN 13501; CTE DB-SI; RSCIEI.",
+          "type": "textarea"
+        },
+        {
+          "id": "constr_sectorizacion_pasos_instalaciones_sellados_ok",
+          "label": "¿Estan sellados correctamente todos los pasos de instalaciones para mantener la RF? (S/N)",
+          "normative_tips": "Asegurador: Pasos sin sellar son una de las principales causas de fallo de compartimentacion. | Normativa (habitual): CTE DB-SI; UNE-EN 1366 (ensayos de sellados) / UNE-EN 13501.",
+          "type": "boolean"
+        },
+        {
+          "assistant_instructions": "Segun la respuesta anterior: si es Si, describe sistemas de sellado (marca/tipo), RF y evidencias (certificados, mantenimientos). Si es No, lista los pasos no sellados o dudosos (bandejas, tuberias, conductos, patinillos) y ubicacion.",
+          "id": "constr_sectorizacion_pasos_instalaciones_sellados_detalle",
+          "label": "Sellado de pasos de instalaciones: detalle y RF",
+          "normative_tips": "Asegurador: Evidencias y mantenimiento de sellados incrementan confianza y reducen PML. | Normativa (habitual): UNE-EN 1366; UNE-EN 13501; CTE DB-SI.",
           "type": "textarea"
         },
         {
@@ -400,6 +447,18 @@
                 "id": "estructura",
                 "label": "Estructura (material y protección)",
                 "normative_tips": "Asegurador: Los materiales y la estabilidad al fuego condicionan velocidad de propagación y colapso estructural. | Normativa (habitual): RSCIEI (RD 2267/2004); Clasificación Euroclases (UNE-EN 13501); CTE DB-SI.",
+                "type": "text"
+              },
+              {
+                "id": "materiales_no_combustibles",
+                "label": "Materiales no combustibles del sector (principales)",
+                "normative_tips": "Asegurador: Identifica materiales que limitan propagación y mejoran estabilidad al fuego dentro del sector. | Normativa (habitual): UNE-EN 13501 (Euroclases); RSCIEI; CTE DB-SI.",
+                "type": "text"
+              },
+              {
+                "id": "rf_sector",
+                "label": "Tipo de RF del sector (EI/REI, minutos)",
+                "normative_tips": "Asegurador: La RF del sector define la capacidad de confinamiento del incendio y el PML. | Normativa (habitual): RSCIEI; CTE DB-SI; UNE-EN 13501.",
                 "type": "text"
               },
               {

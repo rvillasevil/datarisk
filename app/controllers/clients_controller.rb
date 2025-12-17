@@ -1,13 +1,12 @@
 class ClientsController < ApplicationController
   before_action :authenticate_user!
-  before_action :require_owner!, only: %i[index new create destroy]   
+  before_action :require_admin!, only: %i[index new create destroy]
   before_action :set_user, except: :show
   before_action :set_client, only: %i[destroy show]
 
   def index
     @clients = @user.clients
     @client_invitations = @user.client_invitations.order(created_at: :desc)
-
   end
 
   def show; end
@@ -18,8 +17,6 @@ class ClientsController < ApplicationController
 
   def create
     return redirect_to(user_clients_path(@user), alert: 'Client limit reached.') unless current_user.can_add_client?
-
-    token = params.dig(:user, :token).presence || SecureRandom.hex(10)
 
     invitation = ClientInvitation.create(
       email: client_params[:email].presence,
@@ -43,17 +40,15 @@ class ClientsController < ApplicationController
     redirect_to user_clients_path(@user), notice: 'Client was revoked.'
   end
 
-  def dashboard; end  
+  def dashboard
+    redirect_to dashboard_path
+  end  
 
   private
 
   def set_user
     @user = current_user
   end
-
-  def require_owner!
-    redirect_to root_path, alert: 'Solo los owners pueden gestionar invitaciones.' unless current_user&.owner?
-  end  
 
   def set_client
     @client = (@user || current_user).clients.find(params[:id])

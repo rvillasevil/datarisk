@@ -6,3 +6,11 @@
 
   <a href="<%= signup_link %>"><%= signup_link %></a>
 </p>
+
+<p>
+  Si ya tienes el token y quieres acceder directamente, usa este enlace:
+</p>
+<p>
+  <% token_login_link = new_token_session_url(token: @invitation.token) %>
+  <a href="<%= token_login_link %>"><%= token_login_link %></a>
+</p>

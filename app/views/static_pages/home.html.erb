@@ -66,6 +66,12 @@
           <a href="<%= risk_assistants_path %>" class="btn btn-outline-primary btn-lg me-3">Ver Demo Plataforma</a>
           <a href="<%= policy_analyses_path %>" class="btn btn-primary btn-lg">Comparativa de pólizas</a>       
         </div>
+        <div class="d-flex justify-content-center mt-4">
+          <%= form_with url: token_session_path, method: :post, local: true, class: 'd-flex gap-2 w-100', style: 'max-width: 560px;' do %>
+            <%= text_field_tag :token, nil, class: 'form-control form-control-lg', placeholder: 'Introduce tu token', autocomplete: 'one-time-code' %>
+            <%= submit_tag 'Acceso con token', class: 'btn btn-outline-dark btn-lg' %>
+          <% end %>
+        </div>
         <small class="d-block mt-3 text-muted">Oferta Early‑Adopter: 20 % descuento hasta el 30 de septiembre de 2025.</small>
         <small class="d-block mt-2 text-muted">Sin compromiso. Descubre el futuro de la intermediación de seguros.</small> 
       </div><!-- /lc-block -->

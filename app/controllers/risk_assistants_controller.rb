@@ -1,7 +1,8 @@
-  class RiskAssistantsController < ApplicationController
+class RiskAssistantsController < ApplicationController
     before_action :authenticate_user!
     before_action :require_client!
     before_action :require_authorized_user!
+    before_action :ensure_can_create_risk_assistant!, only: %i[new create]
     before_action :set_risk_assistant, only: [:show, :generate_report, :report, :update_message, :create_message, :summary, :destroy_file, :resume]    
     
     def index
@@ -144,6 +145,12 @@
 
     private
   
+    def ensure_can_create_risk_assistant!
+      return if current_user.can_create_risk_assistant?
+
+      redirect_to risk_assistants_path, alert: "Has alcanzado el limite de tomas de datos para cuentas invitadas."
+    end
+
     # Si todos los campos están confirmados, devuelve un hash con los
     # pares key/value para mostrar al usuario como resumen final.
     # En caso contrario, devuelve un hash vacío.
